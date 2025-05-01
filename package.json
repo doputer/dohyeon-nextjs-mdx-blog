@@ -13,6 +13,7 @@
     "start": "next start",
     "type-check": "tsc --noEmit"
   },
+  "prettier": "./configs/prettier/index.js",
   "dependencies": {
     "@giscus/react": "^3.0.0",
     "@heroicons/react": "^2.1.5",
