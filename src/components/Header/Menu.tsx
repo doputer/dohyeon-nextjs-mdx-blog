@@ -27,7 +27,7 @@ const Menu = ({ links }: MenuProps) => {
       </button>
 
       {open && (
-        <div className="pointer-events-auto fixed left-0 top-0 z-10 h-full w-full bg-black/40 backdrop-blur-sm" />
+        <div className="pointer-events-auto fixed top-0 left-0 z-10 h-full w-full bg-black/40 backdrop-blur-xs" />
       )}
 
       {open && (
@@ -37,7 +37,7 @@ const Menu = ({ links }: MenuProps) => {
       )}
 
       {open && (
-        <div className="absolute right-0 top-full z-20 mt-2 min-w-48 rounded-lg border border-line bg-background py-2">
+        <div className="border-line bg-background absolute top-full right-0 z-20 mt-2 min-w-48 rounded-lg border py-2">
           <ul>
             {restLinks.map(({ name, href }) => (
               <li key={name} onClick={toggleMenu}>

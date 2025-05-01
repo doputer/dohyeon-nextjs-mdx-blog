@@ -12,7 +12,7 @@ const InlineFold: AnnotationHandler['Inline'] = ({ children }) => {
   return (
     <button
       onClick={() => setFolded(false)}
-      className="rounded bg-black/10 dark:bg-white/10"
+      className="rounded-sm bg-black/10 dark:bg-white/10"
       aria-label="Expand Button"
     >
       ...
