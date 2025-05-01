@@ -11,14 +11,15 @@ interface GNBProps {
   links: Nav[];
 }
 
-const linkClasses = (enable: boolean) => clsx('capitalize hover:text', { text: enable });
+const linkClasses = (enable: boolean) =>
+  clsx('hover:text-primary capitalize', { 'text-primary': enable });
 
 const GNB = ({ links }: GNBProps) => {
   const pathname = usePathname();
   const [homeLink, postLink, ...restLinks] = links;
 
   return (
-    <nav className="flex gap-4 text-lg font-medium text md:text-muted">
+    <nav className="text-primary md:text-muted flex gap-4 text-lg font-medium">
       <Link
         key={homeLink.name}
         href={homeLink.href}

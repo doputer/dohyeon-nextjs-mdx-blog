@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="flex justify-center border-t border-line pt-8 text-sm text-muted">
+    <footer className="border-line text-muted flex justify-center border-t pt-8 text-sm">
       ⓒ 2024. 김도현. All Rights Reserved.
     </footer>
   );

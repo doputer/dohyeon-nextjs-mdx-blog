@@ -19,7 +19,7 @@ const TOC = ({ toc }: TOCProps) => {
   return (
     <aside className="absolute left-full hidden h-full xl:block">
       <div className="sticky top-32 ml-8">
-        <ul className="flex flex-col text-nowrap border-l border-line pl-4 text-sm">
+        <ul className="border-line flex flex-col border-l pl-4 text-sm text-nowrap">
           <li className="py-1 font-medium">On this page</li>
           {toc.map(({ id, text, depth }) => (
             <li
@@ -40,10 +40,10 @@ const TOC = ({ toc }: TOCProps) => {
             onClick={() => scrollToTarget({ page: 'bottom' })}
             aria-label="Scroll Bottom Button"
           >
-            <ChatBubbleOvalLeftIcon className="size-5 text-muted hover:text-secondary" />
+            <ChatBubbleOvalLeftIcon className="text-muted hover:text-secondary size-5" />
           </button>
           <button onClick={() => scrollToTarget({ page: 'top' })} aria-label="Scroll Top Button">
-            <ArrowUpIcon className="size-5 text-muted hover:text-secondary" />
+            <ArrowUpIcon className="text-muted hover:text-secondary size-5" />
           </button>
         </div>
       </div>
