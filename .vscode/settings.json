@@ -1,7 +1,4 @@
 {
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
   "tailwindCSS.experimental.classRegex": [
     [
       "clsx\\(([^)]*)\\)",

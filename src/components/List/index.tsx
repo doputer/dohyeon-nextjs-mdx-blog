@@ -11,10 +11,7 @@ const List = ({ posts }: ListProps) => {
   return (
     <div className="divide-line divide-y divide-dashed">
       {posts.map(({ frontmatter, slug }) => (
-        <div
-          key={frontmatter.title}
-          className="[&:not(:first-of-type)]:pt-4 [&:not(:last-of-type)]:pb-4"
-        >
+        <div key={frontmatter.title} className="not-first-of-type:pt-4 not-last-of-type:pb-4">
           <div className="group md:hover:bg-surface flex items-center gap-8 rounded-lg px-0 py-2 md:px-6 md:py-4">
             <div className="group-hover:animate-flip pointer-events-none hidden text-5xl select-none md:block">
               {frontmatter.emoji}
