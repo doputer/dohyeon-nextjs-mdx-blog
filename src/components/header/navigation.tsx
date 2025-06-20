@@ -14,8 +14,6 @@ interface GNBProps {
 }
 
 const Navigation = ({ menus }: GNBProps) => {
-  const [homeLink] = menus;
-
   const pathname = usePathname();
   const refs = useRef<(HTMLAnchorElement | null)[]>([]);
   const [indicatorStyle, setIndicatorStyle] = useState({
@@ -56,38 +54,25 @@ const Navigation = ({ menus }: GNBProps) => {
   }, [pathname, updateIndicator]);
 
   return (
-    <nav className="relative grid auto-cols-auto grid-flow-col">
+    <nav className={clsx('relative grid auto-cols-auto grid-flow-col', 'max-mobile:hidden')}>
       <div
-        className={clsx(
-          'bg-accent absolute size-full origin-center rounded-3xl duration-300 ease-out',
-          'max-mobile:hidden'
-        )}
+        className="bg-accent absolute size-full origin-center rounded-3xl duration-300 ease-out"
         style={indicatorStyle}
       />
-      <Link
-        key={homeLink.label}
-        href={homeLink.path}
-        className={clsx(
-          'text-muted bg-accent z-10 hidden rounded-3xl px-4 py-1 text-lg font-medium capitalize',
-          'max-mobile:text-primary max-mobile:inline'
-        )}
-      >
-        {homeLink.label}
-      </Link>
-      {menus.map((menu, index) => (
+
+      {menus.map(({ label, path }, index) => (
         <Link
-          key={menu.label}
-          href={menu.path}
+          key={label}
+          href={path}
           ref={(el) => {
             refs.current[index] = el;
           }}
           className={clsx(
             'text-muted z-10 px-4 py-1 text-lg font-medium capitalize transition-colors duration-300 ease-out',
-            activeIndex === index && 'text-primary',
-            'max-mobile:hidden'
+            activeIndex === index && 'text-primary'
           )}
         >
-          {menu.label}
+          {label}
         </Link>
       ))}
     </nav>

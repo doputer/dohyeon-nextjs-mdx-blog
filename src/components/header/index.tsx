@@ -1,3 +1,7 @@
+import Link from 'next/link';
+
+import clsx from 'clsx';
+
 import MobileNavigation from '@/components/header/mobile-navigation';
 import Navigation from '@/components/header/navigation';
 import Github from '@/components/icon/github';
@@ -14,8 +18,20 @@ const menus: Menu[] = [
 ] satisfies Menu[];
 
 const Header = () => {
+  const home = menus[0];
+
   return (
     <header className="flex items-center justify-between">
+      <Link
+        key={home.label}
+        href={home.path}
+        className={clsx(
+          'text-muted bg-accent z-10 hidden rounded-3xl px-4 py-1 text-lg font-medium capitalize',
+          'max-mobile:text-primary max-mobile:inline'
+        )}
+      >
+        {home.label}
+      </Link>
       <Navigation menus={menus} />
       <div className="flex gap-4">
         <ThemeSwitch position="header" />
