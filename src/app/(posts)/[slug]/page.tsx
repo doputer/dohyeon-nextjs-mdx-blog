@@ -16,11 +16,11 @@ const Page = async ({ params }: PageProps) => {
   if (!(await accessPost(params.slug))) notFound();
 
   const { frontmatter, toc, MDX } = await getPost(params.slug);
-  const { title, description, date } = frontmatter;
+  const { title, description, date, tags } = frontmatter;
 
   return (
     <>
-      <Header title={title} date={date} />
+      <Header title={title} date={date} tags={tags} />
       <Post toc={toc} MDX={MDX} />
       <Share title={title} description={description} />
       <Comment />
