@@ -7,14 +7,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 
-import type { Nav } from '@/components/header';
+import type { Menu } from '@/components/header';
 
 interface GNBProps {
-  links: Nav[];
+  menus: Menu[];
 }
 
-const GNB = ({ links }: GNBProps) => {
-  const [homeLink] = links;
+const GNB = ({ menus }: GNBProps) => {
+  const [homeLink] = menus;
 
   const pathname = usePathname();
   const refs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -24,12 +24,12 @@ const GNB = ({ links }: GNBProps) => {
   });
 
   const getActiveIndex = useCallback(() => {
-    const index = links.findIndex(({ href }) => {
-      return pathname === href || (href !== '/' && pathname.startsWith(href));
+    const index = menus.findIndex(({ path }) => {
+      return pathname === path || (path !== '/' && pathname.startsWith(path));
     });
 
     return index !== -1 ? index : 0;
-  }, [links, pathname]);
+  }, [menus, pathname]);
 
   const activeIndex = useMemo(() => getActiveIndex(), [getActiveIndex]);
 
@@ -65,19 +65,19 @@ const GNB = ({ links }: GNBProps) => {
         style={indicatorStyle}
       />
       <Link
-        key={homeLink.name}
-        href={homeLink.href}
+        key={homeLink.label}
+        href={homeLink.path}
         className={clsx(
           'text-muted bg-accent z-10 hidden rounded-3xl px-4 py-1 text-lg font-medium capitalize',
           'max-mobile:text-primary max-mobile:inline'
         )}
       >
-        {homeLink.name}
+        {homeLink.label}
       </Link>
-      {links.map((link, index) => (
+      {menus.map((menu, index) => (
         <Link
-          key={link.name}
-          href={link.href}
+          key={menu.label}
+          href={menu.path}
           ref={(el) => {
             refs.current[index] = el;
           }}
@@ -87,7 +87,7 @@ const GNB = ({ links }: GNBProps) => {
             'max-mobile:hidden'
           )}
         >
-          {link.name}
+          {menu.label}
         </Link>
       ))}
     </nav>

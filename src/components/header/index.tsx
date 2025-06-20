@@ -4,25 +4,25 @@ import Github from '@/components/icon/github';
 import ThemeSwitch from '@/components/theme-switch';
 import config from '@/configs/config.json';
 
-export type Nav = { name: string; href: string };
+export type Menu = { label: string; path: string };
 
-const navList = [
-  { name: config.name, href: '/' },
-  { name: 'posts', href: '/pages/1' },
-  { name: 'about', href: '/about' },
-  { name: 'tags', href: '/tags' },
-] satisfies Nav[];
+const menus: Menu[] = [
+  { label: config.name, path: '/' },
+  { label: 'posts', path: '/pages/1' },
+  { label: 'about', path: '/about' },
+  { label: 'tags', path: '/tags' },
+] satisfies Menu[];
 
 const Header = () => {
   return (
     <header className="flex items-center justify-between">
-      <GNB links={navList} />
+      <GNB menus={menus} />
       <div className="flex gap-4">
         <ThemeSwitch position="header" />
         <a href={config.social.github} target="_blank" aria-label="GitHub Link">
           <Github className="size-6" />
         </a>
-        <Menu links={navList} />
+        <Menu menus={menus} />
       </div>
     </header>
   );
