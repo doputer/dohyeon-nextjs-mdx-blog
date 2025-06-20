@@ -2,10 +2,10 @@ import type { ImageProps } from 'next/image';
 
 import type { MDXComponents } from 'mdx/types';
 
-import Callout from '@/components/Typography/Callout';
-import Code from '@/components/Typography/Code';
-import * as Format from '@/components/Typography/format';
-import Img from '@/components/Typography/Img';
+import Callout from '@/components/typography/callout';
+import Code from '@/components/typography/code';
+import * as Format from '@/components/typography/format';
+import Img from '@/components/typography/img';
 
 const components: MDXComponents = {
   h2: (props) => <h2 className={Format.h2} {...props} />,

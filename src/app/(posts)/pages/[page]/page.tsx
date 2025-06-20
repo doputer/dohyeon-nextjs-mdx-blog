@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 
-import Counter from '@/components/Counter';
-import List from '@/components/List';
-import Pagination from '@/components/Pagination';
+import Counter from '@/components/counter';
+import List from '@/components/list';
+import Pagination from '@/components/pagination';
 import { getPosts } from '@/lib/MDX';
 
 interface PageProps {

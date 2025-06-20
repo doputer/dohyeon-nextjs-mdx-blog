@@ -1,6 +1,6 @@
 import type { AnnotationHandler } from 'codehike/code';
 
-import Collapse from '@/components/Typography/Code/handlers/Collapse/Collapse';
+import Collapse from '@/components/typography/code/handlers/collapse/collapse';
 
 const collapse: AnnotationHandler = {
   name: 'collapse',

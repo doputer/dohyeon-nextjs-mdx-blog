@@ -2,9 +2,9 @@ import type { PropsWithChildren } from 'react';
 
 import { type HighlightedCode, Pre } from 'codehike/code';
 
-import collapse from '@/components/Typography/Code/handlers/Collapse';
-import fold from '@/components/Typography/Code/handlers/Fold';
-import mark from '@/components/Typography/Code/handlers/Mark';
+import collapse from '@/components/typography/code/handlers/collapse';
+import fold from '@/components/typography/code/handlers/fold';
+import mark from '@/components/typography/code/handlers/mark';
 
 interface CodeProps {
   codeblock: HighlightedCode;

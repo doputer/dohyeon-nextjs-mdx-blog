@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import Comment from '@/components/Comment';
-import Post from '@/components/Post';
-import Header from '@/components/Post/header';
-import Share from '@/components/Share';
+import Comment from '@/components/comment';
+import Post from '@/components/post';
+import Header from '@/components/post/header';
+import Share from '@/components/share';
 import config from '@/configs/config.json';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
 

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 
-import type { Nav } from '@/components/Header';
+import type { Nav } from '@/components/header';
 import useMenu from '@/hooks/useMenu';
 
 interface MenuProps {

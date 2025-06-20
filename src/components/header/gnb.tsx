@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import clsx from 'clsx';
 
-import type { Nav } from '@/components/Header';
+import type { Nav } from '@/components/header';
 
 interface GNBProps {
   links: Nav[];

@@ -1,5 +1,5 @@
-import Floating from '@/components/Floating';
-import TOC from '@/components/TOC';
+import Floating from '@/components/floating';
+import TOC from '@/components/toc';
 import type { Post } from '@/lib/MDX/types';
 
 interface PostProps {
