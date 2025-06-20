@@ -14,6 +14,8 @@ interface GNBProps {
 }
 
 const GNB = ({ links }: GNBProps) => {
+  const [homeLink] = links;
+
   const pathname = usePathname();
   const refs = useRef<(HTMLAnchorElement | null)[]>([]);
   const [indicatorStyle, setIndicatorStyle] = useState({
@@ -56,9 +58,22 @@ const GNB = ({ links }: GNBProps) => {
   return (
     <nav className="relative grid auto-cols-auto grid-flow-col">
       <div
-        className="bg-accent absolute size-full origin-center rounded-3xl duration-300 ease-out"
+        className={clsx(
+          'bg-accent absolute size-full origin-center rounded-3xl duration-300 ease-out',
+          'max-mobile:hidden'
+        )}
         style={indicatorStyle}
       />
+      <Link
+        key={homeLink.name}
+        href={homeLink.href}
+        className={clsx(
+          'text-muted bg-accent z-10 hidden rounded-3xl px-4 py-1 text-lg font-medium capitalize',
+          'max-mobile:text-primary max-mobile:inline'
+        )}
+      >
+        {homeLink.name}
+      </Link>
       {links.map((link, index) => (
         <Link
           key={link.name}
@@ -68,7 +83,8 @@ const GNB = ({ links }: GNBProps) => {
           }}
           className={clsx(
             'text-muted z-10 px-4 py-1 text-lg font-medium capitalize transition-colors duration-300 ease-out',
-            activeIndex === index && 'text-primary'
+            activeIndex === index && 'text-primary',
+            'max-mobile:hidden'
           )}
         >
           {link.name}

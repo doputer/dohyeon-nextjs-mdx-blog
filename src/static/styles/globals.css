@@ -22,6 +22,8 @@
   --font-sans: var(--font-pretendard);
   --font-mono: var(--font-jetbrains), 'consolas';
 
+  --breakpoint-mobile: 768px;
+
   --animate-flip: flip 1s linear infinite;
 
   @keyframes flip {
