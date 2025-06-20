@@ -5,15 +5,15 @@ import Link from 'next/link';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 
-import type { Nav } from '@/components/header';
+import type { Menu } from '@/components/header';
 import useMenu from '@/hooks/useMenu';
 
 interface MenuProps {
-  links: Nav[];
+  menus: Menu[];
 }
 
-const Menu = ({ links }: MenuProps) => {
-  const [, ...restLinks] = links;
+const MobileNavigation = ({ menus }: MenuProps) => {
+  const [, ...restLinks] = menus;
   const [open, toggleMenu] = useMenu();
 
   return (
@@ -39,10 +39,10 @@ const Menu = ({ links }: MenuProps) => {
       {open && (
         <div className="border-line bg-background absolute top-full right-0 z-20 mt-2 min-w-48 rounded-lg border py-2">
           <ul>
-            {restLinks.map(({ name, href }) => (
-              <li key={name} onClick={toggleMenu}>
-                <Link href={href} className="block size-full px-6 py-2 font-light capitalize">
-                  {name}
+            {restLinks.map(({ label, path }) => (
+              <li key={label} onClick={toggleMenu}>
+                <Link href={path} className="block size-full px-6 py-2 font-light capitalize">
+                  {label}
                 </Link>
               </li>
             ))}
@@ -53,4 +53,4 @@ const Menu = ({ links }: MenuProps) => {
   );
 };
 
-export default Menu;
+export default MobileNavigation;
