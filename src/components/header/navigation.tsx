@@ -13,7 +13,7 @@ interface GNBProps {
   menus: Menu[];
 }
 
-const GNB = ({ menus }: GNBProps) => {
+const Navigation = ({ menus }: GNBProps) => {
   const [homeLink] = menus;
 
   const pathname = usePathname();
@@ -94,4 +94,4 @@ const GNB = ({ menus }: GNBProps) => {
   );
 };
 
-export default GNB;
+export default Navigation;

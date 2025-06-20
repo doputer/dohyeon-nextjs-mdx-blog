@@ -12,7 +12,7 @@ interface MenuProps {
   menus: Menu[];
 }
 
-const Menu = ({ menus }: MenuProps) => {
+const MobileNavigation = ({ menus }: MenuProps) => {
   const [, ...restLinks] = menus;
   const [open, toggleMenu] = useMenu();
 
@@ -53,4 +53,4 @@ const Menu = ({ menus }: MenuProps) => {
   );
 };
 
-export default Menu;
+export default MobileNavigation;
