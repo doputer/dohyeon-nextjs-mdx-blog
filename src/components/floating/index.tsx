@@ -3,7 +3,7 @@
 import { ArrowUpIcon, ChatBubbleOvalLeftIcon, TagIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
 
-import ThemeSwitch from '@/components/ThemeSwitch';
+import ThemeSwitch from '@/components/theme-switch';
 import useMenu from '@/hooks/useMenu';
 import useScroll from '@/hooks/useScroll';
 import type { Post } from '@/lib/MDX/types';

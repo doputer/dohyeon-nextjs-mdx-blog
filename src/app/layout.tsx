@@ -9,9 +9,9 @@ import type { PropsWithChildren } from 'react';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import ThemeScript from '@/components/ThemeSwitch/ThemeScript';
+import Footer from '@/components/footer';
+import Header from '@/components/header';
+import ThemeScript from '@/components/theme-switch/theme-script';
 import config from '@/configs/config.json';
 import { jetbrains, pretendard } from '@/static/fonts';
 

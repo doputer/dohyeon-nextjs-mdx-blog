@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import Counter from '@/components/Counter';
+import Counter from '@/components/counter';
 import config from '@/configs/config.json';
 
 const Page = async () => {

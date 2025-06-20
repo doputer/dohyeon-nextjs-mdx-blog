@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import Counter from '@/components/Counter';
+import Counter from '@/components/counter';
 import config from '@/configs/config.json';
 import { getPosts } from '@/lib/MDX';
 import { encode } from '@/utils/uri';
