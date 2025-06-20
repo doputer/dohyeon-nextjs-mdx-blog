@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import clsx from 'clsx';
 
 import type { Nav } from '@/components/header';
@@ -11,39 +13,65 @@ interface GNBProps {
   links: Nav[];
 }
 
-const linkClasses = (enable: boolean) =>
-  clsx('hover:text-primary capitalize', { 'text-primary': enable });
-
 const GNB = ({ links }: GNBProps) => {
   const pathname = usePathname();
-  const [homeLink, postLink, ...restLinks] = links;
+  const refs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const [indicatorStyle, setIndicatorStyle] = useState({
+    transform: 'translate3d(0px, 0, 0)',
+    width: '0px',
+  });
+
+  const getActiveIndex = useCallback(() => {
+    const index = links.findIndex(({ href }) => {
+      return pathname === href || (href !== '/' && pathname.startsWith(href));
+    });
+
+    return index !== -1 ? index : 0;
+  }, [links, pathname]);
+
+  const activeIndex = useMemo(() => getActiveIndex(), [getActiveIndex]);
+
+  const updateIndicator = useCallback(() => {
+    const targetEl = refs.current[activeIndex];
+    const parentEl = targetEl?.parentElement;
+
+    if (!targetEl || !parentEl) return;
+
+    const targetRect = targetEl.getBoundingClientRect();
+    const parentRect = parentEl.getBoundingClientRect();
+
+    const translateX = targetRect.left - parentRect.left;
+    const width = targetRect.width;
+
+    setIndicatorStyle({
+      transform: `translate3d(${translateX}px, 0, 0)`,
+      width: `${width}px`,
+    });
+  }, [activeIndex]);
+
+  useEffect(() => {
+    updateIndicator();
+  }, [pathname, updateIndicator]);
 
   return (
-    <nav className="text-primary md:text-muted flex gap-4 text-lg font-medium">
-      <Link
-        key={homeLink.name}
-        href={homeLink.href}
-        className={linkClasses(homeLink.href === pathname)}
-      >
-        {homeLink.name}
-      </Link>
-      <Link
-        key={postLink.name}
-        href={postLink.href}
-        className={clsx(
-          'hidden md:block',
-          linkClasses([homeLink, ...restLinks].every(({ href }) => href !== pathname))
-        )}
-      >
-        {postLink.name}
-      </Link>
-      {restLinks.map(({ name, href }) => (
+    <nav className="relative grid auto-cols-auto grid-flow-col">
+      <div
+        className="bg-accent absolute size-full origin-center rounded-3xl duration-300 ease-out"
+        style={indicatorStyle}
+      />
+      {links.map((link, index) => (
         <Link
-          key={name}
-          href={href}
-          className={clsx('hidden md:block', linkClasses(href === pathname))}
+          key={link.name}
+          href={link.href}
+          ref={(el) => {
+            refs.current[index] = el;
+          }}
+          className={clsx(
+            'text-muted z-10 px-4 py-1 text-lg font-medium capitalize transition-colors duration-300 ease-out',
+            activeIndex === index && 'text-primary'
+          )}
         >
-          {name}
+          {link.name}
         </Link>
       ))}
     </nav>
