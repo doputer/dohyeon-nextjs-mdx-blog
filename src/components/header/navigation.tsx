@@ -53,7 +53,7 @@ const Navigation = ({ menus }: GNBProps) => {
   }, [pathname, updateIndicator]);
 
   return (
-    <nav className="max-mobile:hidden relative grid auto-cols-auto grid-flow-col">
+    <nav className="relative hidden auto-cols-auto grid-flow-col md:grid">
       <div
         className="bg-surface absolute size-full origin-center rounded-3xl transition-transform duration-300 ease-out"
         style={indicatorStyle}

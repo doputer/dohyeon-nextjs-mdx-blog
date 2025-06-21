@@ -8,24 +8,24 @@ interface ListProps {
 
 const List = ({ posts }: ListProps) => {
   return (
-    <div className="max-mobile:gap-8 grid grid-flow-row auto-rows-fr gap-12">
+    <div className="grid grid-flow-row auto-rows-fr gap-8 md:gap-12">
       {posts.map(({ frontmatter, slug }) => (
         <Link
           key={frontmatter.title}
           href={`/${slug}`}
-          className="group max-mobile:gap-6 flex items-center gap-8"
+          className="group flex items-center gap-6 md:gap-8"
         >
-          <div className="group-hover:animate-flip max-mobile:text-4xl pointer-events-none text-5xl select-none">
+          <div className="group-hover:animate-flip pointer-events-none text-4xl select-none md:text-5xl">
             {frontmatter.emoji}
           </div>
           <div className="flex-1">
-            <div className="group-hover:text-link max-mobile:text-base text-xl font-medium transition-colors duration-300 ease-out">
+            <div className="group-hover:text-link font-medium transition-colors duration-300 ease-out md:text-xl">
               {frontmatter.title}
             </div>
-            <div className="text-subtle max-mobile:text-sm max-mobile:mb-2 max-mobile:mt-1 my-2">
+            <div className="text-subtle mt-1 mb-2 text-sm md:my-2 md:text-base">
               {frontmatter.description}
             </div>
-            <time className="max-mobile:text-xs block text-sm font-light">{frontmatter.date}</time>
+            <time className="block text-xs font-light md:text-sm">{frontmatter.date}</time>
           </div>
         </Link>
       ))}

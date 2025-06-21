@@ -23,7 +23,7 @@ const Header = () => {
       <Link
         key={home.label}
         href={home.path}
-        className="max-mobile:inline bg-surface z-10 hidden rounded-3xl px-4 py-1 font-medium capitalize"
+        className="bg-surface z-10 rounded-3xl px-4 py-1 font-medium capitalize md:hidden"
       >
         {home.label}
       </Link>
