@@ -68,7 +68,7 @@ const Navigation = ({ menus }: GNBProps) => {
           }}
           className={cn(
             'text-subtle z-10 px-4 py-1 text-lg font-medium capitalize transition-colors duration-300 ease-out',
-            activeIndex === index && 'text-primary'
+            activeIndex === index && 'text-inherit'
           )}
         >
           {label}

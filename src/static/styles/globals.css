@@ -21,7 +21,7 @@
   --font-sans: var(--font-pretendard);
   --font-mono: var(--font-jetbrains), 'consolas';
 
-  --animate-flip: flip 1s linear infinite;
+  --animate-flip: flip 1s ease-in-out infinite;
 
   @keyframes flip {
     0% {
@@ -38,7 +38,7 @@
   --color-link: #10b981;
   --color-background: #191c1f;
   --color-subtle: #b3b3b3;
-  --color-surface: #222527;
+  --color-surface: #262a30;
   --color-line: #3a3e42;
 }
 

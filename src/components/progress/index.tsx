@@ -23,7 +23,7 @@ const Progress = () => {
     };
   }, []);
 
-  return <div ref={ref} className="fixed top-0 left-0 z-10 h-1 bg-black" />;
+  return <div ref={ref} className="bg-primary fixed top-0 left-0 z-10 h-1" />;
 };
 
 export default Progress;
