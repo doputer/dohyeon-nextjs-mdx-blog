@@ -1,7 +1,5 @@
 import Link from 'next/link';
 
-import clsx from 'clsx';
-
 import MobileNavigation from '@/components/header/mobile-navigation';
 import Navigation from '@/components/header/navigation';
 import Github from '@/components/icon/github';
@@ -25,10 +23,7 @@ const Header = () => {
       <Link
         key={home.label}
         href={home.path}
-        className={clsx(
-          'text-muted bg-accent z-10 hidden rounded-3xl px-4 py-1 text-lg font-medium capitalize',
-          'max-mobile:text-primary max-mobile:inline'
-        )}
+        className="max-mobile:inline bg-surface z-10 hidden rounded-3xl px-4 py-1 font-medium capitalize"
       >
         {home.label}
       </Link>

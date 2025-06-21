@@ -25,7 +25,7 @@ const TOC = ({ toc }: TOCProps) => {
             <li
               key={id}
               className={clsx('cursor-pointer py-1 font-light', {
-                'text-secondary': id === activeId,
+                'text-link': id === activeId,
                 'pl-4': depth === 3,
               })}
               onClick={() => scrollToTarget({ id })}
@@ -40,10 +40,10 @@ const TOC = ({ toc }: TOCProps) => {
             onClick={() => scrollToTarget({ page: 'bottom' })}
             aria-label="Scroll Bottom Button"
           >
-            <ChatBubbleOvalLeftIcon className="text-muted hover:text-secondary size-5" />
+            <ChatBubbleOvalLeftIcon className="text-subtle hover:text-link size-5" />
           </button>
           <button onClick={() => scrollToTarget({ page: 'top' })} aria-label="Scroll Top Button">
-            <ArrowUpIcon className="text-muted hover:text-secondary size-5" />
+            <ArrowUpIcon className="text-subtle hover:text-link size-5" />
           </button>
         </div>
       </div>

@@ -5,9 +5,8 @@ import { usePathname } from 'next/navigation';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import clsx from 'clsx';
-
 import type { Menu } from '@/components/header';
+import { cn } from '@/utils/cn';
 
 interface GNBProps {
   menus: Menu[];
@@ -54,9 +53,9 @@ const Navigation = ({ menus }: GNBProps) => {
   }, [pathname, updateIndicator]);
 
   return (
-    <nav className={clsx('relative grid auto-cols-auto grid-flow-col', 'max-mobile:hidden')}>
+    <nav className="max-mobile:hidden relative grid auto-cols-auto grid-flow-col">
       <div
-        className="bg-accent absolute size-full origin-center rounded-3xl duration-300 ease-out"
+        className="bg-surface absolute size-full origin-center rounded-3xl transition-transform duration-300 ease-out"
         style={indicatorStyle}
       />
 
@@ -67,8 +66,8 @@ const Navigation = ({ menus }: GNBProps) => {
           ref={(el) => {
             refs.current[index] = el;
           }}
-          className={clsx(
-            'text-muted z-10 px-4 py-1 text-lg font-medium capitalize transition-colors duration-300 ease-out',
+          className={cn(
+            'text-subtle z-10 px-4 py-1 text-lg font-medium capitalize transition-colors duration-300 ease-out',
             activeIndex === index && 'text-primary'
           )}
         >

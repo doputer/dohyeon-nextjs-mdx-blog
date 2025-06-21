@@ -11,8 +11,8 @@ interface ThemeSwitchProps {
 
 const variants = {
   header: 'size-6',
-  toc: 'size-5 text-muted hover:text-secondary',
-  floating: 'size-5 text-muted',
+  toc: 'size-5 text-subtle hover:text-link',
+  floating: 'size-5 text-subtle',
 };
 
 const ThemeSwitch = ({ position }: ThemeSwitchProps) => {

@@ -20,11 +20,11 @@ const Floating = ({ toc }: FloatingProps) => {
     <div className="fixed right-4 bottom-4 space-y-2 xl:hidden">
       <div className="relative">
         <button
-          className="border-line text-muted rounded-full border bg-white p-2 dark:bg-black"
+          className="border-line text-subtle rounded-full border bg-white p-2 dark:bg-black"
           onClick={toggleMenu}
           aria-label="Open TOC Button"
         >
-          <TagIcon className="text-muted size-5" />
+          <TagIcon className="text-subtle size-5" />
         </button>
 
         {open && (
@@ -37,7 +37,7 @@ const Floating = ({ toc }: FloatingProps) => {
             onClick={toggleMenu}
             aria-label="Close TOC Button"
           >
-            <XMarkIcon className="text-muted size-5" />
+            <XMarkIcon className="text-subtle size-5" />
           </button>
         )}
 
@@ -65,13 +65,13 @@ const Floating = ({ toc }: FloatingProps) => {
                 onClick={() => scrollToTarget({ page: 'bottom' })}
                 aria-label="Scroll Bottom Button"
               >
-                <ChatBubbleOvalLeftIcon className="text-muted size-5" />
+                <ChatBubbleOvalLeftIcon className="text-subtle size-5" />
               </button>
               <button
                 onClick={() => scrollToTarget({ page: 'top' })}
                 aria-label="Scroll Top Button"
               >
-                <ArrowUpIcon className="text-muted size-5" />
+                <ArrowUpIcon className="text-subtle size-5" />
               </button>
             </div>
           </div>
