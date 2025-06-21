@@ -13,7 +13,7 @@ const Page = async () => {
       <Counter label="Latest" count={slicedPosts.length} />
       <List posts={slicedPosts} />
       <div className="text-right text-lg">
-        <Link href="/pages/1" className="text-secondary max-mobile:text-sm">
+        <Link href="/pages/1" className="text-link text-sm md:text-base">
           All Posts →
         </Link>
       </div>

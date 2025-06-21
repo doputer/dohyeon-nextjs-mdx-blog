@@ -8,23 +8,20 @@
   --color-black: #000000;
 
   --color-primary: #191c1f;
-  --color-secondary: #004ec7;
+  --color-link: #004ec7;
   --color-background: #ffffff;
-  --color-muted: #6c757d;
   --color-surface: #f2f4f6;
+  --color-subtle: #737373;
   --color-line: #e5e7eb;
-  --color-accent: #818b981f;
 
-  --color-mark: #fef08a4d;
-  --color-info: 45 156 219;
-  --color-warn: 234 179 8;
+  --color-mark: #fef08a;
+  --color-info: #2d9cdb;
+  --color-warn: #eab308;
 
   --font-sans: var(--font-pretendard);
   --font-mono: var(--font-jetbrains), 'consolas';
 
-  --breakpoint-mobile: 768px;
-
-  --animate-flip: flip 1s linear infinite;
+  --animate-flip: flip 1s ease-in-out infinite;
 
   @keyframes flip {
     0% {
@@ -38,12 +35,11 @@
 
 [data-theme~='dark'] {
   --color-primary: #dddddd;
-  --color-secondary: #10b981;
+  --color-link: #10b981;
   --color-background: #191c1f;
-  --color-muted: #b3b3b3;
-  --color-surface: #222527;
+  --color-subtle: #b3b3b3;
+  --color-surface: #262a30;
   --color-line: #3a3e42;
-  --color-accent: #656c7633;
 }
 
 @layer base {

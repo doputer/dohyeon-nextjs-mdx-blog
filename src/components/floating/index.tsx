@@ -1,12 +1,12 @@
 'use client';
 
 import { ArrowUpIcon, ChatBubbleOvalLeftIcon, TagIcon, XMarkIcon } from '@heroicons/react/20/solid';
-import clsx from 'clsx';
 
 import ThemeSwitch from '@/components/theme-switch';
 import useMenu from '@/hooks/useMenu';
 import useScroll from '@/hooks/useScroll';
 import type { Post } from '@/lib/MDX/types';
+import { cn } from '@/utils/cn';
 
 interface FloatingProps {
   toc: Post['toc'];
@@ -20,11 +20,11 @@ const Floating = ({ toc }: FloatingProps) => {
     <div className="fixed right-4 bottom-4 space-y-2 xl:hidden">
       <div className="relative">
         <button
-          className="border-line text-muted rounded-full border bg-white p-2 dark:bg-black"
+          className="border-line text-subtle rounded-full border bg-white p-2 dark:bg-black"
           onClick={toggleMenu}
           aria-label="Open TOC Button"
         >
-          <TagIcon className="text-muted size-5" />
+          <TagIcon className="text-subtle size-5" />
         </button>
 
         {open && (
@@ -37,7 +37,7 @@ const Floating = ({ toc }: FloatingProps) => {
             onClick={toggleMenu}
             aria-label="Close TOC Button"
           >
-            <XMarkIcon className="text-muted size-5" />
+            <XMarkIcon className="text-subtle size-5" />
           </button>
         )}
 
@@ -49,9 +49,7 @@ const Floating = ({ toc }: FloatingProps) => {
                 {toc.map(({ id, text, depth }) => (
                   <li
                     key={id}
-                    className={clsx('cursor-pointer px-6 py-2 font-light', {
-                      'pl-10': depth === 3,
-                    })}
+                    className={cn('cursor-pointer px-6 py-2 font-light', depth === 3 && 'pl-10')}
                     onClick={() => scrollToTarget({ id })}
                   >
                     {text}
@@ -65,13 +63,13 @@ const Floating = ({ toc }: FloatingProps) => {
                 onClick={() => scrollToTarget({ page: 'bottom' })}
                 aria-label="Scroll Bottom Button"
               >
-                <ChatBubbleOvalLeftIcon className="text-muted size-5" />
+                <ChatBubbleOvalLeftIcon className="text-subtle size-5" />
               </button>
               <button
                 onClick={() => scrollToTarget({ page: 'top' })}
                 aria-label="Scroll Top Button"
               >
-                <ArrowUpIcon className="text-muted size-5" />
+                <ArrowUpIcon className="text-subtle size-5" />
               </button>
             </div>
           </div>

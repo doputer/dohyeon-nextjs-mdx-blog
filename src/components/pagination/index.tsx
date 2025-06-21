@@ -1,7 +1,8 @@
 import Link from 'next/link';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
-import clsx from 'clsx';
+
+import { cn } from '@/utils/cn';
 
 interface PaginationProps {
   totalCount: number;
@@ -18,7 +19,7 @@ const Pagination = ({ totalCount, currentPage = 1 }: PaginationProps) => {
     <div className="flex items-center justify-center gap-1">
       <Link
         href={`/pages/${startPage}`}
-        className={clsx({ invisible: startPage === 0 })}
+        className={cn(startPage === 0 && 'invisible')}
         aria-label="Prev Page Link"
       >
         <ChevronLeftIcon className="size-5" />
@@ -28,9 +29,7 @@ const Pagination = ({ totalCount, currentPage = 1 }: PaginationProps) => {
           <Link
             key={i}
             href={`/pages/${i + 1 + startPage}`}
-            className={clsx('px-2 text-lg', {
-              'text-secondary': currentPage === i + 1 + startPage,
-            })}
+            className={cn('px-2 text-lg', currentPage === i + 1 + startPage && 'text-link')}
           >
             {i + 1 + startPage}
           </Link>
@@ -38,7 +37,7 @@ const Pagination = ({ totalCount, currentPage = 1 }: PaginationProps) => {
       </div>
       <Link
         href={`/pages/${endPage + 1}`}
-        className={clsx({ invisible: endPage === numPages })}
+        className={cn(endPage === numPages && 'invisible')}
         aria-label="Next Page Link"
       >
         <ChevronRightIcon className="size-5" />

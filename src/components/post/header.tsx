@@ -11,20 +11,17 @@ interface HeaderProps {
 
 const Header = ({ title, date, tags }: HeaderProps) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{title}</h1>
-      <div className="space-x-2">
+      <div className="flex items-center gap-2">
+        <time className="text-sm">{date}</time>
+        <span className="text-sm">/</span>
         {tags.map((tag) => (
-          <Link
-            key={tag}
-            href={`/tags/${encode(tag)}`}
-            className="bg-accent text-secondary rounded-2xl px-3 py-1.5 text-sm uppercase"
-          >
+          <Link key={tag} href={`/tags/${encode(tag)}`} className="text-link text-sm uppercase">
             #{tag}
           </Link>
         ))}
       </div>
-      <time className="block text-sm">{date}</time>
     </div>
   );
 };

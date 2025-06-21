@@ -1,9 +1,9 @@
 'use client';
 
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
-import clsx from 'clsx';
 
 import useTheme from '@/hooks/useTheme';
+import { cn } from '@/utils/cn';
 
 interface ThemeSwitchProps {
   position: 'header' | 'toc' | 'floating';
@@ -11,8 +11,8 @@ interface ThemeSwitchProps {
 
 const variants = {
   header: 'size-6',
-  toc: 'size-5 text-muted hover:text-secondary',
-  floating: 'size-5 text-muted',
+  toc: 'size-5 text-subtle hover:text-link',
+  floating: 'size-5 text-subtle',
 };
 
 const ThemeSwitch = ({ position }: ThemeSwitchProps) => {
@@ -20,8 +20,8 @@ const ThemeSwitch = ({ position }: ThemeSwitchProps) => {
 
   return (
     <button onClick={toggleTheme} aria-label="Theme Button">
-      <SunIcon className={clsx('hidden dark:block', variants[position])} />
-      <MoonIcon className={clsx('dark:hidden', variants[position])} />
+      <SunIcon className={cn('hidden dark:block', variants[position])} />
+      <MoonIcon className={cn('dark:hidden', variants[position])} />
     </button>
   );
 };
