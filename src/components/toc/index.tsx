@@ -1,12 +1,12 @@
 'use client';
 
 import { ArrowUpIcon, ChatBubbleOvalLeftIcon } from '@heroicons/react/20/solid';
-import clsx from 'clsx';
 
 import ThemeSwitch from '@/components/theme-switch';
 import useObserver from '@/hooks/useObserver';
 import useScroll from '@/hooks/useScroll';
 import type { Post } from '@/lib/MDX/types';
+import { cn } from '@/utils/cn';
 
 interface TOCProps {
   toc: Post['toc'];
@@ -24,10 +24,11 @@ const TOC = ({ toc }: TOCProps) => {
           {toc.map(({ id, text, depth }) => (
             <li
               key={id}
-              className={clsx('cursor-pointer py-1 font-light', {
-                'text-link': id === activeId,
-                'pl-4': depth === 3,
-              })}
+              className={cn(
+                'cursor-pointer py-1 font-light',
+                id === activeId && 'text-link',
+                depth === 3 && 'pl-4'
+              )}
               onClick={() => scrollToTarget({ id })}
             >
               {text}

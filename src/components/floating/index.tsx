@@ -1,12 +1,12 @@
 'use client';
 
 import { ArrowUpIcon, ChatBubbleOvalLeftIcon, TagIcon, XMarkIcon } from '@heroicons/react/20/solid';
-import clsx from 'clsx';
 
 import ThemeSwitch from '@/components/theme-switch';
 import useMenu from '@/hooks/useMenu';
 import useScroll from '@/hooks/useScroll';
 import type { Post } from '@/lib/MDX/types';
+import { cn } from '@/utils/cn';
 
 interface FloatingProps {
   toc: Post['toc'];
@@ -49,9 +49,7 @@ const Floating = ({ toc }: FloatingProps) => {
                 {toc.map(({ id, text, depth }) => (
                   <li
                     key={id}
-                    className={clsx('cursor-pointer px-6 py-2 font-light', {
-                      'pl-10': depth === 3,
-                    })}
+                    className={cn('cursor-pointer px-6 py-2 font-light', depth === 3 && 'pl-10')}
                     onClick={() => scrollToTarget({ id })}
                   >
                     {text}

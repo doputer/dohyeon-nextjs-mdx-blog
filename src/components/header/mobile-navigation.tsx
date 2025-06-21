@@ -3,10 +3,10 @@
 import Link from 'next/link';
 
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
-import clsx from 'clsx';
 
 import type { Menu } from '@/components/header';
 import useMenu from '@/hooks/useMenu';
+import { cn } from '@/utils/cn';
 
 interface MenuProps {
   menus: Menu[];
@@ -19,7 +19,7 @@ const MobileNavigation = ({ menus }: MenuProps) => {
   return (
     <div className="relative md:hidden">
       <button
-        className={clsx('flex items-center', { invisible: open })}
+        className={cn('flex items-center', open && 'invisible')}
         onClick={toggleMenu}
         aria-label="Open Menu Button"
       >
