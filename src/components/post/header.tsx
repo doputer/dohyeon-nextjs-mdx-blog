@@ -12,8 +12,8 @@ interface HeaderProps {
 const Header = ({ title, date, tags }: HeaderProps) => {
   return (
     <div className="space-y-2">
-      <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{title}</h1>
-      <div className="flex items-center gap-2">
+      <h1 className="text-2xl font-medium tracking-tight md:text-3xl">{title}</h1>
+      <div className="flex flex-wrap items-center gap-2">
         <time className="text-sm">{date}</time>
         <span className="text-sm">/</span>
         {tags.map((tag) => (

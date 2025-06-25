@@ -1,8 +1,5 @@
 'use client';
 
-import { ArrowUpIcon, ChatBubbleOvalLeftIcon } from '@heroicons/react/20/solid';
-
-import ThemeSwitch from '@/components/theme-switch';
 import useObserver from '@/hooks/useObserver';
 import useScroll from '@/hooks/useScroll';
 import type { Post } from '@/lib/MDX/types';
@@ -17,16 +14,15 @@ const TOC = ({ toc }: TOCProps) => {
   const scrollToTarget = useScroll();
 
   return (
-    <aside className="absolute left-full hidden h-full xl:block">
-      <div className="sticky top-32 ml-8">
-        <ul className="border-line flex flex-col border-l pl-4 text-sm text-nowrap">
-          <li className="py-1 font-medium">On this page</li>
+    <aside className="static left-full h-full xl:absolute">
+      <div className="border-line sticky top-32 mb-4 w-fit rounded-lg border p-4 text-sm md:mb-8 xl:mb-0 xl:ml-8 xl:border-0 xl:p-0 xl:text-base">
+        <ul className="flex flex-col gap-2 xl:text-nowrap">
           {toc.map(({ id, text, depth }) => (
             <li
               key={id}
               className={cn(
-                'cursor-pointer py-1 font-light',
-                id === activeId && 'text-link',
+                'xl:text-subtle cursor-pointer',
+                id === activeId && 'xl:text-primary xl:font-medium',
                 depth === 3 && 'pl-4'
               )}
               onClick={() => scrollToTarget({ id })}
@@ -35,18 +31,6 @@ const TOC = ({ toc }: TOCProps) => {
             </li>
           ))}
         </ul>
-        <div className="flex justify-start gap-4 px-4 pt-2">
-          <ThemeSwitch position="toc" />
-          <button
-            onClick={() => scrollToTarget({ page: 'bottom' })}
-            aria-label="Scroll Bottom Button"
-          >
-            <ChatBubbleOvalLeftIcon className="text-subtle hover:text-link size-5" />
-          </button>
-          <button onClick={() => scrollToTarget({ page: 'top' })} aria-label="Scroll Top Button">
-            <ArrowUpIcon className="text-subtle hover:text-link size-5" />
-          </button>
-        </div>
       </div>
     </aside>
   );

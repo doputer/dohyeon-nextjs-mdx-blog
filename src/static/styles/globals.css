@@ -18,7 +18,7 @@
   --color-info: #2d9cdb;
   --color-warn: #eab308;
 
-  --font-sans: var(--font-pretendard);
+  --font-sans: var(--font-ibm);
   --font-mono: var(--font-jetbrains), 'consolas';
 
   --animate-flip: flip 1s ease-in-out infinite;
