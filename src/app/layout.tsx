@@ -13,18 +13,18 @@ import Footer from '@/components/footer';
 import Header from '@/components/header';
 import ThemeScript from '@/components/theme-switch/theme-script';
 import config from '@/configs/config.json';
-import { jetbrains, pretendard } from '@/static/fonts';
+import { ibm, jetbrains } from '@/static/fonts';
 
 const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
   return (
-    <html lang="ko-KR" className={`${pretendard.variable} ${jetbrains.variable}`}>
+    <html lang="ko-KR" className={`${ibm.variable} ${jetbrains.variable}`}>
       <head>
         <ThemeScript />
       </head>
       <body>
         <div className="mx-auto flex min-h-screen max-w-2xl flex-col gap-8 px-4 py-8">
           <Header />
-          <main className="flex flex-1 flex-col gap-8">{children}</main>
+          <main className="flex flex-1 flex-col gap-4 md:gap-8">{children}</main>
           <Footer />
         </div>
         <Analytics />
