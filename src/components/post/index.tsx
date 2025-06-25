@@ -1,4 +1,3 @@
-import Floating from '@/components/floating';
 import TOC from '@/components/toc';
 import type { Post } from '@/lib/MDX/types';
 
@@ -14,7 +13,6 @@ const Post = ({ toc, MDX }: PostProps) => {
       <article className="[&>*:first-child]:mt-0">
         <MDX />
       </article>
-      <Floating toc={toc} />
     </div>
   );
 };

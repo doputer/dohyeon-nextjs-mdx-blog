@@ -53,7 +53,7 @@ const Navigation = ({ menus }: GNBProps) => {
   }, [pathname, updateIndicator]);
 
   return (
-    <nav className="relative hidden auto-cols-auto grid-flow-col md:grid">
+    <nav className="relative grid auto-cols-auto grid-flow-col">
       <div
         className="bg-surface absolute size-full origin-center rounded-3xl transition-transform duration-300 ease-out"
         style={indicatorStyle}
@@ -67,7 +67,7 @@ const Navigation = ({ menus }: GNBProps) => {
             refs.current[index] = el;
           }}
           className={cn(
-            'text-subtle z-10 px-4 py-1 text-lg font-medium capitalize transition-colors duration-300 ease-out',
+            'text-subtle z-10 px-4 py-1 font-medium capitalize transition-colors duration-300 ease-out',
             activeIndex === index && 'text-inherit'
           )}
         >
