@@ -32,8 +32,8 @@ const Navigation = () => {
           key={label}
           href={path}
           className={cn(
-            'text-subtle font-medium capitalize transition-colors duration-300 ease-out md:text-lg',
-            current === index && 'text-inherit'
+            'text-subtle font-medium capitalize transition-opacity duration-300 ease-out hover:opacity-70 md:text-lg',
+            current === index && 'text-inherit hover:opacity-100'
           )}
         >
           {label}
