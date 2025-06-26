@@ -8,7 +8,7 @@ interface PostProps {
 
 const Post = ({ toc, MDX }: PostProps) => {
   return (
-    <div className="relative">
+    <div className="relative space-y-8">
       <TOC toc={toc} />
       <article className="[&>*:first-child]:mt-0">
         <MDX />

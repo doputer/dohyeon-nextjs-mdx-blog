@@ -8,7 +8,7 @@ interface ListProps {
 
 const List = ({ posts }: ListProps) => {
   return (
-    <div className="grid grid-flow-row auto-rows-fr gap-8 md:gap-12">
+    <div className="grid grid-flow-row gap-8 md:gap-12">
       {posts.map(({ frontmatter, slug }) => (
         <Link
           key={frontmatter.title}
