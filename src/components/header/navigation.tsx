@@ -16,13 +16,10 @@ const menus = [
 
 const Navigation = () => {
   const pathname = usePathname();
-
   const current = useMemo(() => {
-    const index = menus.findIndex(({ path }) => {
-      return pathname === path || (path !== '/' && pathname.startsWith(path));
-    });
-
-    return index !== -1 ? index : 0;
+    if (pathname.startsWith('/about')) return 1;
+    else if (pathname.startsWith('/tags')) return 2;
+    return 0;
   }, [pathname]);
 
   return (
