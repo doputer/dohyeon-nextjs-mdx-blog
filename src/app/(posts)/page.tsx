@@ -7,7 +7,7 @@ const Page = async () => {
 
   return (
     <>
-      <Counter label="posts" count={posts.length} />
+      <Counter label="글" count={posts.length} />
       <List posts={posts} />
     </>
   );

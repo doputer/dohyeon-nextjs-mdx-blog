@@ -22,7 +22,7 @@ const Page = async () => {
 
   return (
     <>
-      <Counter label="tags" count={Object.keys(tagsObject).length} />
+      <Counter label="태그" count={tags.length} />
       <div className="flex flex-wrap gap-4">
         {tags.map(([tag, totalCount]) => (
           <Link key={tag} href={`/tags/${encode(tag)}`} className="space-x-1 text-sm">
