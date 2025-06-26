@@ -8,15 +8,15 @@
   --color-black: #000000;
 
   --color-primary: #191c1f;
-  --color-link: #004ec7;
-  --color-background: #ffffff;
-  --color-surface: #f2f4f6;
   --color-subtle: #737373;
+  --color-link: #004ec7;
   --color-line: #e5e7eb;
+  --color-surface: #f2f4f6;
+  --color-background: #ffffff;
 
-  --color-mark: #fef08a;
-  --color-info: #2d9cdb;
-  --color-warn: #eab308;
+  --color-blue: #2d9cdb;
+  --color-yellow: #fef08a;
+  --color-orange: #eab308;
 
   --font-sans: var(--font-ibm);
   --font-mono: var(--font-jetbrains), 'consolas';
@@ -35,11 +35,11 @@
 
 [data-theme~='dark'] {
   --color-primary: #dddddd;
-  --color-link: #10b981;
-  --color-background: #191c1f;
   --color-subtle: #b3b3b3;
-  --color-surface: #262a30;
+  --color-link: #10b981;
   --color-line: #3a3e42;
+  --color-surface: #262a30;
+  --color-background: #191c1f;
 }
 
 @layer base {
