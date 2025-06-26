@@ -3,25 +3,18 @@
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
 
 import useTheme from '@/hooks/useTheme';
-import { cn } from '@/utils/cn';
 
-interface ThemeSwitchProps {
-  position: 'header' | 'toc' | 'floating';
-}
-
-const variants = {
-  header: 'size-6',
-  toc: 'size-5 text-subtle hover:text-link',
-  floating: 'size-5 text-subtle',
-};
-
-const ThemeSwitch = ({ position }: ThemeSwitchProps) => {
+const ThemeSwitch = () => {
   const toggleTheme = useTheme();
 
   return (
-    <button onClick={toggleTheme} aria-label="Theme Button">
-      <SunIcon className={cn('hidden dark:block', variants[position])} />
-      <MoonIcon className={cn('dark:hidden', variants[position])} />
+    <button
+      className="dark:hover:text-yellow hover:text-orange relative size-6 cursor-pointer overflow-hidden transition-transform duration-300 active:scale-90"
+      onClick={toggleTheme}
+      aria-label="Theme Button"
+    >
+      <SunIcon className="absolute top-0 left-0 translate-x-0 translate-y-0 transition-transform duration-300 dark:translate-x-full dark:-translate-y-full" />
+      <MoonIcon className="absolute top-full left-0 -translate-x-full translate-y-0 transition-transform duration-300 dark:translate-x-0 dark:-translate-y-full" />
     </button>
   );
 };

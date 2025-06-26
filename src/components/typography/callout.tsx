@@ -8,8 +8,8 @@ interface CalloutProps {
 }
 
 const calloutClasses = {
-  info: 'bg-info/15',
-  warn: 'bg-warn/15',
+  info: 'bg-blue/15',
+  warn: 'bg-orange/15',
 } as const;
 
 const Callout = (props: PropsWithChildren<CalloutProps>) => {

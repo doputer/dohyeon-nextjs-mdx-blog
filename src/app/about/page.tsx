@@ -6,7 +6,7 @@ import config from '@/configs/config.json';
 const Page = async () => {
   return (
     <>
-      <Counter label="me" />
+      <Counter label="소개" />
       <p>
         안녕하세요.
         <br />
