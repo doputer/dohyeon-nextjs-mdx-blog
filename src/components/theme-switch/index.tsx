@@ -8,9 +8,13 @@ const ThemeSwitch = () => {
   const toggleTheme = useTheme();
 
   return (
-    <button className="cursor-pointer" onClick={toggleTheme} aria-label="Theme Button">
-      <SunIcon className="hidden size-6 dark:block" />
-      <MoonIcon className="size-6 dark:hidden" />
+    <button
+      className="dark:hover:text-mark hover:text-warn relative size-6 cursor-pointer overflow-hidden transition-transform duration-300 active:scale-90"
+      onClick={toggleTheme}
+      aria-label="Theme Button"
+    >
+      <SunIcon className="absolute top-0 left-0 translate-x-0 translate-y-0 transition-transform duration-300 dark:translate-x-full dark:-translate-y-full" />
+      <MoonIcon className="absolute top-full left-0 -translate-x-full translate-y-0 transition-transform duration-300 dark:translate-x-0 dark:-translate-y-full" />
     </button>
   );
 };
