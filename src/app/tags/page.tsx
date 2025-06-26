@@ -8,22 +8,23 @@ import { encode } from '@/utils/uri';
 
 const Page = async () => {
   const posts = await getPosts();
-  const tagsObject = posts.reduce(
-    (object, post) => {
-      post.frontmatter.tags.forEach((tag) => {
-        object[tag] = (object[tag] || 0) + 1;
-      });
-      return object;
-    },
-    {} as Record<string, number>
-  );
-  const sortedTagsArray = Object.entries(tagsObject).sort(([a], [b]) => a.localeCompare(b));
+  const tags = (() => {
+    const map = new Map<string, number>();
+
+    for (const post of posts) {
+      for (const tag of post.frontmatter.tags) {
+        map.set(tag, (map.get(tag) ?? 0) + 1);
+      }
+    }
+
+    return [...map.entries()].sort(([a], [b]) => a.localeCompare(b));
+  })();
 
   return (
     <>
       <Counter label="tags" count={Object.keys(tagsObject).length} />
       <div className="flex flex-wrap gap-4">
-        {sortedTagsArray.map(([tag, totalCount]) => (
+        {tags.map(([tag, totalCount]) => (
           <Link key={tag} href={`/tags/${encode(tag)}`} className="space-x-1 text-sm">
             <span className="text-link uppercase">{tag}</span>
             <span>{totalCount}</span>
