@@ -29,7 +29,7 @@ const Navigation = () => {
           key={label}
           href={path}
           className={cn(
-            'text-subtle font-medium capitalize transition-opacity duration-300 ease-out hover:opacity-70 md:text-lg',
+            'text-subtle text-lg font-medium capitalize transition-opacity duration-300 ease-out hover:opacity-70 md:text-xl',
             current === index && 'text-inherit hover:opacity-100'
           )}
         >

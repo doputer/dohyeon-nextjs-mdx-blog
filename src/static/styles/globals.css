@@ -18,9 +18,6 @@
   --color-yellow: #fef08a;
   --color-orange: #eab308;
 
-  --font-sans: var(--font-ibm);
-  --font-mono: var(--font-jetbrains), 'consolas';
-
   --animate-flip: flip 1s ease-in-out infinite;
 
   @keyframes flip {

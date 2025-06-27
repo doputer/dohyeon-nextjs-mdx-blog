@@ -1,7 +1,7 @@
 'use client';
 
-import useObserver from '@/hooks/useObserver';
-import useScroll from '@/hooks/useScroll';
+import useObserver from '@/hooks/use-observer';
+import useScroll from '@/hooks/use-scroll';
 import type { Post } from '@/lib/MDX/types';
 import { cn } from '@/utils/cn';
 

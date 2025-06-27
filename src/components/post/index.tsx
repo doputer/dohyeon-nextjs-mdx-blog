@@ -10,7 +10,7 @@ const Post = ({ toc, MDX }: PostProps) => {
   return (
     <div className="relative space-y-6 md:space-y-8">
       <TOC toc={toc} />
-      <article className="[&>*:first-child]:mt-0">
+      <article className="*:first:mt-0">
         <MDX />
       </article>
     </div>

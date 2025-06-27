@@ -22,8 +22,8 @@ const List = ({ posts }: ListProps) => {
             <div className="group-hover:text-link text-lg font-medium transition-colors duration-300 ease-out md:text-xl">
               {frontmatter.title}
             </div>
-            <div className="text-subtle text-sm md:text-base">{frontmatter.description}</div>
-            <time className="block text-xs font-light md:text-sm">{frontmatter.date}</time>
+            <div className="text-sm md:text-base">{frontmatter.description}</div>
+            <time className="text-subtle block text-xs md:text-sm">{frontmatter.date}</time>
           </div>
         </Link>
       ))}
