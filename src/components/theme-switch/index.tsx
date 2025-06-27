@@ -2,7 +2,7 @@
 
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
 
-import useTheme from '@/hooks/useTheme';
+import useTheme from '@/hooks/use-theme';
 
 const ThemeSwitch = () => {
   const toggleTheme = useTheme();
