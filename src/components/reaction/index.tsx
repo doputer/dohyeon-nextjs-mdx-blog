@@ -55,14 +55,12 @@ const Reaction = () => {
   useEffect(() => {
     const fetch = async () => {
       const slug = pathname.slice(1);
-      const data = await getReactionBySlug(slug);
+      const datas = await getReactionBySlug(slug);
 
       setReaction((prev) => {
         const next = { ...prev };
 
-        for (const { reaction_type, count } of data) {
-          next[reaction_type] = count;
-        }
+        datas.forEach((data) => (next[data.reaction_type] = data.count));
 
         return next;
       });
