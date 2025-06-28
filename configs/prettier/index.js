@@ -14,6 +14,7 @@ const defaults = {
   endOfLine: 'lf',
   bracketSpacing: true,
   proseWrap: 'preserve',
+  tailwindStylesheet: '../../src/static/styles/globals.css',
   tailwindFunctions: ['clsx', 'cn'],
   plugins: ['prettier-plugin-packagejson', 'prettier-plugin-tailwindcss'],
 };
