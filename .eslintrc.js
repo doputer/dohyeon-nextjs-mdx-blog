@@ -1,6 +1,21 @@
 module.exports = {
-  plugins: ['import'],
+  extends: ['next/core-web-vitals', 'next/typescript'],
+  plugins: ['import', 'prettier'],
   rules: {
+    // Prettier
+    'prettier/prettier': 'error',
+
+    // React
+    'react/function-component-definition': [
+      'error',
+      {
+        namedComponents: 'arrow-function',
+        unnamedComponents: 'arrow-function',
+      },
+    ],
+    'react/react-in-jsx-scope': 'off',
+
+    // Import
     'import/order': [
       'error',
       {

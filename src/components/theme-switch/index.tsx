@@ -9,7 +9,7 @@ const ThemeSwitch = () => {
 
   return (
     <button
-      className="dark:hover:text-yellow hover:text-orange relative size-6 overflow-hidden transition-transform duration-300 active:scale-90"
+      className="relative size-6 overflow-hidden transition-transform duration-300 hover:text-orange active:scale-90 dark:hover:text-yellow"
       onClick={toggleTheme}
       aria-label="Theme Button"
     >

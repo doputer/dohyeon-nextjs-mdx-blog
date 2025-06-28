@@ -9,11 +9,11 @@ interface Props {
 }
 
 const Blockquote = (props: PropsWithChildren<Props>) => {
-  const className = cn(props.className, 'bg-surface group');
+  const className = cn(props.className, 'group bg-surface');
 
   return (
     <blockquote {...props} className={className}>
-      <ChatBubbleOvalLeftIcon className="text-subtle group-hover:animate-flip size-6" />
+      <ChatBubbleOvalLeftIcon className="size-6 text-subtle group-hover:animate-flip" />
       {props.children}
     </blockquote>
   );
