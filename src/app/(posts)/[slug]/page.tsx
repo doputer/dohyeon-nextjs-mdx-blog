@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Comment from '@/components/comment';
 import Post from '@/components/post';
 import Header from '@/components/post/header';
-import Share from '@/components/share';
+import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
 
@@ -16,13 +16,13 @@ const Page = async ({ params }: PageProps) => {
   if (!(await accessPost(params.slug))) notFound();
 
   const { frontmatter, toc, MDX } = await getPost(params.slug);
-  const { title, description, date, tags } = frontmatter;
+  const { title, date, tags } = frontmatter;
 
   return (
     <>
       <Header title={title} date={date} tags={tags} />
       <Post toc={toc} MDX={MDX} />
-      <Share title={title} description={description} />
+      <Reaction />
       <Comment />
     </>
   );

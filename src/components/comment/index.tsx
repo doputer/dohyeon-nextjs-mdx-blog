@@ -35,7 +35,7 @@ const Comment = () => {
         categoryId={config.comment.categoryId}
         mapping="title"
         strict="0"
-        reactionsEnabled="1"
+        reactionsEnabled="0"
         emitMetadata="0"
         inputPosition="top"
         theme={theme}
