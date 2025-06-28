@@ -14,7 +14,6 @@
   --color-surface: #f2f4f6;
   --color-background: #ffffff;
 
-  --color-blue: #2d9cdb;
   --color-yellow: #fef08a;
   --color-orange: #eab308;
 
@@ -41,13 +40,18 @@
 
 @layer base {
   body {
-    color: var(--color-primary);
-    background-color: var(--color-background);
+    @apply text-primary;
+    @apply bg-background;
+
     font-synthesis: none;
 
     .katex-display {
       overflow-x: scroll;
     }
+  }
+
+  button {
+    @apply cursor-pointer;
   }
 }
 
