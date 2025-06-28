@@ -16,10 +16,10 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
     <button
       ref={ref}
       onClick={props.onClick}
-      className="group flex items-center justify-start gap-2 bg-surface px-2 py-1"
+      className="group flex items-center justify-start gap-2 bg-surface px-2 py-1 hover:bg-subtle/20"
     >
       {View}
-      <span className="">{10}</span>
+      <span>{10}</span>
     </button>
   );
 });
