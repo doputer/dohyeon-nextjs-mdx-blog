@@ -2,27 +2,28 @@ import type { ImageProps } from 'next/image';
 
 import type { MDXComponents } from 'mdx/types';
 
+import Blockquote from '@/components/typography/blockquote';
 import Callout from '@/components/typography/callout';
 import Code from '@/components/typography/code';
-import * as Format from '@/components/typography/format';
+import * as format from '@/components/typography/format';
 import Img from '@/components/typography/img';
 
 const components: MDXComponents = {
-  h2: (props) => <h2 className={Format.h2} {...props} />,
-  h3: (props) => <h3 className={Format.h3} {...props} />,
-  blockquote: (props) => <blockquote className={Format.blockquote} {...props} />,
-  code: (props) => <code className={Format.code} {...props} />,
-  ol: (props) => <ol className={Format.ol} {...props} />,
-  ul: (props) => <ul className={Format.ul} {...props} />,
-  p: (props) => <p className={Format.p} {...props} />,
-  table: (props) => <table className={Format.table} {...props} />,
-  th: (props) => <th className={Format.th} {...props} />,
-  td: (props) => <td className={Format.td} {...props} />,
-  a: (props) => <a className={Format.a} target="_blank" {...props} />,
-  strong: (props) => <strong className={Format.strong} {...props} />,
+  h2: (props) => <h2 className={format.h2} {...props} />,
+  h3: (props) => <h3 className={format.h3} {...props} />,
+  blockquote: (props) => <Blockquote className={format.blockquote} {...props} />,
+  code: (props) => <code className={format.code} {...props} />,
+  ol: (props) => <ol className={format.ol} {...props} />,
+  ul: (props) => <ul className={format.ul} {...props} />,
+  p: (props) => <p className={format.p} {...props} />,
+  table: (props) => <table className={format.table} {...props} />,
+  th: (props) => <th className={format.th} {...props} />,
+  td: (props) => <td className={format.td} {...props} />,
+  a: (props) => <a className={format.a} target="_blank" {...props} />,
+  strong: (props) => <strong className={format.strong} {...props} />,
 
-  img: (props) => <Img className={Format.img} {...(props as ImageProps)} />,
-  Callout: (props) => <Callout className={Format.blockquote} {...props} />,
+  img: (props) => <Img className={format.img} {...(props as ImageProps)} />,
+  Callout: (props) => <Callout className={format.blockquote} {...props} />,
   Code: (props) => <Code {...props} />,
 };
 

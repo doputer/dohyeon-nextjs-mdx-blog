@@ -1,22 +1,22 @@
 import type { PropsWithChildren } from 'react';
 
+import { BoltIcon } from '@heroicons/react/24/solid';
+
 import { cn } from '@/utils/cn';
 
-interface CalloutProps {
-  type?: 'info' | 'warn';
+interface Props {
   className?: string | undefined;
 }
 
-const calloutClasses = {
-  info: 'bg-blue/15',
-  warn: 'bg-orange/15',
-} as const;
+const Callout = (props: PropsWithChildren<Props>) => {
+  const className = cn(props.className, 'bg-orange/15 group');
 
-const Callout = (props: PropsWithChildren<CalloutProps>) => {
-  const type = props.type ?? 'info';
-  const className = cn(props.className, calloutClasses[type]);
-
-  return <div {...props} className={className} />;
+  return (
+    <blockquote {...props} className={className}>
+      <BoltIcon className="text-orange/70 group-hover:animate-flip size-6" />
+      {props.children}
+    </blockquote>
+  );
 };
 
 export default Callout;
