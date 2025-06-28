@@ -27,8 +27,8 @@ interface WrapperProps {
 
 const Wrapper = ({ title, children }: PropsWithChildren<WrapperProps>) => {
   return (
-    <div className="border-line bg-background my-4 rounded-lg border font-mono text-sm leading-6">
-      {title && <div className="border-line border-b px-4 py-2">{title}</div>}
+    <div className="border-line bg-background divide-line my-4 divide-y rounded-lg border text-sm leading-6">
+      {title && <div className="px-4 py-2 font-mono tracking-tight">{title}</div>}
       <div className="overflow-auto py-4">{children}</div>
     </div>
   );
