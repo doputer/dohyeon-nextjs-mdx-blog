@@ -11,7 +11,10 @@ const ibm = localFont({
 });
 
 const jetbrains = localFont({
-  src: './JetBrainsMono.woff2',
+  src: [
+    { path: './JetBrainsMono-Regular.woff2', weight: '400' },
+    { path: './JetBrainsMono-Bold.woff2', weight: '700' },
+  ],
   display: 'swap',
   variable: '--font-mono',
 });
