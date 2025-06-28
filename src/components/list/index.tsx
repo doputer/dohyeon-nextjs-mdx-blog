@@ -15,7 +15,7 @@ const List = ({ posts }: ListProps) => {
           href={`/${slug}`}
           className="group flex w-fit items-center gap-6 md:gap-8"
         >
-          <div className="group-hover:animate-flip pointer-events-none text-4xl select-none md:text-5xl">
+          <div className="group-hover:animate-flip pointer-events-none select-none text-4xl md:text-5xl">
             {frontmatter.emoji}
           </div>
           <div className="space-y-2">

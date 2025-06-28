@@ -14,15 +14,14 @@ const TOC = ({ toc }: TOCProps) => {
   const scrollToTarget = useScroll();
 
   return (
-    <aside className="static left-full h-full xl:absolute">
-      <ul className="sticky top-32 flex w-fit list-inside flex-col gap-2 xl:ml-8 xl:text-nowrap">
+    <aside className="left-full h-full xl:absolute">
+      <ul className="sticky top-32 flex w-fit list-inside flex-col gap-2 text-nowrap xl:ml-8">
         {toc.map(({ id, text, depth }) => (
-          <li key={id} className="list-disc xl:list-none">
+          <li key={id} className={cn('list-disc xl:list-none', depth === 3 && 'pl-4')}>
             <button
               className={cn(
                 'xl:text-subtle xl:hover:text-subtle/70 transition-colors duration-300 ease-out',
-                id === activeId && 'xl:text-primary xl:hover:text-primary xl:font-medium',
-                depth === 3 && 'pl-4'
+                id === activeId && 'xl:text-primary xl:hover:text-primary xl:font-medium'
               )}
               onClick={() => scrollToTarget({ id })}
             >

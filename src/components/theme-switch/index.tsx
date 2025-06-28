@@ -13,8 +13,8 @@ const ThemeSwitch = () => {
       onClick={toggleTheme}
       aria-label="Theme Button"
     >
-      <SunIcon className="absolute top-0 left-0 translate-x-0 translate-y-0 transition-transform duration-300 dark:translate-x-full dark:-translate-y-full" />
-      <MoonIcon className="absolute top-full left-0 -translate-x-full translate-y-0 transition-transform duration-300 dark:translate-x-0 dark:-translate-y-full" />
+      <SunIcon className="absolute left-0 top-0 translate-x-0 translate-y-0 transition-transform duration-300 dark:-translate-y-full dark:translate-x-full" />
+      <MoonIcon className="absolute left-0 top-full -translate-x-full translate-y-0 transition-transform duration-300 dark:-translate-y-full dark:translate-x-0" />
     </button>
   );
 };
