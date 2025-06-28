@@ -3,7 +3,9 @@ import { forwardRef } from 'react';
 import { useLottie } from 'lottie-react';
 
 interface Props {
+  type: string;
   emoji: object;
+  count: number;
   onClick: () => void;
 }
 
@@ -19,7 +21,7 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
       className="group flex items-center justify-start gap-2 bg-surface px-2 py-1 hover:bg-subtle/20"
     >
       {View}
-      <span>{10}</span>
+      <span>{props.count}</span>
     </button>
   );
 });

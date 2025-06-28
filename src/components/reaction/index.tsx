@@ -1,21 +1,45 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
+import { getReactionBySlug, Type } from '@/lib/supabase/reaction';
 import party from '@/static/lottie/party-popper.json';
 import partying from '@/static/lottie/partying-face.json';
 import rocket from '@/static/lottie/rocket.json';
 import particle from '@/utils/particle';
 
 const themes = [
-  { emoji: partying, colors: ['#ff4d6d', '#ff758f', '#ffb3c1', '#ffe0e9', '#f08080'] },
-  { emoji: party, colors: ['#ffc300', '#ffd60a', '#ffe066', '#ffd6a5', '#ffa94d'] },
-  { emoji: rocket, colors: ['#4dabf7', '#74c0fc', '#a5d8ff', '#d0ebff', '#9775fa'] },
+  {
+    type: 'partying-face' as const,
+    emoji: partying,
+    colors: ['#ff4d6d', '#ff758f', '#ffb3c1', '#ffe0e9', '#f08080'],
+  },
+  {
+    type: 'party-popper' as const,
+    emoji: party,
+    colors: ['#ffc300', '#ffd60a', '#ffe066', '#ffd6a5', '#ffa94d'],
+  },
+  {
+    type: 'rocket' as const,
+    emoji: rocket,
+    colors: ['#4dabf7', '#74c0fc', '#a5d8ff', '#d0ebff', '#9775fa'],
+  },
 ];
+
+const defaultReaction: Record<Type, number> = {
+  'partying-face': 0,
+  'party-popper': 0,
+  rocket: 0,
+};
 
 const Reaction = () => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
+  const pathname = usePathname();
+
+  const [reaction, setReaction] = useState(defaultReaction);
 
   const handleClick = useCallback((index: number) => {
     const button = ref.current[index];
@@ -28,13 +52,34 @@ const Reaction = () => {
     particle(themes[index].colors, { x, y });
   }, []);
 
+  useEffect(() => {
+    const fetch = async () => {
+      const slug = pathname.slice(1);
+      const data = await getReactionBySlug(slug);
+
+      setReaction((prev) => {
+        const next = { ...prev };
+
+        for (const { reaction_type, count } of data) {
+          next[reaction_type] = count;
+        }
+
+        return next;
+      });
+    };
+
+    fetch();
+  }, [pathname]);
+
   return (
     <div className="mx-auto grid auto-cols-fr grid-flow-col gap-2">
       {themes.map((theme, index) => (
         <Button
-          key={index}
+          key={theme.type}
           ref={(element) => void (ref.current[index] = element)}
+          type={theme.type}
           emoji={theme.emoji}
+          count={reaction[theme.type]}
           onClick={() => handleClick(index)}
         />
       ))}
