@@ -17,7 +17,7 @@ const Header = ({ title, date, tags }: HeaderProps) => {
         <time className="text-sm">{date}</time>
         <span className="text-sm">/</span>
         {tags.map((tag) => (
-          <Link key={tag} href={`/tags/${encode(tag)}`} className="text-link text-sm uppercase">
+          <Link key={tag} href={`/tags/${encode(tag)}`} className="text-sm text-link uppercase">
             #{tag}
           </Link>
         ))}

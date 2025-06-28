@@ -20,8 +20,8 @@ const TOC = ({ toc }: TOCProps) => {
           <li key={id} className={cn('list-disc xl:list-none', depth === 3 && 'pl-4')}>
             <button
               className={cn(
-                'xl:text-subtle xl:hover:text-subtle/70 transition-colors duration-300 ease-out',
-                id === activeId && 'xl:text-primary xl:hover:text-primary xl:font-medium'
+                'transition-colors duration-300 ease-out xl:text-subtle xl:hover:text-subtle/70',
+                id === activeId && 'xl:font-medium xl:text-primary xl:hover:text-primary'
               )}
               onClick={() => scrollToTarget({ id })}
             >

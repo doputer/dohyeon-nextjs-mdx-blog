@@ -15,7 +15,7 @@ const Img = (props: ImageProps) => {
         alt=""
         unoptimized={isUnoptimized}
       />
-      {caption && <figcaption className="text-subtle text-center text-sm">{caption}</figcaption>}
+      {caption && <figcaption className="text-center text-sm text-subtle">{caption}</figcaption>}
     </figure>
   );
 };

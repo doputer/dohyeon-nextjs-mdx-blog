@@ -15,15 +15,15 @@ const List = ({ posts }: ListProps) => {
           href={`/${slug}`}
           className="group flex w-fit items-center gap-6 md:gap-8"
         >
-          <div className="group-hover:animate-flip pointer-events-none select-none text-4xl md:text-5xl">
+          <div className="pointer-events-none text-4xl select-none group-hover:animate-flip md:text-5xl">
             {frontmatter.emoji}
           </div>
           <div className="space-y-2">
-            <div className="group-hover:text-link text-lg font-medium transition-colors duration-300 ease-out md:text-xl">
+            <div className="text-lg font-medium transition-colors duration-300 ease-out group-hover:text-link md:text-xl">
               {frontmatter.title}
             </div>
             <div className="text-sm md:text-base">{frontmatter.description}</div>
-            <time className="text-subtle block text-xs md:text-sm">{frontmatter.date}</time>
+            <time className="block text-xs text-subtle md:text-sm">{frontmatter.date}</time>
           </div>
         </Link>
       ))}

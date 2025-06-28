@@ -23,9 +23,9 @@ const Share = ({ title, description }: ShareProps) => {
   };
 
   return (
-    <div className="bg-surface flex justify-center rounded-lg py-8">
+    <div className="flex justify-center rounded-lg bg-surface py-8">
       <button
-        className="hover:text-link flex gap-2"
+        className="flex gap-2 hover:text-link"
         onClick={handleShareClick}
         aria-label="Share Button"
       >
