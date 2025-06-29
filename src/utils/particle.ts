@@ -16,7 +16,7 @@ export const launch = (colors: string[], origin: Record<'x' | 'y', number>) => {
 
 export const burst = () => {
   const end = Date.now() + 5 * 1000;
-  const colors = ['#bb0000', '#f472b6', '#c4b5fd'];
+  const colors = ['#bb0000', '#facc15', '#fb923c'];
 
   (function frame() {
     confetti({

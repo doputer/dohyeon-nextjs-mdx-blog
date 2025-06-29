@@ -20,12 +20,12 @@ const themes = [
   {
     type: 'reaction1',
     emoji: fire,
-    colors: ['#ff4d6d', '#ff758f', '#ffb3c1', '#ffe0e9', '#f08080'],
+    colors: ['#ff4d00', '#ff6b00', '#ffa200', '#ffd700', '#ffb347'],
   },
   {
     type: 'reaction2',
     emoji: party,
-    colors: ['#ffc300', '#ffd60a', '#ffe066', '#ffd6a5', '#ffa94d'],
+    colors: ['#16a34a', '#22c55e', '#4ade80', '#86efac', '#bbf7d0'],
   },
   {
     type: 'reaction3',
