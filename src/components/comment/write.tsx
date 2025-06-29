@@ -69,7 +69,7 @@ const Write = ({ disabled, onSubmit }: Props) => {
       <textarea
         name="comment"
         id="comment"
-        className="block w-full resize-none border border-line p-4 text-sm text-subtle outline-0 placeholder:text-subtle/50 disabled:cursor-not-allowed disabled:bg-subtle/10"
+        className="block w-full resize-none border border-line p-4 text-sm text-subtle outline-0 placeholder:text-subtle/50 disabled:cursor-not-allowed"
         placeholder="댓글을 남겨주세요."
         value={comment.value}
         onChange={(e) => setComment((prev) => ({ ...prev, value: e.target.value }))}
