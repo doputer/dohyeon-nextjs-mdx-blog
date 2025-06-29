@@ -9,7 +9,7 @@ import fire from '@/static/lotties/fire.json';
 import party from '@/static/lotties/party-popper.json';
 import rocket from '@/static/lotties/rocket.json';
 import { getItem } from '@/utils/local-storage';
-import particle from '@/utils/particle';
+import { launch } from '@/utils/particle';
 
 interface Props {
   data: Record<string, number>;
@@ -50,7 +50,7 @@ const Reaction = ({ data, slug }: Props) => {
       const x = (rect.left + rect.width / 2) / window.innerWidth;
       const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-      particle(colors, { x, y });
+      launch(colors, { x, y });
 
       if (process.env.NODE_ENV === 'development') return;
 

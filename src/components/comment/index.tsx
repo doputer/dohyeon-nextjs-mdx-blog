@@ -7,6 +7,7 @@ import Write from '@/components/comment/write';
 import useActions from '@/hooks/use-actions';
 import { postComment } from '@/lib/supabase/comment.client';
 import { getItem } from '@/utils/local-storage';
+import { burst } from '@/utils/particle';
 
 interface Props {
   data: Comment[];
@@ -21,6 +22,8 @@ const Comment = ({ data, slug }: Props) => {
 
   const handleWrite = useCallback(
     async (newComment: Comment) => {
+      burst();
+
       try {
         const user_id = getItem('UNIQUE_USER_ID');
 
