@@ -1,15 +1,17 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
-import { getReactionBySlug, postReaction, Type } from '@/lib/supabase/reaction';
+import { postReaction } from '@/lib/supabase/reaction.client';
+import type { Reaction } from '@/lib/supabase/reaction.server';
 import party from '@/static/lottie/party-popper.json';
 import partying from '@/static/lottie/partying-face.json';
 import rocket from '@/static/lottie/rocket.json';
 import particle from '@/utils/particle';
 
 interface Props {
+  data: Reaction;
   slug: string;
 }
 
@@ -31,55 +33,33 @@ const themes = [
   },
 ];
 
-const defaultReaction: Record<Type, number> = {
-  'partying-face': 0,
-  'party-popper': 0,
-  rocket: 0,
-};
-
-const Reaction = ({ slug }: Props) => {
+const Reaction = ({ data, slug }: Props) => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
-  const [reaction, setReaction] = useState(defaultReaction);
+  const [reaction, setReaction] = useState(data);
 
   const handleClick = useCallback(
     async (index: number) => {
       const button = ref.current[index];
       if (!button) return;
 
+      const { type, colors } = themes[index];
+
       const rect = button.getBoundingClientRect();
       const x = (rect.left + rect.width / 2) / window.innerWidth;
       const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-      particle(themes[index].colors, { x, y });
-
-      const type = themes[index].type;
+      particle(colors, { x, y });
 
       try {
         await postReaction(slug, type);
 
         setReaction((prev) => ({ ...prev, [type]: prev[type] + 1 }));
-      } catch (e) {
-        console.error('💥 리액션 저장 실패', e);
+      } catch (error) {
+        throw error;
       }
     },
     [slug]
   );
-
-  useEffect(() => {
-    const fetch = async () => {
-      const datas = await getReactionBySlug(slug);
-
-      setReaction((prev) => {
-        const next = { ...prev };
-
-        datas.forEach((data) => (next[data.reaction_type] = data.count));
-
-        return next;
-      });
-    };
-
-    fetch();
-  }, [slug]);
 
   return (
     <div className="mx-auto grid auto-cols-min grid-flow-col gap-2">
@@ -87,16 +67,14 @@ const Reaction = ({ slug }: Props) => {
         <Button
           key={theme.type}
           ref={(element) => void (ref.current[index] = element)}
-          type={theme.type}
           emoji={theme.emoji}
-          count={reaction[theme.type]}
           onClick={() => handleClick(index)}
-        />
+        >
+          {reaction[theme.type]}
+        </Button>
       ))}
     </div>
   );
 };
-
-export const Skeleton = () => <div className="h-40" />;
 
 export default Reaction;

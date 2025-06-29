@@ -1,18 +1,13 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 
 import Comment from '@/components/comment';
 import Post from '@/components/post';
 import Header from '@/components/post/header';
-import { Skeleton } from '@/components/reaction';
+import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
-
-const Reaction = dynamic(() => import('@/components/reaction'), {
-  ssr: false,
-  loading: () => <Skeleton />,
-});
+import { getReactionBySlug } from '@/lib/supabase/reaction.server';
 
 interface PageProps {
   params: { slug: string };
@@ -24,11 +19,13 @@ const Page = async ({ params }: PageProps) => {
   const { frontmatter, toc, MDX } = await getPost(params.slug);
   const { title, date, tags } = frontmatter;
 
+  const data = await getReactionBySlug(params.slug);
+
   return (
     <>
       <Header title={title} date={date} tags={tags} />
       <Post toc={toc} MDX={MDX} />
-      <Reaction slug={params.slug} />
+      <Reaction data={data} slug={params.slug} />
       <Comment />
     </>
   );
