@@ -6,7 +6,8 @@ export const getCommentBySlug = async (slug: string) => {
   const { data, error } = await supabase
     .from('comments')
     .select('id,emoji,label,value')
-    .eq('slug', slug);
+    .eq('slug', slug)
+    .order('created_at', { ascending: false });
 
   if (error) throw error;
 
