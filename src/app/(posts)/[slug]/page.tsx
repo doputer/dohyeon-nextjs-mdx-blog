@@ -28,7 +28,7 @@ const Page = async ({ params }: PageProps) => {
     <>
       <Header title={title} date={date} tags={tags} />
       <Post toc={toc} MDX={MDX} />
-      <Reaction />
+      <Reaction slug={params.slug} />
       <Comment />
     </>
   );

@@ -1,7 +1,5 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
@@ -10,6 +8,10 @@ import party from '@/static/lottie/party-popper.json';
 import partying from '@/static/lottie/partying-face.json';
 import rocket from '@/static/lottie/rocket.json';
 import particle from '@/utils/particle';
+
+interface Props {
+  slug: string;
+}
 
 const themes = [
   {
@@ -35,11 +37,8 @@ const defaultReaction: Record<Type, number> = {
   rocket: 0,
 };
 
-const Reaction = () => {
+const Reaction = ({ slug }: Props) => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
-  const pathname = usePathname();
-  const slug = pathname.slice(1);
-
   const [reaction, setReaction] = useState(defaultReaction);
 
   const handleClick = useCallback(
@@ -83,7 +82,7 @@ const Reaction = () => {
   }, [slug]);
 
   return (
-    <div className="mx-auto grid auto-cols-fr grid-flow-col gap-2">
+    <div className="mx-auto grid auto-cols-min grid-flow-col gap-2">
       {themes.map((theme, index) => (
         <Button
           key={theme.type}
