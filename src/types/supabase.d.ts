@@ -28,6 +28,30 @@ export type Database = {
   };
   public: {
     Tables: {
+      actions: {
+        Row: {
+          action: string;
+          created_at: string;
+          id: string;
+          slug: string;
+          user_id: string;
+        };
+        Insert: {
+          action: string;
+          created_at?: string;
+          id?: string;
+          slug: string;
+          user_id: string;
+        };
+        Update: {
+          action?: string;
+          created_at?: string;
+          id?: string;
+          slug?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       reactions: {
         Row: {
           count: number;
@@ -61,7 +85,9 @@ export type Database = {
     };
     Functions: {
       increment_reaction: {
-        Args: { _post_slug: string; _reaction_type: string };
+        Args:
+          | { _post_slug: string; _reaction_type: string }
+          | { _user_id: string; _post_slug: string; _reaction_type: string };
         Returns: undefined;
       };
     };
