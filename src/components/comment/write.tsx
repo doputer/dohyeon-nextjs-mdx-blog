@@ -6,15 +6,33 @@ interface Props {
   onSubmit: (data: Comment) => void;
 }
 
-const emojis = ['🚀', '🐱', '🧠', '🍕', '🌈', '👾', '🔥', '🎩'];
-const labels = ['이상한', '똑똑한', '멋진', '졸린', '슬픈', '기쁜', '차가운'];
-const getRandom = (array: string[]) => array[Math.floor(Math.random() * array.length)];
+const fruits = [
+  { emoji: '🍎', label: '사과' },
+  { emoji: '🍌', label: '바나나' },
+  { emoji: '🍊', label: '오렌지' },
+  { emoji: '🍇', label: '포도' },
+  { emoji: '🍓', label: '딸기' },
+  { emoji: '🍑', label: '복숭아' },
+  { emoji: '🍍', label: '파인애플' },
+  { emoji: '🥝', label: '키위' },
+  { emoji: '🍒', label: '체리' },
+  { emoji: '🍉', label: '수박' },
+  { emoji: '🥭', label: '망고' },
+  { emoji: '🍐', label: '배' },
+  { emoji: '🍈', label: '멜론' },
+  { emoji: '🍋', label: '레몬' },
+  { emoji: '🫐', label: '블루베리' },
+  { emoji: '🍋‍🟩', label: '라임' },
+  { emoji: '🥥', label: '코코넛' },
+  { emoji: '🥑', label: '아보카도' },
+  { emoji: '🥔', label: '감자' },
+];
 
 const Write = ({ onSubmit }: Props) => {
   const [comment, setComment] = useState({ emoji: '', label: '', value: '' });
 
   const reroll = () => {
-    setComment((prev) => ({ ...prev, emoji: getRandom(emojis), label: getRandom(labels) }));
+    setComment((prev) => ({ ...prev, ...fruits[Math.floor(Math.random() * fruits.length)] }));
   };
 
   const handleWrite = () => {
