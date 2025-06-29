@@ -1,12 +1,18 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 
 import Comment from '@/components/comment';
 import Post from '@/components/post';
 import Header from '@/components/post/header';
-import Reaction from '@/components/reaction';
+import { Skeleton } from '@/components/reaction';
 import config from '@/configs/config.json';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
+
+const Reaction = dynamic(() => import('@/components/reaction'), {
+  ssr: false,
+  loading: () => <Skeleton />,
+});
 
 interface PageProps {
   params: { slug: string };

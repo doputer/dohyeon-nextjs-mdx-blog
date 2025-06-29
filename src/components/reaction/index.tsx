@@ -98,4 +98,6 @@ const Reaction = () => {
   );
 };
 
+export const Skeleton = () => <div className="h-40" />;
+
 export default Reaction;
