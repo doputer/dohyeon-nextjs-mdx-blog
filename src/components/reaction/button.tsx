@@ -1,4 +1,4 @@
-import { forwardRef, type PropsWithChildren, useMemo } from 'react';
+import { forwardRef, type PropsWithChildren } from 'react';
 
 import { useLottie } from 'lottie-react';
 
@@ -10,7 +10,7 @@ interface Props {
 const style = { width: 32, height: 32 };
 
 const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>((props, ref) => {
-  const options = useMemo(() => ({ animationData: props.emoji, loop: true }), [props.emoji]);
+  const options = { animationData: props.emoji, loop: true };
   const { View } = useLottie(options, style);
 
   return (
@@ -20,7 +20,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>((props, r
       className="group flex items-center justify-start gap-2 bg-surface px-2 py-1 hover:bg-subtle/20"
     >
       {View}
-      <span>{props.children}</span>
+      {props.children}
     </button>
   );
 });
