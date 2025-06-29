@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import Comment from '@/components/comment';
 import Post from '@/components/post';
+import Actions from '@/components/post/actions';
 import Header from '@/components/post/header';
 import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
@@ -22,12 +22,11 @@ const Page = async ({ params }: PageProps) => {
   const data = await getReactionBySlug(params.slug);
 
   return (
-    <>
+    <Actions>
       <Header title={title} date={date} tags={tags} />
       <Post toc={toc} MDX={MDX} />
       <Reaction data={data} slug={params.slug} />
-      <Comment />
-    </>
+    </Actions>
   );
 };
 

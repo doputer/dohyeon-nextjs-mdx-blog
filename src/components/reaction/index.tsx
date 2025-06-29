@@ -18,17 +18,17 @@ interface Props {
 
 const themes = [
   {
-    type: 'reaction1' as const,
+    type: 'reaction1',
     emoji: fire,
     colors: ['#ff4d6d', '#ff758f', '#ffb3c1', '#ffe0e9', '#f08080'],
   },
   {
-    type: 'reaction2' as const,
+    type: 'reaction2',
     emoji: party,
     colors: ['#ffc300', '#ffd60a', '#ffe066', '#ffd6a5', '#ffa94d'],
   },
   {
-    type: 'reaction3' as const,
+    type: 'reaction3',
     emoji: rocket,
     colors: ['#4dabf7', '#74c0fc', '#a5d8ff', '#d0ebff', '#9775fa'],
   },
@@ -51,6 +51,8 @@ const Reaction = ({ data, slug }: Props) => {
       const y = (rect.top + rect.height / 2) / window.innerHeight;
 
       particle(colors, { x, y });
+
+      if (process.env.NODE_ENV === 'development') return;
 
       try {
         const user_id = getItem('UNIQUE_USER_ID');
