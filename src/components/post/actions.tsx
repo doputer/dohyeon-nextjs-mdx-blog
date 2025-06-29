@@ -2,7 +2,7 @@
 
 import { type PropsWithChildren, useEffect } from 'react';
 
-import { useActions } from '@/hooks/use-actions';
+import useActions from '@/hooks/use-actions';
 import { getActionByUserId } from '@/lib/supabase/action.client';
 import { getItem } from '@/utils/local-storage';
 

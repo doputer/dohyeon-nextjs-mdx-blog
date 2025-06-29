@@ -3,11 +3,11 @@
 import { useCallback, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
-import { useActions } from '@/hooks/use-actions';
+import useActions from '@/hooks/use-actions';
 import { postReaction } from '@/lib/supabase/reaction.client';
-import fire from '@/static/lottie/fire.json';
-import party from '@/static/lottie/party-popper.json';
-import rocket from '@/static/lottie/rocket.json';
+import fire from '@/static/lotties/fire.json';
+import party from '@/static/lotties/party-popper.json';
+import rocket from '@/static/lotties/rocket.json';
 import { getItem } from '@/utils/local-storage';
 import particle from '@/utils/particle';
 

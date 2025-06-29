@@ -6,7 +6,7 @@ type UseActions = {
   setActions: (slug: string, action: string) => void;
 };
 
-export const useActions = create<UseActions>((set, get) => ({
+const useActions = create<UseActions>((set, get) => ({
   actions: {},
   hasActions: (slug, action) => (get().actions[slug] ?? []).includes(action),
   setActions: (slug, action) => {
@@ -18,3 +18,5 @@ export const useActions = create<UseActions>((set, get) => ({
     });
   },
 }));
+
+export default useActions;
