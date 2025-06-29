@@ -55,26 +55,26 @@ export type Database = {
       reactions: {
         Row: {
           count: number;
+          created_at: string;
           id: string;
-          inserted_at: string;
-          post_slug: string;
-          reaction_type: string;
+          slug: string;
+          type: string;
           updated_at: string;
         };
         Insert: {
           count?: number;
+          created_at?: string;
           id?: string;
-          inserted_at?: string;
-          post_slug: string;
-          reaction_type: string;
+          slug: string;
+          type: string;
           updated_at?: string;
         };
         Update: {
           count?: number;
+          created_at?: string;
           id?: string;
-          inserted_at?: string;
-          post_slug?: string;
-          reaction_type?: string;
+          slug?: string;
+          type?: string;
           updated_at?: string;
         };
         Relationships: [];
@@ -87,7 +87,7 @@ export type Database = {
       increment_reaction: {
         Args:
           | { _post_slug: string; _reaction_type: string }
-          | { _user_id: string; _post_slug: string; _reaction_type: string };
+          | { _user_id: string; _slug: string; _type: string };
         Returns: undefined;
       };
     };

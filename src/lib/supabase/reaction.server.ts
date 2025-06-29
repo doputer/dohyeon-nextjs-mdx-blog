@@ -7,15 +7,12 @@ export type Reaction = Record<Type, number>;
 export const getReactionBySlug = async (slug: string) => {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from('reactions')
-    .select('reaction_type,count')
-    .eq('post_slug', slug);
+  const { data, error } = await supabase.from('reactions').select('type,count').eq('slug', slug);
 
   if (error) throw error;
 
-  return data.reduce((acc, cur) => {
-    acc[cur.reaction_type as Type] = cur.count;
+  return data.reduce((acc, { type, count }) => {
+    acc[type as Type] = count;
     return acc;
   }, {} as Reaction);
 };

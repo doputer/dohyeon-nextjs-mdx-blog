@@ -8,8 +8,8 @@ export const postReaction = async (slug: string, type: Type) => {
 
   const { error } = await supabase.rpc('increment_reaction', {
     _user_id: id,
-    _post_slug: slug,
-    _reaction_type: type,
+    _slug: slug,
+    _type: type,
   });
 
   if (error) throw error;
