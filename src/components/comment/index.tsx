@@ -1,47 +1,55 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import Giscus from '@giscus/react';
+import Read from '@/components/comment/read';
+import Write from '@/components/comment/write';
+import useActions from '@/hooks/use-actions';
+import { postComment } from '@/lib/supabase/comment.client';
+import { getItem } from '@/utils/local-storage';
+import { burst } from '@/utils/particle';
 
-import config from '@/configs/config.json';
+interface Props {
+  data: Comment[];
+  slug: string;
+}
 
-const Comment = () => {
-  const [theme, setTheme] = useState(global.window?.__theme || 'light');
+export type Comment = { id: string; emoji: string; label: string; value: string };
 
-  useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          setTheme(global.window?.__theme);
-        }
-      });
-    });
+const Comment = ({ data, slug }: Props) => {
+  const [comments, setComments] = useState(data);
+  const { hasActions, setActions } = useActions();
 
-    observer.observe(document.documentElement, { attributes: true });
+  const handleWrite = useCallback(
+    async (newComment: Comment) => {
+      burst();
 
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+      try {
+        const user_id = getItem('UNIQUE_USER_ID');
+
+        if (!user_id) return;
+        if (hasActions(slug, 'comment')) return;
+
+        await postComment(user_id, slug, newComment);
+
+        setComments((prev) => [newComment, ...prev]);
+        setActions(slug, 'comment');
+      } catch (error) {
+        throw error;
+      }
+    },
+    [hasActions, setActions, slug]
+  );
 
   return (
-    <div>
-      <Giscus
-        id="comments"
-        repo={config.comment.repo as `${string}/${string}`}
-        repoId={config.comment.repoId}
-        category={config.comment.category}
-        categoryId={config.comment.categoryId}
-        mapping="title"
-        strict="0"
-        reactionsEnabled="0"
-        emitMetadata="0"
-        inputPosition="top"
-        theme={theme}
-        lang="ko"
-        loading="lazy"
-      />
+    <div className="space-y-4">
+      <div>댓글 {comments.length}</div>
+
+      <Write disabled={hasActions(slug, 'comment')} onSubmit={handleWrite} />
+
+      {comments.map((data) => (
+        <Read key={data.id} {...data} />
+      ))}
     </div>
   );
 };

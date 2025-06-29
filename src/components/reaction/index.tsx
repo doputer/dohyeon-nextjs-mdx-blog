@@ -9,7 +9,7 @@ import fire from '@/static/lotties/fire.json';
 import party from '@/static/lotties/party-popper.json';
 import rocket from '@/static/lotties/rocket.json';
 import { getItem } from '@/utils/local-storage';
-import particle from '@/utils/particle';
+import { launch } from '@/utils/particle';
 
 interface Props {
   data: Record<string, number>;
@@ -18,17 +18,17 @@ interface Props {
 
 const themes = [
   {
-    type: 'reaction1' as const,
+    type: 'reaction1',
     emoji: fire,
-    colors: ['#ff4d6d', '#ff758f', '#ffb3c1', '#ffe0e9', '#f08080'],
+    colors: ['#ff4d00', '#ff6b00', '#ffa200', '#ffd700', '#ffb347'],
   },
   {
-    type: 'reaction2' as const,
+    type: 'reaction2',
     emoji: party,
-    colors: ['#ffc300', '#ffd60a', '#ffe066', '#ffd6a5', '#ffa94d'],
+    colors: ['#16a34a', '#22c55e', '#4ade80', '#86efac', '#bbf7d0'],
   },
   {
-    type: 'reaction3' as const,
+    type: 'reaction3',
     emoji: rocket,
     colors: ['#4dabf7', '#74c0fc', '#a5d8ff', '#d0ebff', '#9775fa'],
   },
@@ -50,7 +50,9 @@ const Reaction = ({ data, slug }: Props) => {
       const x = (rect.left + rect.width / 2) / window.innerWidth;
       const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-      particle(colors, { x, y });
+      launch(colors, { x, y });
+
+      if (process.env.NODE_ENV === 'development') return;
 
       try {
         const user_id = getItem('UNIQUE_USER_ID');

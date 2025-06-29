@@ -3,10 +3,12 @@ import { notFound } from 'next/navigation';
 
 import Comment from '@/components/comment';
 import Post from '@/components/post';
+import Actions from '@/components/post/actions';
 import Header from '@/components/post/header';
 import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
+import { getCommentBySlug } from '@/lib/supabase/comment.server';
 import { getReactionBySlug } from '@/lib/supabase/reaction.server';
 
 interface PageProps {
@@ -19,15 +21,16 @@ const Page = async ({ params }: PageProps) => {
   const { frontmatter, toc, MDX } = await getPost(params.slug);
   const { title, date, tags } = frontmatter;
 
-  const data = await getReactionBySlug(params.slug);
+  const reactions = await getReactionBySlug(params.slug);
+  const comments = await getCommentBySlug(params.slug);
 
   return (
-    <>
+    <Actions>
       <Header title={title} date={date} tags={tags} />
       <Post toc={toc} MDX={MDX} />
-      <Reaction data={data} slug={params.slug} />
-      <Comment />
-    </>
+      <Reaction data={reactions} slug={params.slug} />
+      <Comment data={comments} slug={params.slug} />
+    </Actions>
   );
 };
 

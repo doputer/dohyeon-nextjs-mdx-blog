@@ -3,12 +3,6 @@
   "title": "개발자 김도현",
   "description": "김도현의 개발 블로그 입니다.",
   "siteUrl": "https://dohyeon.dev",
-  "comment": {
-    "repo": "doputer/dohyeon-nextjs-mdx-blog",
-    "repoId": "R_kgDOGOk5Dg",
-    "category": "Comments",
-    "categoryId": "DIC_kwDOGOk5Ds4CcufD"
-  },
   "social": {
     "github": "https://github.com/doputer"
   },

@@ -52,6 +52,33 @@ export type Database = {
         };
         Relationships: [];
       };
+      comments: {
+        Row: {
+          created_at: string;
+          emoji: string;
+          id: string;
+          label: string;
+          slug: string;
+          value: string;
+        };
+        Insert: {
+          created_at?: string;
+          emoji: string;
+          id?: string;
+          label: string;
+          slug: string;
+          value: string;
+        };
+        Update: {
+          created_at?: string;
+          emoji?: string;
+          id?: string;
+          label?: string;
+          slug?: string;
+          value?: string;
+        };
+        Relationships: [];
+      };
       reactions: {
         Row: {
           count: number;
@@ -85,9 +112,18 @@ export type Database = {
     };
     Functions: {
       increment_reaction: {
-        Args:
-          | { _post_slug: string; _reaction_type: string }
-          | { _user_id: string; _slug: string; _type: string };
+        Args: { _user_id: string; _slug: string; _type: string };
+        Returns: undefined;
+      };
+      insert_comment: {
+        Args: {
+          _user_id: string;
+          _slug: string;
+          _emoji: string;
+          _label: string;
+          _value: string;
+          _type: string;
+        };
         Returns: undefined;
       };
     };
