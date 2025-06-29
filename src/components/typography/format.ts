@@ -17,4 +17,4 @@ export const th = cn('p-2');
 export const td = cn('p-2');
 export const a = cn('text-link underline underline-offset-4');
 export const strong = cn('font-medium text-black dark:text-white');
-export const img = cn('m-auto my-4 aspect-auto h-auto w-full max-w-1/2 rounded-sm');
+export const img = cn('m-auto my-4 aspect-auto h-auto w-auto max-w-full rounded-sm');
