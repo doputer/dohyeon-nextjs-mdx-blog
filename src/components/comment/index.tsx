@@ -42,7 +42,7 @@ const Comment = ({ data, slug }: Props) => {
     <div className="space-y-4">
       <div>댓글 {comments.length}</div>
 
-      <Write onSubmit={handleWrite} />
+      <Write disabled={hasActions(slug, 'comment')} onSubmit={handleWrite} />
 
       {comments.map((data) => (
         <Read key={data.id} {...data} />
