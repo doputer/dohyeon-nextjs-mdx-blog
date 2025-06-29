@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/client-ssr';
 
-export type Type = 'partying-face' | 'party-popper' | 'rocket';
+export type Type = 'reaction1' | 'reaction2' | 'reaction3';
 
 export type Reaction = Record<Type, number>;
 

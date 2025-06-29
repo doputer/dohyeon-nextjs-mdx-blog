@@ -5,8 +5,8 @@ import { useCallback, useRef, useState } from 'react';
 import Button from '@/components/reaction/button';
 import { postReaction } from '@/lib/supabase/reaction.client';
 import type { Reaction } from '@/lib/supabase/reaction.server';
+import fire from '@/static/lottie/fire.json';
 import party from '@/static/lottie/party-popper.json';
-import partying from '@/static/lottie/partying-face.json';
 import rocket from '@/static/lottie/rocket.json';
 import particle from '@/utils/particle';
 
@@ -17,17 +17,17 @@ interface Props {
 
 const themes = [
   {
-    type: 'partying-face' as const,
-    emoji: partying,
+    type: 'reaction1' as const,
+    emoji: fire,
     colors: ['#ff4d6d', '#ff758f', '#ffb3c1', '#ffe0e9', '#f08080'],
   },
   {
-    type: 'party-popper' as const,
+    type: 'reaction2' as const,
     emoji: party,
     colors: ['#ffc300', '#ffd60a', '#ffe066', '#ffd6a5', '#ffa94d'],
   },
   {
-    type: 'rocket' as const,
+    type: 'reaction3' as const,
     emoji: rocket,
     colors: ['#4dabf7', '#74c0fc', '#a5d8ff', '#d0ebff', '#9775fa'],
   },
@@ -53,7 +53,7 @@ const Reaction = ({ data, slug }: Props) => {
       try {
         await postReaction(slug, type);
 
-        setReaction((prev) => ({ ...prev, [type]: prev[type] + 1 }));
+        setReaction((prev) => ({ ...prev, [type]: (prev[type] ?? 0) + 1 }));
       } catch (error) {
         throw error;
       }
@@ -65,12 +65,12 @@ const Reaction = ({ data, slug }: Props) => {
     <div className="mx-auto grid auto-cols-min grid-flow-col gap-2">
       {themes.map((theme, index) => (
         <Button
-          key={theme.type}
+          key={index}
           ref={(element) => void (ref.current[index] = element)}
           emoji={theme.emoji}
           onClick={() => handleClick(index)}
         >
-          {reaction[theme.type]}
+          {reaction[theme.type] ?? 0}
         </Button>
       ))}
     </div>
