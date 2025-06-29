@@ -14,7 +14,7 @@ export const getReactionBySlug = async (slug: string) => {
 
   if (error) throw error;
 
-  return data.reduce<Reaction>((acc, cur) => {
+  return data.reduce((acc, cur) => {
     acc[cur.reaction_type as Type] = cur.count;
     return acc;
   }, {} as Reaction);
