@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
+import { useUserActions } from '@/hooks/use-user-actions';
 import { postReaction } from '@/lib/supabase/reaction.client';
 import type { Reaction } from '@/lib/supabase/reaction.server';
 import fire from '@/static/lottie/fire.json';
@@ -36,6 +37,7 @@ const themes = [
 const Reaction = ({ data, slug }: Props) => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
   const [reaction, setReaction] = useState(data);
+  const { getActions, setActions } = useUserActions();
 
   const handleClick = useCallback(
     async (index: number) => {
@@ -51,14 +53,17 @@ const Reaction = ({ data, slug }: Props) => {
       particle(colors, { x, y });
 
       try {
+        if (getActions(slug).includes(type)) return;
+
         await postReaction(slug, type);
 
         setReaction((prev) => ({ ...prev, [type]: (prev[type] ?? 0) + 1 }));
+        setActions(slug, type);
       } catch (error) {
         throw error;
       }
     },
-    [slug]
+    [getActions, setActions, slug]
   );
 
   return (
