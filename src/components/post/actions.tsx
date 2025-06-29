@@ -2,12 +2,12 @@
 
 import { type PropsWithChildren, useEffect } from 'react';
 
-import { useUserActions } from '@/hooks/use-user-actions';
+import { useActions } from '@/hooks/use-actions';
 import { getActionByUserId } from '@/lib/supabase/action.client';
 import { getItem } from '@/utils/local-storage';
 
-const UserActions = ({ children }: PropsWithChildren) => {
-  const { setActions } = useUserActions();
+const Actions = ({ children }: PropsWithChildren) => {
+  const { setActions } = useActions();
 
   useEffect(() => {
     const id = getItem('UNIQUE_USER_ID', () => crypto.randomUUID());
@@ -24,4 +24,4 @@ const UserActions = ({ children }: PropsWithChildren) => {
   return <>{children}</>;
 };
 
-export default UserActions;
+export default Actions;

@@ -1,14 +1,14 @@
 import type { PropsWithChildren } from 'react';
 
-import UserActions from '@/components/post/user-actions';
+import Actions from '@/components/post/actions';
 import Progress from '@/components/progress';
 
 const Layout = async ({ children }: PropsWithChildren) => {
   return (
-    <UserActions>
+    <Actions>
       <Progress />
       {children}
-    </UserActions>
+    </Actions>
   );
 };
 

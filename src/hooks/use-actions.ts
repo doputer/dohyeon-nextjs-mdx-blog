@@ -1,16 +1,14 @@
 import { create } from 'zustand';
 
-export type Action = Record<string, string[]>;
-
-type UserActions = {
-  actions: Action;
-  getActions: (slug: string) => string[];
+type UseActions = {
+  actions: Record<string, string[]>;
+  hasActions: (slug: string, action: string) => boolean;
   setActions: (slug: string, action: string) => void;
 };
 
-export const useUserActions = create<UserActions>((set, get) => ({
+export const useActions = create<UseActions>((set, get) => ({
   actions: {},
-  getActions: (slug) => get().actions[slug] ?? [],
+  hasActions: (slug, action) => (get().actions[slug] ?? []).includes(action),
   setActions: (slug, action) => {
     set((state) => {
       const existing = state.actions[slug] ?? [];

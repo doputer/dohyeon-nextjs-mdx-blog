@@ -3,16 +3,16 @@
 import { useCallback, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
-import { useUserActions } from '@/hooks/use-user-actions';
+import { useActions } from '@/hooks/use-actions';
 import { postReaction } from '@/lib/supabase/reaction.client';
-import type { Reaction } from '@/lib/supabase/reaction.server';
 import fire from '@/static/lottie/fire.json';
 import party from '@/static/lottie/party-popper.json';
 import rocket from '@/static/lottie/rocket.json';
+import { getItem } from '@/utils/local-storage';
 import particle from '@/utils/particle';
 
 interface Props {
-  data: Reaction;
+  data: Record<string, number>;
   slug: string;
 }
 
@@ -37,7 +37,7 @@ const themes = [
 const Reaction = ({ data, slug }: Props) => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
   const [reaction, setReaction] = useState(data);
-  const { getActions, setActions } = useUserActions();
+  const { hasActions, setActions } = useActions();
 
   const handleClick = useCallback(
     async (index: number) => {
@@ -53,9 +53,12 @@ const Reaction = ({ data, slug }: Props) => {
       particle(colors, { x, y });
 
       try {
-        if (getActions(slug).includes(type)) return;
+        const user_id = getItem('UNIQUE_USER_ID');
 
-        await postReaction(slug, type);
+        if (!user_id) return;
+        if (hasActions(slug, type)) return;
+
+        await postReaction(user_id, slug, type);
 
         setReaction((prev) => ({ ...prev, [type]: (prev[type] ?? 0) + 1 }));
         setActions(slug, type);
@@ -63,7 +66,7 @@ const Reaction = ({ data, slug }: Props) => {
         throw error;
       }
     },
-    [getActions, setActions, slug]
+    [hasActions, setActions, slug]
   );
 
   return (
