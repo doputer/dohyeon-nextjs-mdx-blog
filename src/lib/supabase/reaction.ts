@@ -13,7 +13,16 @@ export const getReactionBySlug = async (slug: string): Promise<ReactionCount[]> 
     .select('reaction_type,count')
     .eq('post_slug', slug);
 
-  if (!data || error) throw new Error('error');
+  if (error) throw error;
 
   return data;
+};
+
+export const postReaction = async (slug: string, type: Type) => {
+  const { error } = await supabase.rpc('increment_reaction', {
+    _post_slug: slug,
+    _reaction_type: type,
+  });
+
+  if (error) throw error;
 };
