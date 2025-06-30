@@ -75,9 +75,9 @@ const Reaction = ({ data, slug }: Props) => {
           key={index}
           ref={(element) => void (ref.current[index] = element)}
           onClick={() => handleClick(index)}
-          className="flex items-center justify-start gap-2 rounded bg-surface px-2 py-1 transition-colors duration-300 ease-out select-none hover:bg-subtle/20"
+          className="group flex items-center justify-start gap-2 rounded bg-surface px-2 py-1 transition-colors duration-300 ease-out select-none hover:bg-subtle/20"
         >
-          <div className="flex size-8 items-center justify-center text-3xl">
+          <div className="flex size-6 items-center justify-center text-3xl transition-transform duration-300 ease-out group-hover:scale-200">
             <Emoji emoji={theme.emoji} />
           </div>
           {reaction[theme.type] ?? 0}
