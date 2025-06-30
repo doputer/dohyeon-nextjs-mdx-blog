@@ -17,7 +17,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>((props, r
     <button
       ref={ref}
       onClick={props.onClick}
-      className="group flex items-center justify-start gap-2 bg-surface px-2 py-1 transition-colors duration-300 ease-out select-none hover:bg-subtle/20"
+      className="group flex items-center justify-start gap-2 rounded bg-surface px-2 py-1 transition-colors duration-300 ease-out select-none hover:bg-subtle/20"
     >
       {View}
       {props.children}
