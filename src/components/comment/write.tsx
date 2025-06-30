@@ -48,24 +48,7 @@ const Write = ({ disabled, onSubmit }: Props) => {
   }, []);
 
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between">
-        <button
-          className="flex items-center gap-2 select-none disabled:cursor-not-allowed"
-          onClick={reroll}
-          disabled={disabled}
-        >
-          <div className="text-2xl">{comment.emoji}</div>
-          <b className="text-sm">{comment.label}</b>
-        </button>
-        <button
-          className="bg-surface p-2 text-sm text-subtle transition-colors duration-300 ease-out hover:bg-subtle/20 disabled:cursor-not-allowed disabled:hover:bg-surface"
-          onClick={handleWrite}
-          disabled={disabled}
-        >
-          남기기
-        </button>
-      </div>
+    <div className="space-y-4 text-right">
       <textarea
         name="comment"
         id="comment"
@@ -75,6 +58,13 @@ const Write = ({ disabled, onSubmit }: Props) => {
         onChange={(e) => setComment((prev) => ({ ...prev, value: e.target.value }))}
         disabled={disabled}
       ></textarea>
+      <button
+        className="rounded bg-surface p-2 text-sm text-subtle transition-colors duration-300 ease-out hover:bg-subtle/20 disabled:cursor-not-allowed disabled:hover:bg-surface"
+        onClick={handleWrite}
+        disabled={disabled}
+      >
+        남기기
+      </button>
     </div>
   );
 };
