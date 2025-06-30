@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import Emoji from '@/components/list/emoji';
+import Emoji from '@/components/emoji';
 import type { Post } from '@/lib/MDX/types';
 
 interface ListProps {

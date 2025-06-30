@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 
-import Emoji from '@/components/list/emoji';
+import Emoji from '@/components/emoji';
 import useActions from '@/hooks/use-actions';
 import { postReaction } from '@/lib/supabase/reaction.client';
 import { getItem } from '@/utils/local-storage';
