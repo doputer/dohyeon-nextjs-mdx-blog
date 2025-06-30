@@ -14,9 +14,9 @@ const List = ({ posts }: ListProps) => {
         <Link
           key={frontmatter.title}
           href={`/${slug}`}
-          className="group flex w-fit items-center gap-6 md:gap-8"
+          className="group flex items-center gap-6 md:gap-8"
         >
-          <div className="size-16">
+          <div className="flex size-full max-h-12 max-w-12 items-center justify-center text-4xl md:max-h-16 md:max-w-16 md:text-5xl">
             <Emoji emoji={frontmatter.emoji} />
           </div>
           <div className="space-y-2">

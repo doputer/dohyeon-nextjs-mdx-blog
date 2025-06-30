@@ -16,17 +16,17 @@ interface Props {
 const themes = [
   {
     type: 'reaction1',
-    emoji: '🔥' as const,
+    emoji: '🔥',
     colors: ['#ff4d00', '#ff6b00', '#ffa200', '#ffd700', '#ffb347'],
   },
   {
     type: 'reaction2',
-    emoji: '🎉' as const,
+    emoji: '🎉',
     colors: ['#16a34a', '#22c55e', '#4ade80', '#86efac', '#bbf7d0'],
   },
   {
     type: 'reaction3',
-    emoji: '🚀' as const,
+    emoji: '🚀',
     colors: ['#4dabf7', '#74c0fc', '#a5d8ff', '#d0ebff', '#9775fa'],
   },
 ];
@@ -77,7 +77,7 @@ const Reaction = ({ data, slug }: Props) => {
           onClick={() => handleClick(index)}
           className="flex items-center justify-start gap-2 rounded bg-surface px-2 py-1 transition-colors duration-300 ease-out select-none hover:bg-subtle/20"
         >
-          <div className="size-8">
+          <div className="flex size-8 items-center justify-center text-3xl">
             <Emoji emoji={theme.emoji} />
           </div>
           {reaction[theme.type] ?? 0}
