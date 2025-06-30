@@ -41,19 +41,14 @@ export type LottieKey = keyof typeof lottieMap;
 const lottieCache = new Map<LottieKey, object>();
 
 export const loadLottie = async (key: LottieKey) => {
-  if (lottieCache.has(key)) {
-    return lottieCache.get(key) ?? {};
-  }
+  if (lottieCache.has(key)) return lottieCache.get(key)!;
 
-  try {
-    const fileName = lottieMap[key];
-    const lottieData = await import(`./${fileName}.json`);
+  const res = await fetch(`/lotties/${lottieMap[key]}.json`);
+  if (!res.ok) throw new Error('Failed to load lottie: ' + lottieMap[key]);
+  const data = await res.json();
 
-    lottieCache.set(key, lottieData.default);
-    return lottieData.default;
-  } catch (error) {
-    throw error;
-  }
+  lottieCache.set(key, data);
+  return data;
 };
 
 export const preloadLotties = async (keys: LottieKey[]) => {

@@ -15,6 +15,14 @@ import remarkToc from './scripts/remark-toc.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/lotties/:path*.json',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, s-maxage=86400' }],
+      },
+    ];
+  },
   redirects,
   pageExtensions: ['ts', 'tsx', 'mdx'],
 };
