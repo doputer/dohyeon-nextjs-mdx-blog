@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { type LottieOptions, useLottie } from 'lottie-react';
 
-import { loadLottie, type LottieKey } from '@/static/lotties';
+import { loadLottie, type LottieKey } from '@/utils/lottie';
 
 interface Props {
   emoji: string;
