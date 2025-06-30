@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import Emoji from '@/components/emoji';
 import type { Post } from '@/lib/MDX/types';
 
 interface ListProps {
@@ -13,17 +14,17 @@ const List = ({ posts }: ListProps) => {
         <Link
           key={frontmatter.title}
           href={`/${slug}`}
-          className="group flex w-fit items-center gap-6 md:gap-8"
+          className="group flex items-center gap-6 md:gap-8"
         >
-          <div className="pointer-events-none text-4xl select-none group-hover:animate-flip md:text-5xl">
-            {frontmatter.emoji}
+          <div className="flex size-full max-h-12 max-w-12 items-center justify-center text-4xl transition-transform duration-300 ease-out group-hover:scale-150 md:max-h-14 md:max-w-14 md:text-5xl">
+            <Emoji emoji={frontmatter.emoji} />
           </div>
           <div className="space-y-2">
             <div className="text-lg font-medium transition-colors duration-300 ease-out group-hover:text-link md:text-xl">
               {frontmatter.title}
             </div>
-            <div className="text-sm md:text-base">{frontmatter.description}</div>
-            <time className="block text-xs text-subtle md:text-sm">{frontmatter.date}</time>
+            <div>{frontmatter.description}</div>
+            <time className="block text-sm text-subtle">{frontmatter.date}</time>
           </div>
         </Link>
       ))}

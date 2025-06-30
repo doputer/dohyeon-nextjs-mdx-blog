@@ -2,12 +2,9 @@
 
 import { useCallback, useRef, useState } from 'react';
 
-import Button from '@/components/reaction/button';
+import Emoji from '@/components/emoji';
 import useActions from '@/hooks/use-actions';
 import { postReaction } from '@/lib/supabase/reaction.client';
-import fire from '@/static/lotties/fire.json';
-import party from '@/static/lotties/party-popper.json';
-import rocket from '@/static/lotties/rocket.json';
 import { getItem } from '@/utils/local-storage';
 import { launch } from '@/utils/particle';
 
@@ -19,17 +16,17 @@ interface Props {
 const themes = [
   {
     type: 'reaction1',
-    emoji: fire,
+    emoji: '🔥',
     colors: ['#ff4d00', '#ff6b00', '#ffa200', '#ffd700', '#ffb347'],
   },
   {
     type: 'reaction2',
-    emoji: party,
+    emoji: '🎉',
     colors: ['#16a34a', '#22c55e', '#4ade80', '#86efac', '#bbf7d0'],
   },
   {
     type: 'reaction3',
-    emoji: rocket,
+    emoji: '🚀',
     colors: ['#4dabf7', '#74c0fc', '#a5d8ff', '#d0ebff', '#9775fa'],
   },
 ];
@@ -74,14 +71,17 @@ const Reaction = ({ data, slug }: Props) => {
   return (
     <div className="mx-auto grid auto-cols-min grid-flow-col gap-2">
       {themes.map((theme, index) => (
-        <Button
+        <button
           key={index}
           ref={(element) => void (ref.current[index] = element)}
-          emoji={theme.emoji}
           onClick={() => handleClick(index)}
+          className="group flex items-center justify-start gap-2 rounded bg-surface px-2 py-1 transition-colors duration-300 ease-out select-none hover:bg-subtle/20"
         >
+          <div className="flex size-6 items-center justify-center text-3xl transition-transform duration-300 ease-out group-hover:scale-200">
+            <Emoji emoji={theme.emoji} />
+          </div>
           {reaction[theme.type] ?? 0}
-        </Button>
+        </button>
       ))}
     </div>
   );
