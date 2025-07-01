@@ -27,12 +27,12 @@ const useEmoji = (emoji: string) => {
     autoplay: false,
   };
 
-  const { View: LottieView, play, stop } = useLottie(options);
+  const { View: LottieView, animationLoaded, play, stop } = useLottie(options);
 
   const handlePlay = useCallback(() => {
-    if (animationData) return play();
+    if (animationLoaded) return play();
     if (lottieKey && !shouldLoad) setShouldLoad(true);
-  }, [animationData, lottieKey, shouldLoad, play]);
+  }, [animationLoaded, lottieKey, shouldLoad, play]);
 
   useEffect(() => {
     if (!shouldLoad || !lottieKey) return;
