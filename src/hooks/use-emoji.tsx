@@ -6,17 +6,16 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { type LottieOptions, useLottie } from 'lottie-react';
 
-import { loadLottie, type LottieKey, lottieMap } from '@/utils/lottie';
+import { loadLottie } from '@/utils/lottie';
 
-const toCodePoint = (emoji: string): LottieKey | null => {
+const toCodePoint = (emoji: string) => {
   const code = emoji.codePointAt(0);
-  return code ? (('u' + code.toString(16)) as LottieKey) : null;
+  return code ? 'u' + code.toString(16) : null;
 };
 
 const useEmoji = (emoji: string) => {
   const ref = useRef<HTMLDivElement>(null);
-  const codePoint = toCodePoint(emoji);
-  const lottieKey = codePoint && lottieMap[codePoint];
+  const lottieKey = toCodePoint(emoji);
   const svgSrc = lottieKey ? `/lotties/${lottieKey}.svg` : null;
 
   const [animationData, setAnimationData] = useState<object | null>(null);
@@ -32,19 +31,19 @@ const useEmoji = (emoji: string) => {
 
   const handlePlay = useCallback(() => {
     if (animationData) return play();
-    if (codePoint && !shouldLoad) setShouldLoad(true);
-  }, [animationData, codePoint, shouldLoad, play]);
+    if (lottieKey && !shouldLoad) setShouldLoad(true);
+  }, [animationData, lottieKey, shouldLoad, play]);
 
   useEffect(() => {
-    if (!shouldLoad || !codePoint) return;
+    if (!shouldLoad || !lottieKey) return;
 
-    loadLottie(codePoint)
+    loadLottie(lottieKey)
       .then((data) => {
         setAnimationData(data);
         play();
       })
       .catch(() => setAnimationData(null));
-  }, [shouldLoad, codePoint, play]);
+  }, [shouldLoad, lottieKey, play]);
 
   const View = (
     <div ref={ref} className="contents">

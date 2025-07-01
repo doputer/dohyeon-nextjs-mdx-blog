@@ -4,16 +4,16 @@ import { useEffect, useState } from 'react';
 
 import { type LottieOptions, useLottie } from 'lottie-react';
 
-import { loadLottie, type LottieKey } from '@/utils/lottie';
+import { loadLottie } from '@/utils/lottie';
 
 interface Props {
   emoji: string;
 }
 
-const toCodePoint = (emoji: string): LottieKey | null => {
+const toCodePoint = (emoji: string) => {
   const code = emoji.codePointAt(0);
 
-  return code ? (('u' + code.toString(16)) as LottieKey) : null;
+  return code ? 'u' + code.toString(16) : null;
 };
 
 const Emoji = ({ emoji }: Props) => {
