@@ -39,6 +39,10 @@
 }
 
 @layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     @apply text-primary;
     @apply bg-background;
