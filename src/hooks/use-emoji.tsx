@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { type LottieOptions, useLottie } from 'lottie-react';
 
@@ -13,16 +13,37 @@ const toCodePoint = (emoji: string): LottieKey | null => {
 };
 
 const useEmoji = (emoji: string) => {
+  const ref = useRef<HTMLDivElement>(null);
   const codePoint = toCodePoint(emoji);
   const [animationData, setAnimationData] = useState<object | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (!codePoint) return;
+    const target = ref.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(target);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible || !codePoint) return;
 
     loadLottie(codePoint)
       .then((data) => setAnimationData(data))
       .catch(() => setAnimationData(null));
-  }, [codePoint]);
+  }, [isVisible, codePoint]);
 
   const options: LottieOptions<'svg'> = {
     animationData: animationData ?? {},
@@ -32,9 +53,11 @@ const useEmoji = (emoji: string) => {
 
   const { View: LottieView, play, stop } = useLottie(options);
 
-  const view = !codePoint || animationData === null ? <>{emoji}</> : LottieView;
+  const View = (
+    <div ref={ref}>{!codePoint || animationData === null ? <span>{emoji}</span> : LottieView}</div>
+  );
 
-  return { view, play, stop };
+  return { View, play, stop };
 };
 
 export default useEmoji;
