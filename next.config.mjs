@@ -18,6 +18,10 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: '/lotties/:path*.svg',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, s-maxage=86400' }],
+      },
+      {
         source: '/lotties/:path*.json',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, s-maxage=86400' }],
       },

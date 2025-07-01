@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 
-import Emoji from '@/components/emoji';
+import Button from '@/components/reaction/button';
 import useActions from '@/hooks/use-actions';
 import { postReaction } from '@/lib/supabase/reaction.client';
 import { getItem } from '@/utils/local-storage';
@@ -71,17 +71,14 @@ const Reaction = ({ data, slug }: Props) => {
   return (
     <div className="mx-auto grid auto-cols-min grid-flow-col gap-2">
       {themes.map((theme, index) => (
-        <button
+        <Button
           key={index}
           ref={(element) => void (ref.current[index] = element)}
+          emoji={theme.emoji}
           onClick={() => handleClick(index)}
-          className="group flex items-center justify-start gap-2 rounded bg-surface px-2 py-1 transition-colors duration-300 ease-out select-none hover:bg-subtle/20"
         >
-          <div className="flex size-6 items-center justify-center text-3xl transition-transform duration-300 ease-out group-hover:scale-200">
-            <Emoji emoji={theme.emoji} />
-          </div>
           {reaction[theme.type] ?? 0}
-        </button>
+        </Button>
       ))}
     </div>
   );
