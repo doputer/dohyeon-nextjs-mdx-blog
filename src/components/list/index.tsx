@@ -14,11 +14,11 @@ const List = ({ posts }: ListProps) => {
         <Link key={frontmatter.title} href={slug}>
           <Item emoji={frontmatter.emoji}>
             <div className="space-y-2">
-              <div className="text-lg font-medium transition-colors duration-300 ease-out group-hover:text-link md:text-xl">
+              <div className="font-medium transition-colors duration-300 ease-out group-hover:text-link md:text-lg">
                 {frontmatter.title}
               </div>
-              <div>{frontmatter.description}</div>
-              <time className="block text-sm text-subtle">{frontmatter.date}</time>
+              <div className="text-sm md:text-base">{frontmatter.description}</div>
+              <time className="block text-xs text-subtle md:text-sm">{frontmatter.date}</time>
             </div>
           </Item>
         </Link>
