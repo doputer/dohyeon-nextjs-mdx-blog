@@ -11,7 +11,7 @@ const List = ({ posts }: ListProps) => {
   return (
     <div className="grid grid-flow-row gap-8 md:gap-12">
       {posts.map(({ frontmatter, slug }) => (
-        <Link key={frontmatter.title} href={`/${slug}`}>
+        <Link key={frontmatter.title} href={slug}>
           <Item emoji={frontmatter.emoji}>
             <div className="space-y-2">
               <div className="text-lg font-medium transition-colors duration-300 ease-out group-hover:text-link md:text-xl">
