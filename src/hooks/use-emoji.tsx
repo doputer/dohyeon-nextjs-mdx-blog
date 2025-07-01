@@ -15,18 +15,17 @@ const toCodePoint = (emoji: string) => {
 
 const useEmoji = (emoji: string) => {
   const ref = useRef<HTMLDivElement>(null);
+
+  const [animationData, setAnimationData] = useState<object>({});
+  const [shouldLoad, setShouldLoad] = useState(false);
+
   const lottieKey = toCodePoint(emoji);
   const svgSrc = lottieKey ? `/lotties/${lottieKey}.svg` : null;
 
-  const [animationData, setAnimationData] = useState<object | null>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const shouldShowSvg = !shouldLoad && svgSrc;
+  const shouldShowLottie = shouldLoad && animationData;
 
-  const options: LottieOptions<'svg'> = {
-    animationData: animationData ?? {},
-    loop: true,
-    autoplay: false,
-  };
-
+  const options: LottieOptions<'svg'> = { animationData, loop: true };
   const { View: LottieView, animationLoaded, play, stop } = useLottie(options);
 
   const handlePlay = useCallback(() => {
@@ -38,19 +37,16 @@ const useEmoji = (emoji: string) => {
     if (!shouldLoad || !lottieKey) return;
 
     loadLottie(lottieKey)
-      .then((data) => {
-        setAnimationData(data);
-        play();
-      })
-      .catch(() => setAnimationData(null));
-  }, [shouldLoad, lottieKey, play]);
+      .then((data) => setAnimationData(data))
+      .catch(() => setAnimationData({}));
+  }, [shouldLoad, lottieKey]);
 
   const View = (
     <div ref={ref} className="contents">
-      {!shouldLoad && svgSrc && (
+      {shouldShowSvg && (
         <Image src={svgSrc} alt={emoji} width={0} height={0} className="size-full" loading="lazy" />
       )}
-      {shouldLoad && animationData && LottieView}
+      {shouldShowLottie && LottieView}
     </div>
   );
 
