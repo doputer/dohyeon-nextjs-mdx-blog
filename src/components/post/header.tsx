@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const Header = ({ title, date, tags }: HeaderProps) => {
   return (
-    <div className="space-y-2">
+    <section className="space-y-2">
       <h1 className="text-2xl font-medium tracking-tight md:text-3xl">{title}</h1>
       <div className="flex flex-wrap items-center gap-2">
         <time className="text-sm">{date}</time>
@@ -22,7 +22,7 @@ const Header = ({ title, date, tags }: HeaderProps) => {
           </Link>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

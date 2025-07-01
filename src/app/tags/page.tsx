@@ -23,14 +23,14 @@ const Page = async () => {
   return (
     <>
       <Counter label="태그" count={tags.length} />
-      <div className="flex flex-wrap gap-4">
+      <section className="flex flex-wrap gap-4">
         {tags.map(([tag, totalCount]) => (
           <Link key={tag} href={`/tags/${encode(tag)}`} className="space-x-1 text-sm">
             <span className="text-link uppercase">{tag}</span>
             <span>{totalCount}</span>
           </Link>
         ))}
-      </div>
+      </section>
     </>
   );
 };

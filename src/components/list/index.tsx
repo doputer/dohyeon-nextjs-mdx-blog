@@ -9,21 +9,23 @@ interface ListProps {
 
 const List = ({ posts }: ListProps) => {
   return (
-    <div className="grid grid-flow-row gap-8 md:gap-12">
+    <section className="grid grid-flow-row gap-8 md:gap-12">
       {posts.map(({ frontmatter, slug }) => (
-        <Link key={frontmatter.title} href={slug}>
-          <Item emoji={frontmatter.emoji}>
-            <div className="space-y-2">
-              <div className="font-medium transition-colors duration-300 ease-out group-hover:text-link md:text-lg">
-                {frontmatter.title}
+        <article key={frontmatter.title} className="group">
+          <Link href={slug}>
+            <Item emoji={frontmatter.emoji}>
+              <div className="space-y-2">
+                <h2 className="text-lg font-medium transition-colors duration-300 ease-out group-hover:text-link md:text-xl">
+                  {frontmatter.title}
+                </h2>
+                <p className="text-sm md:text-base">{frontmatter.description}</p>
+                <time className="block text-sm text-subtle">{frontmatter.date}</time>
               </div>
-              <div className="text-sm md:text-base">{frontmatter.description}</div>
-              <time className="block text-xs text-subtle md:text-sm">{frontmatter.date}</time>
-            </div>
-          </Item>
-        </Link>
+            </Item>
+          </Link>
+        </article>
       ))}
-    </div>
+    </section>
   );
 };
 
