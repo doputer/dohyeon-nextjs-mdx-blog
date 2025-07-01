@@ -69,7 +69,7 @@ const Reaction = ({ data, slug }: Props) => {
   );
 
   return (
-    <div className="mx-auto grid auto-cols-min grid-flow-col gap-2">
+    <section className="mx-auto grid auto-cols-min grid-flow-col gap-2">
       {themes.map((theme, index) => (
         <Button
           key={index}
@@ -80,7 +80,7 @@ const Reaction = ({ data, slug }: Props) => {
           {reaction[theme.type] ?? 0}
         </Button>
       ))}
-    </div>
+    </section>
   );
 };
 

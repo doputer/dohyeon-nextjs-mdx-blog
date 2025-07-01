@@ -7,11 +7,13 @@ const Page = async () => {
   return (
     <>
       <Counter label="소개" />
-      <p>
-        안녕하세요.
-        <br />
-        프론트엔드 개발자 김도현 입니다.
-      </p>
+      <section>
+        <p>
+          안녕하세요.
+          <br />
+          프론트엔드 개발자 김도현 입니다.
+        </p>
+      </section>
     </>
   );
 };
