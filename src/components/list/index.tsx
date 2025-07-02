@@ -9,9 +9,9 @@ interface ListProps {
 
 const List = ({ posts }: ListProps) => {
   return (
-    <section className="grid grid-flow-row gap-4 sm:gap-8">
+    <section className="grid grid-flow-row gap-6 sm:gap-8">
       {posts.map(({ frontmatter, slug }) => (
-        <article key={frontmatter.title} className="group pb-4">
+        <article key={frontmatter.title} className="group">
           <Link href={slug}>
             <Item emoji={frontmatter.emoji}>
               <div className="space-y-1 sm:space-y-1.5">

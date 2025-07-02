@@ -23,7 +23,7 @@ const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
         <ThemeScript />
       </head>
       <body>
-        <div className="mx-auto flex min-h-screen max-w-2xl flex-col gap-6 px-6 py-6 md:gap-8 md:py-8">
+        <div className="mx-auto flex min-h-screen w-full max-w-xl flex-col gap-6 px-6 py-6 md:gap-8 md:py-8">
           <Header />
           <main className="flex flex-1 flex-col gap-6 md:gap-8">{children}</main>
           <Footer />
