@@ -25,14 +25,14 @@ const Comment = ({ data, slug }: Props) => {
       burst();
 
       try {
-        const user_id = getItem('UNIQUE_USER_ID');
+        const id = getItem('UNIQUE_USER_ID');
 
-        if (!user_id) return;
+        if (!id) return;
         if (hasActions(slug, 'comment')) return;
 
-        await postComment(user_id, slug, newComment);
+        await postComment(id, slug, newComment);
 
-        setComments((prev) => [newComment, ...prev]);
+        setComments((prev) => [{ ...newComment, id }, ...prev]);
         setActions(slug, 'comment');
       } catch (error) {
         throw error;

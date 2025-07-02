@@ -30,7 +30,7 @@ const fruits = [
 ];
 
 const Write = ({ disabled, onSubmit }: Props) => {
-  const [comment, setComment] = useState({ emoji: '', label: '', value: '' });
+  const [comment, setComment] = useState({ id: '', emoji: '', label: '', value: '' });
 
   const reroll = () => {
     setComment((prev) => ({ ...prev, ...fruits[Math.floor(Math.random() * fruits.length)] }));
@@ -39,7 +39,7 @@ const Write = ({ disabled, onSubmit }: Props) => {
   const handleWrite = () => {
     if (!comment.value.trim()) return;
 
-    onSubmit({ id: crypto.randomUUID(), ...comment });
+    onSubmit(comment);
     setComment((prev) => ({ ...prev, value: '' }));
   };
 
