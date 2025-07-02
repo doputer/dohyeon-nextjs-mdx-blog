@@ -13,7 +13,7 @@ const Item = ({ emoji, children }: PropsWithChildren<Props>) => {
 
   return (
     <div
-      className="flex items-center justify-between gap-4"
+      className="flex items-center justify-between gap-8"
       onMouseEnter={play}
       onMouseLeave={stop}
     >
