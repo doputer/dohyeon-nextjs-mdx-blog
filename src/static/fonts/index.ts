@@ -6,6 +6,7 @@ const pretendard = localFont({
     { path: './Pretendard-Light.subset.woff2', weight: '300' },
     { path: './Pretendard-Regular.subset.woff2', weight: '400' },
     { path: './Pretendard-Medium.subset.woff2', weight: '500' },
+    { path: './Pretendard-Semibold.subset.woff2', weight: '600' },
   ],
   display: 'swap',
   variable: '--font-sans',
