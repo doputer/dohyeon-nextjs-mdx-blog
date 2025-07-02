@@ -59,7 +59,7 @@ const Write = ({ disabled, onSubmit }: Props) => {
         disabled={disabled}
       ></textarea>
       <button
-        className="rounded bg-surface p-2 text-sm text-subtle transition-colors duration-300 ease-out hover:bg-subtle/20 disabled:cursor-not-allowed disabled:hover:bg-surface"
+        className="rounded bg-surface p-2 text-sm text-subtle transition-colors duration-300 ease-out not-disabled:hover:bg-subtle/20 disabled:cursor-not-allowed"
         onClick={handleWrite}
         disabled={disabled}
       >

@@ -46,7 +46,7 @@ const useEmoji = (emoji: string) => {
   }, [shouldLoad, lottieKey]);
 
   const View = (
-    <div ref={ref} className="contents">
+    <div ref={ref} className="pointer-events-none contents">
       {shouldShowSvg && (
         <Image src={svgSrc} alt={emoji} width={0} height={0} className="size-full" loading="lazy" />
       )}
