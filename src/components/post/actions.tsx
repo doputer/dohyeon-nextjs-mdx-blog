@@ -13,12 +13,9 @@ const Actions = ({ children }: PropsWithChildren) => {
     const id = getItem('UNIQUE_USER_ID', () => crypto.randomUUID());
     if (!id) return;
 
-    const fetch = async () => {
-      const data = await getActionByUserId(id);
+    getActionByUserId(id).then((data) => {
       data.forEach(({ slug, action }) => setActions(slug, action));
-    };
-
-    fetch();
+    });
   }, [setActions]);
 
   return <>{children}</>;
