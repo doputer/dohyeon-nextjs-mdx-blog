@@ -69,7 +69,7 @@ const Reaction = ({ data, slug }: Props) => {
   );
 
   return (
-    <section className="mx-auto grid auto-cols-min grid-flow-col gap-2">
+    <section className="mx-auto grid auto-cols-min grid-flow-col gap-3">
       {themes.map((theme, index) => (
         <Button
           key={index}
