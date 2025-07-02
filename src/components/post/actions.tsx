@@ -10,7 +10,15 @@ const Actions = ({ children }: PropsWithChildren) => {
   const { setActions } = useActions();
 
   useEffect(() => {
-    const id = getItem('UNIQUE_USER_ID', () => crypto.randomUUID());
+    const fallback = () => {
+      try {
+        return crypto.randomUUID();
+      } catch {
+        return 'localhost';
+      }
+    };
+
+    const id = getItem('UNIQUE_USER_ID', fallback);
     if (!id) return;
 
     getActionByUserId(id).then((data) => {
