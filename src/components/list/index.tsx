@@ -9,17 +9,20 @@ interface ListProps {
 
 const List = ({ posts }: ListProps) => {
   return (
-    <section className="grid grid-flow-row gap-8 md:gap-12">
+    <section className="grid grid-flow-row gap-6 sm:gap-8">
       {posts.map(({ frontmatter, slug }) => (
         <article key={frontmatter.title} className="group">
           <Link href={slug}>
             <Item emoji={frontmatter.emoji}>
-              <div className="space-y-2">
-                <h2 className="text-lg font-medium transition-colors duration-300 ease-out group-hover:text-link md:text-xl">
+              <div className="space-y-1.5">
+                <span className="block text-xs text-subtle sm:text-sm">{frontmatter.category}</span>
+                <h2 className="text-xl font-bold break-keep transition-colors duration-300 ease-out group-hover:text-link group-active:text-link sm:text-2xl">
                   {frontmatter.title}
                 </h2>
-                <p className="text-sm md:text-base">{frontmatter.description}</p>
-                <time className="block text-sm text-subtle">{frontmatter.date}</time>
+                <p className="text-sm font-medium break-keep sm:block sm:text-base">
+                  {frontmatter.description}
+                </p>
+                <time className="block text-xs text-subtle sm:text-sm">{frontmatter.date}</time>
               </div>
             </Item>
           </Link>

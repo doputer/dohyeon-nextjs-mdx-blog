@@ -10,15 +10,20 @@ const Actions = ({ children }: PropsWithChildren) => {
   const { setActions } = useActions();
 
   useEffect(() => {
-    const id = getItem('UNIQUE_USER_ID', () => crypto.randomUUID());
-    if (!id) return;
-
-    const fetch = async () => {
-      const data = await getActionByUserId(id);
-      data.forEach(({ slug, action }) => setActions(slug, action));
+    const fallback = () => {
+      try {
+        return crypto.randomUUID();
+      } catch {
+        return 'localhost';
+      }
     };
 
-    fetch();
+    const id = getItem('UNIQUE_USER_ID', fallback);
+    if (!id) return;
+
+    getActionByUserId(id).then((data) => {
+      data.forEach(({ slug, action }) => setActions(slug, action));
+    });
   }, [setActions]);
 
   return <>{children}</>;

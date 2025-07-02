@@ -12,11 +12,17 @@ const Item = ({ emoji, children }: PropsWithChildren<Props>) => {
   const { View, play, stop } = useEmoji(emoji);
 
   return (
-    <div className="flex items-center gap-6 md:gap-8" onMouseEnter={play} onMouseLeave={stop}>
-      <div className="flex size-full max-h-10 max-w-10 items-center justify-center transition-transform duration-300 ease-out group-hover:scale-150 md:max-h-14 md:max-w-14">
+    <div
+      className="flex items-center justify-between gap-8"
+      onMouseEnter={play}
+      onMouseLeave={stop}
+      onTouchStart={play}
+      onTouchEnd={stop}
+    >
+      {children}
+      <div className="size-12 transition-transform duration-300 ease-out group-hover:scale-150 group-active:scale-150 sm:size-16">
         {View}
       </div>
-      {children}
     </div>
   );
 };

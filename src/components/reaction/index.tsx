@@ -1,15 +1,15 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
 import useActions from '@/hooks/use-actions';
-import { postReaction } from '@/lib/supabase/reaction.client';
+import { getReactionBySlug, postReaction } from '@/lib/supabase/reaction.client';
+import type { Reaction } from '@/lib/supabase/reaction.client';
 import { getItem } from '@/utils/local-storage';
 import { launch } from '@/utils/particle';
 
 interface Props {
-  data: Record<string, number>;
   slug: string;
 }
 
@@ -31,9 +31,9 @@ const themes = [
   },
 ];
 
-const Reaction = ({ data, slug }: Props) => {
+const Reaction = ({ slug }: Props) => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
-  const [reaction, setReaction] = useState(data);
+  const [reaction, setReaction] = useState<Reaction>({});
   const { hasActions, setActions } = useActions();
 
   const handleClick = useCallback(
@@ -68,8 +68,12 @@ const Reaction = ({ data, slug }: Props) => {
     [hasActions, setActions, slug]
   );
 
+  useEffect(() => {
+    getReactionBySlug(slug).then((data) => setReaction(data));
+  }, [slug]);
+
   return (
-    <section className="mx-auto grid auto-cols-min grid-flow-col gap-2">
+    <section className="mx-auto grid auto-cols-min grid-flow-col gap-3">
       {themes.map((theme, index) => (
         <Button
           key={index}

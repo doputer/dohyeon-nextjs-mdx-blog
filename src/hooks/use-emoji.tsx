@@ -8,8 +8,6 @@ import { type LottieOptions, useLottie } from 'lottie-react';
 
 import { loadLottie } from '@/utils/lottie';
 
-const isTouchDevice = typeof window !== 'undefined' && 'ontouchstart' in window;
-
 const toCodePoint = (emoji: string) => {
   const code = emoji.codePointAt(0);
   return code ? 'u' + code.toString(16) : null;
@@ -31,8 +29,6 @@ const useEmoji = (emoji: string) => {
   const { View: LottieView, animationLoaded, play, stop } = useLottie(options);
 
   const handlePlay = useCallback(() => {
-    if (isTouchDevice) return;
-
     if (animationLoaded) return play();
     if (lottieKey && !shouldLoad) setShouldLoad(true);
   }, [animationLoaded, lottieKey, shouldLoad, play]);
@@ -46,7 +42,7 @@ const useEmoji = (emoji: string) => {
   }, [shouldLoad, lottieKey]);
 
   const View = (
-    <div ref={ref} className="contents">
+    <div ref={ref} className="pointer-events-none contents">
       {shouldShowSvg && (
         <Image src={svgSrc} alt={emoji} width={0} height={0} className="size-full" loading="lazy" />
       )}

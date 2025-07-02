@@ -1,4 +1,4 @@
-import type { Comment } from '@/components/comment';
+import type { Comment } from '@/lib/supabase/comment.client';
 
 const Read = (props: Comment) => {
   return (

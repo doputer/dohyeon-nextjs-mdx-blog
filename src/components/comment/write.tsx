@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { Comment } from '@/components/comment';
+import type { Comment } from '@/lib/supabase/comment.client';
 
 interface Props {
   disabled: boolean;
@@ -30,7 +30,7 @@ const fruits = [
 ];
 
 const Write = ({ disabled, onSubmit }: Props) => {
-  const [comment, setComment] = useState({ emoji: '', label: '', value: '' });
+  const [comment, setComment] = useState({ id: '', emoji: '', label: '', value: '' });
 
   const reroll = () => {
     setComment((prev) => ({ ...prev, ...fruits[Math.floor(Math.random() * fruits.length)] }));
@@ -39,7 +39,7 @@ const Write = ({ disabled, onSubmit }: Props) => {
   const handleWrite = () => {
     if (!comment.value.trim()) return;
 
-    onSubmit({ id: crypto.randomUUID(), ...comment });
+    onSubmit(comment);
     setComment((prev) => ({ ...prev, value: '' }));
   };
 
@@ -59,7 +59,7 @@ const Write = ({ disabled, onSubmit }: Props) => {
         disabled={disabled}
       ></textarea>
       <button
-        className="rounded bg-surface p-2 text-sm text-subtle transition-colors duration-300 ease-out hover:bg-subtle/20 disabled:cursor-not-allowed disabled:hover:bg-surface"
+        className="rounded bg-surface p-2 text-sm text-subtle transition-colors duration-300 ease-out not-disabled:hover:bg-subtle/20 disabled:cursor-not-allowed"
         onClick={handleWrite}
         disabled={disabled}
       >
