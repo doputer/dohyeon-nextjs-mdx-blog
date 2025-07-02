@@ -16,9 +16,11 @@ const Item = ({ emoji, children }: PropsWithChildren<Props>) => {
       className="flex items-center justify-between gap-8"
       onMouseEnter={play}
       onMouseLeave={stop}
+      onTouchStart={play}
+      onTouchEnd={stop}
     >
       {children}
-      <div className="size-12 transition-transform duration-300 ease-out group-hover:scale-150 sm:size-16">
+      <div className="size-12 transition-transform duration-300 ease-out group-hover:scale-150 group-active:scale-150 sm:size-16">
         {View}
       </div>
     </div>
