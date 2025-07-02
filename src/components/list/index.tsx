@@ -15,7 +15,7 @@ const List = ({ posts }: ListProps) => {
           <Link href={slug}>
             <Item emoji={frontmatter.emoji}>
               <div className="space-y-1.5">
-                <div className="text-xs text-subtle sm:text-sm">{frontmatter.category}</div>
+                <span className="block text-xs text-subtle sm:text-sm">{frontmatter.category}</span>
                 <h2 className="text-xl font-semibold break-keep transition-colors duration-300 ease-out group-hover:text-link group-active:text-link sm:text-2xl">
                   {frontmatter.title}
                 </h2>

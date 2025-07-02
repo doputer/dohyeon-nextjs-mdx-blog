@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { Comment } from '@/components/comment';
+import type { Comment } from '@/lib/supabase/comment.client';
 
 interface Props {
   disabled: boolean;
