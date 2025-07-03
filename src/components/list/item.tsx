@@ -20,7 +20,7 @@ const Item = ({ emoji, children }: PropsWithChildren<Props>) => {
       onTouchEnd={stop}
     >
       {children}
-      <div className="size-12 transition-transform duration-300 ease-out group-hover:scale-150 group-active:scale-150 sm:size-16">
+      <div className="aspect-square w-full max-w-12 transition-transform duration-300 ease-out group-hover:scale-150 group-active:scale-150 sm:max-w-16">
         {View}
       </div>
     </div>

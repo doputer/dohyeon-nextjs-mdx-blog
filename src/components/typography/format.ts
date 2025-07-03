@@ -16,5 +16,5 @@ export const table = cn('w-full divide-y divide-line text-left');
 export const th = cn('p-2');
 export const td = cn('p-2');
 export const a = cn('text-link underline underline-offset-4');
-export const strong = cn('font-bold text-black dark:text-white');
+export const strong = cn('font-semibold');
 export const img = cn('m-auto my-4 aspect-auto h-auto w-auto max-w-full rounded');
