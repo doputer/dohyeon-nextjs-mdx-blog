@@ -19,22 +19,16 @@ const Page = async () => {
           <a
             href={`mailto:${config.social.email}`}
             target="_blank"
-            className="flex size-8 items-center justify-center rounded border border-line p-1 text-subtle hover:bg-surface/50"
+            className="flex size-8 items-center justify-center rounded border border-line p-1"
           >
             <AtSymbolIcon className="size-full" />
           </a>
           <a
             href={config.social.github}
             target="_blank"
-            className="flex size-8 items-center justify-center rounded border border-line p-1.5 hover:bg-surface/50"
+            className="flex size-8 items-center justify-center rounded border border-line p-1.5"
           >
-            <svg
-              width="100%"
-              height="100%"
-              viewBox="0 0 98 96"
-              xmlns="http://www.w3.org/2000/svg"
-              className="text-subtle"
-            >
+            <svg width="100%" height="100%" viewBox="0 0 98 96" xmlns="http://www.w3.org/2000/svg">
               <path
                 fill-rule="evenodd"
                 clip-rule="evenodd"

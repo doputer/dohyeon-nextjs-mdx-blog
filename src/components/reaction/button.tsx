@@ -1,4 +1,4 @@
-import { forwardRef, type PropsWithChildren } from 'react';
+import { forwardRef, type PropsWithChildren, useEffect } from 'react';
 
 import useEmoji from '@/hooks/use-emoji';
 
@@ -8,15 +8,17 @@ interface Props {
 }
 
 const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>((props, ref) => {
-  const { View, play, stop } = useEmoji(props.emoji);
+  const { View, play } = useEmoji(props.emoji);
+
+  useEffect(() => {
+    play();
+  }, [play]);
 
   return (
     <button
       ref={ref}
       onClick={props.onClick}
-      onMouseEnter={play}
-      onMouseLeave={stop}
-      className="group flex items-center justify-start gap-2 rounded bg-surface px-2 py-1 transition-colors duration-300 ease-out select-none hover:bg-subtle/20 active:bg-subtle/20"
+      className="group flex items-center justify-between gap-4 rounded border border-line px-2 py-1 transition-colors duration-300 ease-out select-none"
     >
       <div className="size-6 transition-transform duration-300 ease-out group-hover:scale-150">
         {View}

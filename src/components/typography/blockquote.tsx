@@ -13,7 +13,7 @@ const Blockquote = (props: PropsWithChildren<Props>) => {
 
   return (
     <blockquote {...props} className={className}>
-      <ChatBubbleOvalLeftIcon className="size-6 text-subtle group-hover:animate-flip" />
+      <ChatBubbleOvalLeftIcon className="size-6 text-mute group-hover:animate-flip" />
       {props.children}
     </blockquote>
   );

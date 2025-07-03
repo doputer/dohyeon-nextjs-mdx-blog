@@ -52,14 +52,14 @@ const Write = ({ disabled, onSubmit }: Props) => {
       <textarea
         name="comment"
         id="comment"
-        className="block w-full resize-none rounded border border-line p-4 text-subtle outline-0 placeholder:text-subtle/50 disabled:cursor-not-allowed"
+        className="block w-full resize-none rounded border border-line p-4 text-mute outline-0 placeholder:text-soft disabled:cursor-not-allowed"
         placeholder="댓글을 남겨주세요."
         value={comment.value}
         onChange={(e) => setComment((prev) => ({ ...prev, value: e.target.value }))}
         disabled={disabled}
       ></textarea>
       <button
-        className="rounded bg-surface p-2 text-sm text-subtle transition-colors duration-300 ease-out not-disabled:hover:bg-subtle/20 disabled:cursor-not-allowed"
+        className="rounded bg-surface p-2 text-sm text-mute transition-colors duration-300 ease-out not-disabled:hover:bg-surface-hover disabled:cursor-not-allowed"
         onClick={handleWrite}
         disabled={disabled}
       >

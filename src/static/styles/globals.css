@@ -4,18 +4,17 @@
 @theme {
   --color-*: initial;
 
-  --color-white: #ffffff;
-  --color-black: #000000;
+  --color-yellow: oklch(94.5% 0.124 102deg);
+  --color-orange: oklch(79.5% 0.162 86deg);
 
-  --color-primary: #191c1f;
-  --color-subtle: #737373;
-  --color-link: #004ec7;
-  --color-line: #e5e7eb;
-  --color-surface: #f2f4f6;
-  --color-background: #ffffff;
-
-  --color-yellow: #fef08a;
-  --color-orange: #eab308;
+  --color-main: oklch(26.9% 0 0);
+  --color-mute: oklch(26.9% 0 0 / 50%);
+  --color-soft: oklch(26.9% 0 0 / 30%);
+  --color-line: oklch(26.9% 0 0 / 10%);
+  --color-link: oklch(46.8% 0.2 261deg);
+  --color-surface: oklch(96.5% 0 0);
+  --color-surface-hover: oklch(94.5% 0 0);
+  --color-background: oklch(100% 0 0);
 
   --animate-flip: flip 1s ease-in-out infinite;
 
@@ -30,12 +29,14 @@
 }
 
 [data-theme~='dark'] {
-  --color-primary: #dddddd;
-  --color-subtle: #b3b3b3;
-  --color-link: #10b981;
-  --color-line: #3a3e42;
-  --color-surface: #262a30;
-  --color-background: #191c1f;
+  --color-main: oklch(97% 0 0);
+  --color-mute: oklch(97% 0 0 / 50%);
+  --color-soft: oklch(97% 0 0 / 30%);
+  --color-line: oklch(97% 0 0 / 10%);
+  --color-link: oklch(69.6% 0.149 162deg);
+  --color-surface: oklch(28% 0 0);
+  --color-surface-hover: oklch(33% 0 0);
+  --color-background: oklch(22.5% 0.0074 248deg);
 }
 
 @layer base {
@@ -44,7 +45,7 @@
   }
 
   body {
-    @apply text-primary;
+    @apply text-main;
     @apply bg-background;
 
     font-synthesis: none;
