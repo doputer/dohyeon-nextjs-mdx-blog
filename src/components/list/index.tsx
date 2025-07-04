@@ -23,21 +23,21 @@ const List = ({ posts }: ListProps) => {
   return (
     <section className="space-y-4">
       {sorted.map(([year, posts]) => (
-        <article key={year} className="flex gap-8">
+        <section key={year} className="flex gap-8">
           <div className="text-lg">{year}</div>
-          <div className="flex flex-1 flex-col space-y-4">
+          <ul className="flex flex-1 flex-col space-y-4">
             {posts.map((post) => (
-              <Link key={post.slug} className="flex justify-between" href={post.slug}>
-                <div className="flex w-full justify-between gap-2 text-lg">
+              <li key={post.slug}>
+                <Link className="flex w-full justify-between gap-2 text-lg" href={post.slug}>
                   <h2 className="text-lg">{post.frontmatter.title}</h2>
                   <time dateTime={post.frontmatter.date} className="text-lg">
                     {format(post.frontmatter.date, 'MM.dd')}
                   </time>
-                </div>
-              </Link>
+                </Link>
+              </li>
             ))}
-          </div>
-        </article>
+          </ul>
+        </section>
       ))}
     </section>
   );
