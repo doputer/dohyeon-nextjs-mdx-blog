@@ -8,8 +8,8 @@
   --color-orange: oklch(79.5% 0.162 86deg);
 
   --color-main: oklch(26.9% 0 0);
-  --color-mute: oklch(26.9% 0 0 / 60%);
-  --color-soft: oklch(26.9% 0 0 / 40%);
+  --color-mute: oklch(26.9% 0 0 / 50%);
+  --color-soft: oklch(26.9% 0 0 / 30%);
   --color-line: oklch(26.9% 0 0 / 10%);
   --color-link: oklch(46.8% 0.2 261deg);
   --color-surface: oklch(96.5% 0 0);
@@ -29,8 +29,8 @@
 
 [data-theme~='dark'] {
   --color-main: oklch(97% 0 0);
-  --color-mute: oklch(97% 0 0 / 60%);
-  --color-soft: oklch(97% 0 0 / 40%);
+  --color-mute: oklch(97% 0 0 / 50%);
+  --color-soft: oklch(97% 0 0 / 30%);
   --color-line: oklch(97% 0 0 / 10%);
   --color-link: oklch(69.6% 0.149 162deg);
   --color-surface: oklch(28% 0 0);
