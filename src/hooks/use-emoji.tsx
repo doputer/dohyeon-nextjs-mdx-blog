@@ -2,52 +2,40 @@
 
 import Image from 'next/image';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { type LottieOptions, useLottie } from 'lottie-react';
 
-import { loadLottie } from '@/utils/lottie';
-
-const toCodePoint = (emoji: string) => {
-  const code = emoji.codePointAt(0);
-  return code ? 'u' + code.toString(16) : null;
-};
+import { loadLottie, toCodePoint } from '@/utils/lottie';
 
 const useEmoji = (emoji: string) => {
   const ref = useRef<HTMLDivElement>(null);
 
+  const key = toCodePoint(emoji);
   const [animationData, setAnimationData] = useState<object>();
-  const [shouldLoad, setShouldLoad] = useState(false);
-
-  const lottieKey = toCodePoint(emoji);
-  const svgSrc = lottieKey ? `/lotties/${lottieKey}.svg` : null;
 
   const options: LottieOptions<'svg'> = { animationData, loop: true };
-  const { View: LottieView, animationLoaded, play, stop } = useLottie(options);
-
-  const handlePlay = useCallback(() => {
-    if (animationLoaded) return play();
-    if (lottieKey && !shouldLoad) setShouldLoad(true);
-  }, [animationLoaded, lottieKey, shouldLoad, play]);
+  const { View: LottieView } = useLottie(options);
 
   useEffect(() => {
-    if (!shouldLoad || !lottieKey) return;
+    if (!key) return;
 
-    loadLottie(lottieKey)
+    loadLottie(key)
       .then((data) => setAnimationData(data))
       .catch(() => setAnimationData(undefined));
-  }, [shouldLoad, lottieKey]);
+  }, [key]);
 
   const View = (
     <div ref={ref} className="pointer-events-none contents">
-      {!animationData && svgSrc && (
-        <Image src={svgSrc} alt={emoji} width={0} height={0} className="size-full" />
+      {animationData ? (
+        LottieView
+      ) : (
+        <Image src={`/lotties/${key}.svg`} alt={emoji} width={0} height={0} className="size-full" />
       )}
-      {shouldLoad && animationData && LottieView}
     </div>
   );
 
-  return { View, play: handlePlay, stop };
+  return { View };
 };
 
 export default useEmoji;

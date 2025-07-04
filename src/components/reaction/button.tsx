@@ -1,4 +1,4 @@
-import { forwardRef, type PropsWithChildren, useEffect } from 'react';
+import { forwardRef, type PropsWithChildren } from 'react';
 
 import useEmoji from '@/hooks/use-emoji';
 
@@ -8,11 +8,7 @@ interface Props {
 }
 
 const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>((props, ref) => {
-  const { View, play } = useEmoji(props.emoji);
-
-  useEffect(() => {
-    play();
-  }, [play]);
+  const { View } = useEmoji(props.emoji);
 
   return (
     <button
