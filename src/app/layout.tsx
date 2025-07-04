@@ -13,12 +13,12 @@ import Footer from '@/components/footer';
 import Header from '@/components/header';
 import ThemeScript from '@/components/theme-switch/theme-script';
 import config from '@/configs/config.json';
-import { ibm, jetbrains } from '@/static/fonts';
+import { mono, sans } from '@/static/fonts';
 import { cn } from '@/utils/cn';
 
 const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
   return (
-    <html lang="ko-KR" className={cn(ibm.variable, jetbrains.variable)}>
+    <html lang="ko-KR" className={cn(sans.variable, mono.variable)}>
       <head>
         <ThemeScript />
       </head>
