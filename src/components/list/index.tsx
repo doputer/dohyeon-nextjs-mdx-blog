@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
-import Item from '@/components/list/item';
+import { format } from 'date-fns';
+
 import type { Post } from '@/lib/MDX/types';
 
 interface ListProps {
@@ -8,24 +9,34 @@ interface ListProps {
 }
 
 const List = ({ posts }: ListProps) => {
+  const datas = posts.reduce<Record<string, Post[]>>((acc, post) => {
+    const year = format(post.frontmatter.date, 'yyyy');
+
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(post);
+
+    return acc;
+  }, {});
+
+  const sorted = Object.entries(datas).sort(([a], [b]) => Number(b) - Number(a));
+
   return (
-    <section className="grid grid-flow-row gap-6 sm:gap-8">
-      {posts.map(({ frontmatter, slug }) => (
-        <article key={frontmatter.title} className="group">
-          <Link href={slug}>
-            <Item emoji={frontmatter.emoji}>
-              <div className="space-y-1.5">
-                <span className="block text-xs text-mute sm:text-sm">{frontmatter.category}</span>
-                <h2 className="text-xl font-semibold break-keep transition-colors duration-300 ease-out group-hover:text-link group-active:text-link sm:text-2xl">
-                  {frontmatter.title}
-                </h2>
-                <p className="text-sm font-medium break-keep sm:block sm:text-base">
-                  {frontmatter.description}
-                </p>
-                <time className="block text-xs text-mute sm:text-sm">{frontmatter.date}</time>
-              </div>
-            </Item>
-          </Link>
+    <section className="space-y-4">
+      {sorted.map(([year, posts]) => (
+        <article key={year} className="flex gap-8">
+          <div className="text-lg">{year}</div>
+          <div className="flex flex-1 flex-col space-y-4">
+            {posts.map((post) => (
+              <Link key={post.slug} className="flex justify-between" href={post.slug}>
+                <div className="flex w-full justify-between gap-2 text-lg">
+                  <h2 className="text-lg">{post.frontmatter.title}</h2>
+                  <time dateTime={post.frontmatter.date} className="text-lg">
+                    {format(post.frontmatter.date, 'MM.dd')}
+                  </time>
+                </div>
+              </Link>
+            ))}
+          </div>
         </article>
       ))}
     </section>
