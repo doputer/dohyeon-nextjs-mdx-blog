@@ -1,5 +1,5 @@
-import Counter from '@/components/counter';
 import List from '@/components/list';
+import Me from '@/components/me';
 import { getPosts } from '@/lib/MDX';
 
 const Page = async () => {
@@ -7,7 +7,7 @@ const Page = async () => {
 
   return (
     <>
-      <Counter label="글" count={posts.length} />
+      <Me />
       <List posts={posts} />
     </>
   );
