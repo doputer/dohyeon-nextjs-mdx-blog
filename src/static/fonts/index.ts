@@ -1,13 +1,8 @@
-import { JetBrains_Mono } from 'next/font/google';
-import localFont from 'next/font/local';
+import { IBM_Plex_Sans_KR, JetBrains_Mono } from 'next/font/google';
 
-const pretendard = localFont({
-  src: [
-    { path: './Pretendard-Regular.subset.woff2', weight: '400' },
-    { path: './Pretendard-Medium.subset.woff2', weight: '500' },
-    { path: './Pretendard-SemiBold.subset.woff2', weight: '600' },
-    { path: './Pretendard-Bold.subset.woff2', weight: '700' },
-  ],
+const ibm = IBM_Plex_Sans_KR({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
 });
 
@@ -17,4 +12,4 @@ const jetbrains = JetBrains_Mono({
   variable: '--font-mono',
 });
 
-export { pretendard, jetbrains };
+export { ibm, jetbrains };
