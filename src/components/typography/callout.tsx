@@ -9,11 +9,11 @@ interface Props {
 }
 
 const Callout = (props: PropsWithChildren<Props>) => {
-  const className = cn(props.className, 'group bg-orange/15');
+  const className = cn(props.className, 'group');
 
   return (
     <blockquote {...props} className={className}>
-      <BoltIcon className="size-6 text-orange/70 group-hover:animate-flip" />
+      <BoltIcon className="size-6 text-mute group-hover:animate-flip" />
       {props.children}
     </blockquote>
   );
