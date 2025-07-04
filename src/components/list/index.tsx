@@ -9,7 +9,7 @@ interface ListProps {
 }
 
 const List = ({ posts }: ListProps) => {
-  const datas = posts.reduce<Record<string, Post[]>>((acc, post) => {
+  const group = posts.reduce<Record<string, Post[]>>((acc, post) => {
     const year = format(post.frontmatter.date, 'yyyy');
 
     if (!acc[year]) acc[year] = [];
@@ -18,20 +18,23 @@ const List = ({ posts }: ListProps) => {
     return acc;
   }, {});
 
-  const sorted = Object.entries(datas).sort(([a], [b]) => Number(b) - Number(a));
+  const list = Object.entries(group).sort(([a], [b]) => Number(b) - Number(a));
 
   return (
-    <section className="space-y-4">
-      {sorted.map(([year, posts]) => (
-        <section key={year} className="flex gap-8">
-          <div className="text-lg">{year}</div>
-          <ul className="flex flex-1 flex-col space-y-4">
-            {posts.map((post) => (
-              <li key={post.slug}>
-                <Link className="flex w-full justify-between gap-2 text-lg" href={post.slug}>
-                  <h2 className="text-lg">{post.frontmatter.title}</h2>
-                  <time dateTime={post.frontmatter.date} className="text-lg">
-                    {format(post.frontmatter.date, 'MM.dd')}
+    <section>
+      {list.map(([year, posts]) => (
+        <section key={year} className="grid grid-cols-[auto_1fr] gap-2 sm:gap-8">
+          <div className="py-2 sm:text-lg">{year}</div>
+          <ul>
+            {posts.map(({ frontmatter, slug }) => (
+              <li key={slug}>
+                <Link
+                  className="flex justify-between gap-2 py-2 transition-colors duration-300 ease-out hover:*:text-link"
+                  href={slug}
+                >
+                  <h2 className="sm:text-lg">{frontmatter.title}</h2>
+                  <time dateTime={frontmatter.date} className="shrink-0 text-mute sm:text-lg">
+                    {format(frontmatter.date, 'MM.dd')}
                   </time>
                 </Link>
               </li>
