@@ -25,7 +25,7 @@ const List = ({ posts }: ListProps) => {
       {list.map(([year, posts]) => (
         <section key={year} className="group/section grid grid-cols-[auto_1fr] gap-4 sm:gap-8">
           <div className="relative h-fit py-3 sm:text-lg">
-            <div className="relative z-10 group-hover:text-mute group-hover/section:text-main group-active:text-mute group-active/section:text-main">
+            <div className="relative z-10 transition-colors duration-300 ease-out group-hover:text-mute group-hover/section:text-main group-active:text-mute group-active/section:text-main">
               {year}
             </div>
             <div className="pointer-events-none absolute inset-0 -mx-1.5 my-2 rounded bg-surface opacity-0 transition-opacity duration-300 group-hover/section:opacity-100 group-active/section:opacity-100 sm:-mx-2 sm:my-1" />
@@ -40,7 +40,10 @@ const List = ({ posts }: ListProps) => {
                   href={slug}
                   className="relative z-10 flex justify-between gap-2 py-3 group-hover/li:text-main group-active/li:text-main"
                 >
-                  <h2 data-emoji={frontmatter.emoji} className="break-keep sm:text-lg">
+                  <h2
+                    data-emoji={frontmatter.emoji}
+                    className="break-keep transition-colors duration-300 ease-out sm:text-lg"
+                  >
                     {frontmatter.title}
                     <span
                       data-emoji={frontmatter.emoji}
