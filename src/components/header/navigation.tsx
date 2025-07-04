@@ -5,7 +5,7 @@ import config from '@/configs/config.json';
 const Navigation = () => {
   return (
     <nav>
-      <Link href="/" className="text-2xl font-medium">
+      <Link href="/" className="text-2xl font-semibold">
         {config.name}
       </Link>
     </nav>
