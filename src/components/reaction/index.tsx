@@ -16,13 +16,13 @@ interface Props {
 const themes = [
   {
     type: 'reaction1',
-    emoji: '🔥',
-    colors: ['#ff4d00', '#ff6b00', '#ffa200', '#ffd700', '#ffb347'],
+    emoji: '😀',
+    colors: ['#16a34a', '#22c55e', '#4ade80', '#86efac', '#bbf7d0'],
   },
   {
     type: 'reaction2',
-    emoji: '🎉',
-    colors: ['#16a34a', '#22c55e', '#4ade80', '#86efac', '#bbf7d0'],
+    emoji: '🔥',
+    colors: ['#ff4d00', '#ff6b00', '#ffa200', '#ffd700', '#ffb347'],
   },
   {
     type: 'reaction3',

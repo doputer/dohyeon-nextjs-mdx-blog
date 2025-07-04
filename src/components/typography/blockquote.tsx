@@ -9,7 +9,7 @@ interface Props {
 }
 
 const Blockquote = (props: PropsWithChildren<Props>) => {
-  const className = cn(props.className, 'group bg-surface');
+  const className = cn(props.className, 'group');
 
   return (
     <blockquote {...props} className={className}>

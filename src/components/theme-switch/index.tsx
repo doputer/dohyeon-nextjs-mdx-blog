@@ -9,12 +9,14 @@ const ThemeSwitch = () => {
 
   return (
     <button
-      className="relative size-6 overflow-hidden transition-transform duration-300 hover:text-orange dark:hover:text-yellow"
+      className="relative size-8 overflow-hidden transition-colors duration-300 hover:text-orange dark:hover:text-yellow"
       onClick={toggleTheme}
-      aria-label="Theme Button"
+      aria-label="Theme"
     >
-      <SunIcon className="absolute top-0 left-0 translate-x-0 translate-y-0 transition-transform duration-300 dark:translate-x-full dark:-translate-y-full" />
-      <MoonIcon className="absolute top-full left-0 -translate-x-full translate-y-0 transition-transform duration-300 dark:translate-x-0 dark:-translate-y-full" />
+      <div className="absolute top-0 right-0 left-0 flex flex-col items-center transition-transform duration-300 dark:rotate-180">
+        <SunIcon />
+        <MoonIcon className="rotate-180" />
+      </div>
     </button>
   );
 };

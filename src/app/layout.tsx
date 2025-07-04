@@ -13,17 +13,17 @@ import Footer from '@/components/footer';
 import Header from '@/components/header';
 import ThemeScript from '@/components/theme-switch/theme-script';
 import config from '@/configs/config.json';
-import { jetbrains, pretendard } from '@/static/fonts';
+import { mono, sans } from '@/static/fonts';
 import { cn } from '@/utils/cn';
 
 const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
   return (
-    <html lang="ko-KR" className={cn(pretendard.variable, jetbrains.variable)}>
+    <html lang="ko-KR" className={cn(sans.variable, mono.variable)}>
       <head>
         <ThemeScript />
       </head>
       <body>
-        <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-6 px-6 py-6 sm:gap-8 sm:py-8">
+        <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-6 px-6 py-8 sm:gap-8 sm:py-12">
           <Header />
           <main className="flex flex-1 flex-col gap-6 sm:gap-8">{children}</main>
           <Footer />
