@@ -18,7 +18,7 @@ import { cn } from '@/utils/cn';
 
 const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
   return (
-    <html lang="ko-KR" className={cn(sans.variable, mono.variable)}>
+    <html lang="ko-KR" className={cn(sans.variable, mono.variable)} suppressHydrationWarning>
       <head>
         <ThemeScript />
       </head>

@@ -1,15 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { use, useCallback, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
-import useActions from '@/hooks/use-actions';
-import { getReactionBySlug, postReaction } from '@/lib/supabase/reaction.client';
-import type { Reaction } from '@/lib/supabase/reaction.client';
+import { useAction } from '@/contexts/action/use-action';
+import { postReaction, type Reaction } from '@/lib/supabase/reaction';
 import { getItem } from '@/utils/local-storage';
 import { launch } from '@/utils/particle';
 
 interface Props {
+  initial: Promise<Reaction>;
   slug: string;
 }
 
@@ -31,10 +31,10 @@ const themes = [
   },
 ];
 
-const Reaction = ({ slug }: Props) => {
+const Reaction = ({ initial, slug }: Props) => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
-  const [reaction, setReaction] = useState<Reaction>({});
-  const { hasActions, setActions } = useActions();
+  const [reaction, setReaction] = useState<Reaction>(use(initial));
+  const { hasAction, setAction } = useAction();
 
   const handleClick = useCallback(
     async (index: number) => {
@@ -51,26 +51,18 @@ const Reaction = ({ slug }: Props) => {
 
       if (process.env.NODE_ENV === 'development') return;
 
-      try {
-        const user_id = getItem('UNIQUE_USER_ID');
+      const id = getItem('UNIQUE_USER_ID');
+      if (!id) return;
+      if (hasAction(slug, type)) return;
 
-        if (!user_id) return;
-        if (hasActions(slug, type)) return;
+      setReaction((state) => ({ ...state, [type]: (state[type] ?? 0) + 1 }));
 
-        await postReaction(user_id, slug, type);
+      await postReaction(id, slug, type);
 
-        setReaction((prev) => ({ ...prev, [type]: (prev[type] ?? 0) + 1 }));
-        setActions(slug, type);
-      } catch (error) {
-        throw error;
-      }
+      setAction(slug, type);
     },
-    [hasActions, setActions, slug]
+    [hasAction, setAction, slug]
   );
-
-  useEffect(() => {
-    getReactionBySlug(slug).then((data) => setReaction(data));
-  }, [slug]);
 
   return (
     <section className="mx-auto grid auto-cols-min grid-flow-col gap-3">

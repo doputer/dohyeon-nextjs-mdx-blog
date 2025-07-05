@@ -3,29 +3,35 @@ import { notFound } from 'next/navigation';
 
 import Comment from '@/components/comment';
 import Post from '@/components/post';
-import Actions from '@/components/post/actions';
 import Header from '@/components/post/header';
 import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
+import ActionProvider from '@/contexts/action';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
+import { getCommentBySlug } from '@/lib/supabase/comment';
+import { getReactionBySlug } from '@/lib/supabase/reaction';
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-const Page = async ({ params }: PageProps) => {
+const Page = async (props: PageProps) => {
+  const params = await props.params;
   if (!(await accessPost(params.slug))) notFound();
 
   const { frontmatter, toc, MDX } = await getPost(params.slug);
   const { title, date } = frontmatter;
 
+  const reactionPromise = getReactionBySlug(params.slug);
+  const commentPromise = getCommentBySlug(params.slug);
+
   return (
-    <Actions>
+    <ActionProvider>
       <Header title={title} date={date} />
       <Post toc={toc} MDX={MDX} />
-      <Reaction slug={params.slug} />
-      <Comment slug={params.slug} />
-    </Actions>
+      <Reaction initial={reactionPromise} slug={params.slug} />
+      <Comment initial={commentPromise} slug={params.slug} />
+    </ActionProvider>
   );
 };
 
@@ -35,7 +41,8 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   if (!(await accessPost(params.slug))) notFound();
 
   const { frontmatter } = await getPost(params.slug);

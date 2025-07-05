@@ -4,10 +4,14 @@ import { getPosts } from '@/lib/MDX';
 import { decode } from '@/utils/uri';
 
 interface PageProps {
-  params: { tag: string };
+  params: Promise<{ tag: string }>;
 }
 
-const Page = async ({ params: { tag } }: PageProps) => {
+const Page = async (props: PageProps) => {
+  const params = await props.params;
+
+  const { tag } = params;
+
   const posts = await getPosts();
   const filteredPosts = posts.filter((post) => post.frontmatter.tags.includes(decode(tag)));
 

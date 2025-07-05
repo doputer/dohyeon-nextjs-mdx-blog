@@ -1,4 +1,8 @@
-module.exports = {
+/**
+ * @see https://prettier.io/docs/configuration
+ * @type {import("prettier").Config}
+ */
+export default {
   singleQuote: true,
   printWidth: 100,
   tabWidth: 2,

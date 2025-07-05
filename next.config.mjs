@@ -31,6 +31,7 @@ const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'mdx'],
 };
 
+/** @type {import('codehike/mdx').CodeHikeConfig} */
 const codehikeConfig = {
   components: { code: 'Code' },
   syntaxHighlighting: { theme: 'github-from-css' },
