@@ -51,19 +51,15 @@ const Reaction = ({ slug }: Props) => {
 
       if (process.env.NODE_ENV === 'development') return;
 
-      try {
-        const user_id = getItem('UNIQUE_USER_ID');
+      const user_id = getItem('UNIQUE_USER_ID');
 
-        if (!user_id) return;
-        if (hasActions(slug, type)) return;
+      if (!user_id) return;
+      if (hasActions(slug, type)) return;
 
-        await postReaction(user_id, slug, type);
+      await postReaction(user_id, slug, type);
 
-        setReaction((prev) => ({ ...prev, [type]: (prev[type] ?? 0) + 1 }));
-        setActions(slug, type);
-      } catch (error) {
-        throw error;
-      }
+      setReaction((prev) => ({ ...prev, [type]: (prev[type] ?? 0) + 1 }));
+      setActions(slug, type);
     },
     [hasActions, setActions, slug]
   );
@@ -77,7 +73,9 @@ const Reaction = ({ slug }: Props) => {
       {themes.map((theme, index) => (
         <Button
           key={index}
-          ref={(element) => void (ref.current[index] = element)}
+          ref={(element) => {
+            void (ref.current[index] = element);
+          }}
           emoji={theme.emoji}
           onClick={() => handleClick(index)}
         >
