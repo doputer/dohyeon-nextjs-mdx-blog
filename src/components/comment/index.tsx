@@ -4,7 +4,7 @@ import { use, useCallback, useState } from 'react';
 
 import Read from '@/components/comment/read';
 import Write from '@/components/comment/write';
-import useActions from '@/hooks/use-actions';
+import { useAction } from '@/contexts/action/use-action';
 import { type Comment, postComment } from '@/lib/supabase/comment';
 import { getItem } from '@/utils/local-storage';
 import { burst } from '@/utils/particle';
@@ -16,15 +16,15 @@ interface Props {
 
 const Comment = ({ initial, slug }: Props) => {
   const [comments, setComments] = useState<Comment[]>(use(initial));
-  const { hasActions, setActions } = useActions();
+  const { hasAction, setAction } = useAction();
 
   const handleWrite = useCallback(
     async (newComment: Comment) => {
-      const id = getItem('UNIQUE_USER_ID');
-
-      if (!id) return;
-      if (hasActions(slug, 'comment')) return;
       if (process.env.NODE_ENV === 'development') return;
+
+      const id = getItem('UNIQUE_USER_ID');
+      if (!id) return;
+      if (hasAction(slug, 'comment')) return;
 
       burst();
 
@@ -32,15 +32,15 @@ const Comment = ({ initial, slug }: Props) => {
 
       await postComment(id, slug, newComment);
 
-      setActions(slug, 'comment');
+      setAction(slug, 'comment');
     },
-    [hasActions, setActions, slug]
+    [hasAction, setAction, slug]
   );
 
   return (
     <section className="space-y-4">
       <div>댓글 {comments.length}</div>
-      <Write disabled={hasActions(slug, 'comment')} onSubmit={handleWrite} />
+      <Write disabled={hasAction(slug, 'comment')} onSubmit={handleWrite} />
       <Read comments={comments} />
     </section>
   );

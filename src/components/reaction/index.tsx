@@ -3,7 +3,7 @@
 import { use, useCallback, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
-import useActions from '@/hooks/use-actions';
+import { useAction } from '@/contexts/action/use-action';
 import { postReaction, type Reaction } from '@/lib/supabase/reaction';
 import { getItem } from '@/utils/local-storage';
 import { launch } from '@/utils/particle';
@@ -34,7 +34,7 @@ const themes = [
 const Reaction = ({ initial, slug }: Props) => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
   const [reaction, setReaction] = useState<Reaction>(use(initial));
-  const { hasActions, setActions } = useActions();
+  const { hasAction, setAction } = useAction();
 
   const handleClick = useCallback(
     async (index: number) => {
@@ -49,19 +49,19 @@ const Reaction = ({ initial, slug }: Props) => {
 
       launch(colors, { x, y });
 
-      const id = getItem('UNIQUE_USER_ID');
-
-      if (!id) return;
-      if (hasActions(slug, type)) return;
       if (process.env.NODE_ENV === 'development') return;
+
+      const id = getItem('UNIQUE_USER_ID');
+      if (!id) return;
+      if (hasAction(slug, type)) return;
 
       setReaction((state) => ({ ...state, [type]: (state[type] ?? 0) + 1 }));
 
       await postReaction(id, slug, type);
 
-      setActions(slug, type);
+      setAction(slug, type);
     },
-    [hasActions, setActions, slug]
+    [hasAction, setAction, slug]
   );
 
   return (
