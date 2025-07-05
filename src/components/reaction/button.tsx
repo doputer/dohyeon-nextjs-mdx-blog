@@ -1,13 +1,14 @@
-import { forwardRef, type PropsWithChildren } from 'react';
+import type { PropsWithChildren, Ref } from 'react';
 
 import useEmoji from '@/hooks/use-emoji';
 
 interface Props {
+  ref?: Ref<HTMLButtonElement>;
   emoji: string;
   onClick: () => void;
 }
 
-const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>((props, ref) => {
+const Button = ({ ref, ...props }: PropsWithChildren<Props>) => {
   const { View } = useEmoji(props.emoji);
 
   return (
@@ -22,8 +23,6 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>((props, r
       {props.children}
     </button>
   );
-});
-
-Button.displayName = 'Button';
+};
 
 export default Button;

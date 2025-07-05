@@ -72,9 +72,7 @@ const Reaction = ({ slug }: Props) => {
       {themes.map((theme, index) => (
         <Button
           key={index}
-          ref={(element) => {
-            void (ref.current[index] = element);
-          }}
+          ref={(element) => void (ref.current[index] = element)}
           emoji={theme.emoji}
           onClick={() => handleClick(index)}
         >
