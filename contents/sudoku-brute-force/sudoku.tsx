@@ -55,39 +55,39 @@ const Sudoku = () => {
   }, []);
 
   return (
-    <section className="flex flex-col items-center space-y-1">
-      <div className="relative mb-9 grid aspect-square size-full h-auto max-w-100 grid-cols-9 grid-rows-9">
+    <section className="flex flex-col items-center space-y-2">
+      <div className="relative grid aspect-square size-full h-auto max-w-100 grid-cols-9 grid-rows-9">
         {board.map((row, i) =>
           row.map((cell, j) => (
             <div
               key={`${i}-${j}`}
               className={cn(
-                'flex items-center justify-center border border-line text-lg font-medium',
-                i % 3 === 0 && 'border-t-3',
-                j % 3 === 0 && 'border-l-3',
-                i === 8 && 'border-b-3',
-                j === 8 && 'border-r-3',
+                'flex items-center justify-center border-line text-lg font-medium',
+                i % 3 === 0 ? 'border-t-4' : 'border-t-2',
+                j % 3 === 0 ? 'border-l-4' : 'border-l-2',
+                i === 8 && 'border-b-4',
+                j === 8 && 'border-r-4',
                 initialBoard[i][j] === 0 && 'text-link'
               )}
             >
-              {cell !== 0 ? cell : ''}
+              {cell || ''}
             </div>
           ))
         )}
-        <div className="absolute top-full right-0 flex translate-y-1 items-center justify-end gap-1">
-          <button
-            className="box-content flex size-6 items-center justify-center rounded p-1 text-lg font-medium hover:bg-surface"
-            onClick={increaseSpeed}
-          >
-            X{speed}
-          </button>
-          <button
-            className="box-content flex size-6 items-center justify-center rounded p-1 hover:bg-surface"
-            onClick={togglePause}
-          >
-            {paused ? <PlayIcon className="size-5" /> : <PauseIcon className="size-5" />}
-          </button>
-        </div>
+      </div>
+      <div className="flex items-center gap-1">
+        <button
+          className="box-content flex size-6 items-center justify-center rounded p-1 text-lg font-medium select-none hover:bg-surface"
+          onClick={increaseSpeed}
+        >
+          X{speed}
+        </button>
+        <button
+          className="box-content flex size-6 items-center justify-center rounded p-1 select-none hover:bg-surface"
+          onClick={togglePause}
+        >
+          {paused ? <PlayIcon className="size-5" /> : <PauseIcon className="size-5" />}
+        </button>
       </div>
     </section>
   );
