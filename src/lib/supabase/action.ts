@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/client-csr';
+import { supabase } from '@/lib/supabase/client';
 
 export const getActionByUserId = async (user_id: string) => {
   const { data, error } = await supabase

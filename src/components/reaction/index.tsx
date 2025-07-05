@@ -4,8 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
 import useActions from '@/hooks/use-actions';
-import { getReactionBySlug, postReaction } from '@/lib/supabase/reaction.client';
-import type { Reaction } from '@/lib/supabase/reaction.client';
+import { getReactionBySlug, postReaction, type Reaction } from '@/lib/supabase/reaction';
 import { getItem } from '@/utils/local-storage';
 import { launch } from '@/utils/particle';
 

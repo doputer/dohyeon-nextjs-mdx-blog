@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/client-csr';
+import { supabase } from '@/lib/supabase/client';
 
 export type Reaction = Record<string, number>;
 

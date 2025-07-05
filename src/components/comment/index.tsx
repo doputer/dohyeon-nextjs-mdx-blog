@@ -5,8 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Read from '@/components/comment/read';
 import Write from '@/components/comment/write';
 import useActions from '@/hooks/use-actions';
-import { getCommentBySlug, postComment } from '@/lib/supabase/comment.client';
-import type { Comment } from '@/lib/supabase/comment.client';
+import { type Comment, getCommentBySlug, postComment } from '@/lib/supabase/comment';
 import { getItem } from '@/utils/local-storage';
 import { burst } from '@/utils/particle';
 
