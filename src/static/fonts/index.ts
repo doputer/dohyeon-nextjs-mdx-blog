@@ -1,4 +1,4 @@
-import { IBM_Plex_Mono, IBM_Plex_Sans_KR } from 'next/font/google';
+import { Fira_Code, IBM_Plex_Sans_KR } from 'next/font/google';
 
 const sans = IBM_Plex_Sans_KR({
   subsets: ['latin'],
@@ -6,7 +6,7 @@ const sans = IBM_Plex_Sans_KR({
   variable: '--font-sans',
 });
 
-const mono = IBM_Plex_Mono({
+const mono = Fira_Code({
   subsets: ['latin'],
   weight: ['500', '600'],
   variable: '--font-mono',
