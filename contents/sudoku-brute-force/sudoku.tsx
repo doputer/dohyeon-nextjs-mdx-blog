@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 
@@ -28,15 +28,15 @@ const Sudoku = () => {
   const speedRef = useRef(speed);
   const pauseRef = useRef(paused);
 
-  const increaseSpeed = () => {
+  const increaseSpeed = useCallback(() => {
     speedRef.current = (speedRef.current * 2) % 16 || 1;
     setSpeed(speedRef.current);
-  };
+  }, []);
 
-  const togglePause = () => {
+  const togglePause = useCallback(() => {
     pauseRef.current = !pauseRef.current;
     setPaused(pauseRef.current);
-  };
+  }, []);
 
   useEffect(() => {
     const animate = async () => {
