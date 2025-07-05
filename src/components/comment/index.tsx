@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useCallback, useOptimistic } from 'react';
+import { use, useCallback, useState } from 'react';
 
 import Read from '@/components/comment/read';
 import Write from '@/components/comment/write';
@@ -15,27 +15,26 @@ interface Props {
 }
 
 const Comment = ({ initial, slug }: Props) => {
-  const [comments, addComments] = useOptimistic<Comment[], Comment>(
-    use(initial),
-    (state, newComment) => [newComment, ...state]
-  );
+  const [comments, setComments] = useState<Comment[]>(use(initial));
   const { hasActions, setActions } = useActions();
 
   const handleWrite = useCallback(
     async (newComment: Comment) => {
-      burst();
-
       const id = getItem('UNIQUE_USER_ID');
 
       if (!id) return;
       if (hasActions(slug, 'comment')) return;
+      if (process.env.NODE_ENV === 'development') return;
+
+      burst();
+
+      setComments((state) => [newComment, ...state]);
 
       await postComment(id, slug, newComment);
 
-      addComments({ ...newComment, id });
       setActions(slug, 'comment');
     },
-    [addComments, hasActions, setActions, slug]
+    [hasActions, setActions, slug]
   );
 
   return (

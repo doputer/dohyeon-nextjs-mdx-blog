@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useCallback, useOptimistic, useRef } from 'react';
+import { use, useCallback, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
 import useActions from '@/hooks/use-actions';
@@ -33,10 +33,7 @@ const themes = [
 
 const Reaction = ({ initial, slug }: Props) => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
-  const [reaction, addReaction] = useOptimistic<Reaction, { type: string }>(
-    use(initial),
-    (state, { type }) => ({ ...state, [type]: (state[type] ?? 0) + 1 })
-  );
+  const [reaction, setReaction] = useState<Reaction>(use(initial));
   const { hasActions, setActions } = useActions();
 
   const handleClick = useCallback(
@@ -52,19 +49,19 @@ const Reaction = ({ initial, slug }: Props) => {
 
       launch(colors, { x, y });
 
+      const id = getItem('UNIQUE_USER_ID');
+
+      if (!id) return;
+      if (hasActions(slug, type)) return;
       if (process.env.NODE_ENV === 'development') return;
 
-      const user_id = getItem('UNIQUE_USER_ID');
+      setReaction((state) => ({ ...state, [type]: (state[type] ?? 0) + 1 }));
 
-      if (!user_id) return;
-      if (hasActions(slug, type)) return;
+      await postReaction(id, slug, type);
 
-      await postReaction(user_id, slug, type);
-
-      addReaction({ type });
       setActions(slug, type);
     },
-    [addReaction, hasActions, setActions, slug]
+    [hasActions, setActions, slug]
   );
 
   return (
