@@ -40,14 +40,8 @@ const Comment = ({ initial, slug }: Props) => {
   return (
     <section className="space-y-4">
       <div>댓글 {comments.length}</div>
-
       <Write disabled={hasActions(slug, 'comment')} onSubmit={handleWrite} />
-
-      <ul className="space-y-4">
-        {comments.map((data) => (
-          <Read key={data.id} {...data} />
-        ))}
-      </ul>
+      <Read comments={comments} />
     </section>
   );
 };
