@@ -1,12 +1,11 @@
-// import { FlatCompat } from '@eslint/eslintrc';
+import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
-import importPlugin from 'eslint-plugin-import';
 import prettierPlugin from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
 
-// const compat = new FlatCompat({
-//   baseDirectory: import.meta.dirname,
-// });
+const compat = new FlatCompat({
+  baseDirectory: import.meta.dirname,
+});
 
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
@@ -18,7 +17,6 @@ export default tseslint.config(
 
   /* Import */
   {
-    extends: [importPlugin.flatConfigs.recommended],
     rules: {
       'import/order': [
         'error',
@@ -80,7 +78,7 @@ export default tseslint.config(
   },
 
   /* Next.js */
-  // ...compat.config({ extends: ['next', 'next/core-web-vitals'] }),
+  ...compat.config({ extends: ['next', 'next/core-web-vitals'] }),
 
   //   /* Prettier */
   {
