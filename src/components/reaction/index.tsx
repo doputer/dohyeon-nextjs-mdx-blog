@@ -1,14 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { use, useCallback, useOptimistic, useRef } from 'react';
 
 import Button from '@/components/reaction/button';
 import useActions from '@/hooks/use-actions';
-import { getReactionBySlug, postReaction, type Reaction } from '@/lib/supabase/reaction';
+import { postReaction, type Reaction } from '@/lib/supabase/reaction';
 import { getItem } from '@/utils/local-storage';
 import { launch } from '@/utils/particle';
 
 interface Props {
+  initial: Promise<Reaction>;
   slug: string;
 }
 
@@ -30,9 +31,12 @@ const themes = [
   },
 ];
 
-const Reaction = ({ slug }: Props) => {
+const Reaction = ({ initial, slug }: Props) => {
   const ref = useRef<(HTMLButtonElement | null)[]>([]);
-  const [reaction, setReaction] = useState<Reaction>({});
+  const [reaction, addReaction] = useOptimistic<Reaction, { type: string }>(
+    use(initial),
+    (state, { type }) => ({ ...state, [type]: (state[type] ?? 0) + 1 })
+  );
   const { hasActions, setActions } = useActions();
 
   const handleClick = useCallback(
@@ -57,15 +61,11 @@ const Reaction = ({ slug }: Props) => {
 
       await postReaction(user_id, slug, type);
 
-      setReaction((prev) => ({ ...prev, [type]: (prev[type] ?? 0) + 1 }));
+      addReaction({ type });
       setActions(slug, type);
     },
-    [hasActions, setActions, slug]
+    [addReaction, hasActions, setActions, slug]
   );
-
-  useEffect(() => {
-    getReactionBySlug(slug).then((data) => setReaction(data));
-  }, [slug]);
 
   return (
     <section className="mx-auto grid auto-cols-min grid-flow-col gap-3">

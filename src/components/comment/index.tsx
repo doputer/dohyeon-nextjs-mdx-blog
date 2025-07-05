@@ -1,20 +1,24 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { use, useCallback, useOptimistic } from 'react';
 
 import Read from '@/components/comment/read';
 import Write from '@/components/comment/write';
 import useActions from '@/hooks/use-actions';
-import { type Comment, getCommentBySlug, postComment } from '@/lib/supabase/comment';
+import { type Comment, postComment } from '@/lib/supabase/comment';
 import { getItem } from '@/utils/local-storage';
 import { burst } from '@/utils/particle';
 
 interface Props {
+  initial: Promise<Comment[]>;
   slug: string;
 }
 
-const Comment = ({ slug }: Props) => {
-  const [comments, setComments] = useState<Comment[]>([]);
+const Comment = ({ initial, slug }: Props) => {
+  const [comments, addComments] = useOptimistic<Comment[], Comment>(
+    use(initial),
+    (state, newComment) => [newComment, ...state]
+  );
   const { hasActions, setActions } = useActions();
 
   const handleWrite = useCallback(
@@ -28,15 +32,11 @@ const Comment = ({ slug }: Props) => {
 
       await postComment(id, slug, newComment);
 
-      setComments((prev) => [{ ...newComment, id }, ...prev]);
+      addComments({ ...newComment, id });
       setActions(slug, 'comment');
     },
-    [hasActions, setActions, slug]
+    [addComments, hasActions, setActions, slug]
   );
-
-  useEffect(() => {
-    getCommentBySlug(slug).then((data) => setComments(data));
-  }, [slug]);
 
   return (
     <section className="space-y-4">
@@ -44,9 +44,11 @@ const Comment = ({ slug }: Props) => {
 
       <Write disabled={hasActions(slug, 'comment')} onSubmit={handleWrite} />
 
-      {comments.map((data) => (
-        <Read key={data.id} {...data} />
-      ))}
+      <ul className="space-y-4">
+        {comments.map((data) => (
+          <Read key={data.id} {...data} />
+        ))}
+      </ul>
     </section>
   );
 };
