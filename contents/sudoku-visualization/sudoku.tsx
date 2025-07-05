@@ -22,31 +22,29 @@ const initialBoard = [
 
 const Sudoku = () => {
   const [board, setBoard] = useState(initialBoard);
-
   const [speed, setSpeed] = useState(2);
+  const [paused, setPaused] = useState(false);
+
   const speedRef = useRef(speed);
-  const [pause, setPause] = useState(false);
-  const pauseRef = useRef(pause);
+  const pauseRef = useRef(paused);
 
   const increaseSpeed = () => {
     speedRef.current = (speedRef.current * 2) % 16 || 1;
-    setSpeed((state) => (state * 2) % 16 || 1);
+    setSpeed(speedRef.current);
   };
 
   const togglePause = () => {
     pauseRef.current = !pauseRef.current;
-    setPause((state) => !state);
+    setPaused(pauseRef.current);
   };
 
   useEffect(() => {
     const animate = async () => {
       const generator = solve(initialBoard);
 
-      for (const value of generator) {
+      for (const nextBoard of generator) {
         while (pauseRef.current) await sleep();
-
-        setBoard(cloneBoard(value));
-
+        setBoard(cloneBoard(nextBoard));
         await sleep(100 / speedRef.current);
       }
 
@@ -58,7 +56,7 @@ const Sudoku = () => {
 
   return (
     <section className="flex flex-col items-center space-y-1">
-      <div className="relative grid aspect-square size-full h-auto max-w-100 grid-cols-9 grid-rows-9">
+      <div className="relative mb-9 grid aspect-square size-full h-auto max-w-100 grid-cols-9 grid-rows-9">
         {board.map((row, i) =>
           row.map((cell, j) => (
             <div
@@ -83,8 +81,11 @@ const Sudoku = () => {
           >
             X{speed}
           </button>
-          <button className="box-content size-6 rounded p-1 hover:bg-surface" onClick={togglePause}>
-            {pause ? <PlayIcon /> : <PauseIcon />}
+          <button
+            className="box-content flex size-6 items-center justify-center rounded p-1 hover:bg-surface"
+            onClick={togglePause}
+          >
+            {paused ? <PlayIcon className="size-5" /> : <PauseIcon className="size-5" />}
           </button>
         </div>
       </div>
