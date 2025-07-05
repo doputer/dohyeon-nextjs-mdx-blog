@@ -29,7 +29,7 @@ const Sudoku = () => {
   const pauseRef = useRef(paused);
 
   const increaseSpeed = useCallback(() => {
-    speedRef.current = (speedRef.current * 2) % 16 || 1;
+    speedRef.current = (speedRef.current * 2) % 2 ** 4 || 1;
     setSpeed(speedRef.current);
   }, []);
 
@@ -75,17 +75,14 @@ const Sudoku = () => {
           ))
         )}
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex h-8 gap-1">
         <button
-          className="box-content flex size-6 items-center justify-center rounded p-1 text-lg font-medium select-none hover:bg-surface"
+          className="rounded px-2 text-lg font-medium select-none hover:bg-surface"
           onClick={increaseSpeed}
         >
           X{speed}
         </button>
-        <button
-          className="box-content flex size-6 items-center justify-center rounded p-1 select-none hover:bg-surface"
-          onClick={togglePause}
-        >
+        <button className="rounded px-2 select-none hover:bg-surface" onClick={togglePause}>
           {paused ? <PlayIcon className="size-5" /> : <PauseIcon className="size-5" />}
         </button>
       </div>
