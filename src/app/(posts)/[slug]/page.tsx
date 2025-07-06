@@ -49,6 +49,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { emoji, title, description } = frontmatter;
 
   return {
+    metadataBase: new URL(config.siteUrl),
     title,
     description,
     openGraph: {
