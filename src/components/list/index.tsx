@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 
 import type { Post } from '@/lib/MDX/types';
+import { cn } from '@/utils/cn';
 
 interface ListProps {
   posts: Post[];
@@ -23,27 +24,38 @@ const List = ({ posts }: ListProps) => {
   return (
     <section className="group">
       {list.map(([year, posts]) => (
-        <section key={year} className="group/section grid grid-cols-[auto_1fr] gap-4 sm:gap-8">
-          <div className="relative h-fit py-3 sm:text-lg">
-            <div className="relative z-10 transition-colors duration-300 ease-out group-hover:text-mute group-hover/section:text-main group-active:text-mute group-active/section:text-main">
-              {year}
-            </div>
-            <div className="pointer-events-none absolute inset-0 -mx-1.5 my-2 rounded bg-surface opacity-0 transition-opacity duration-300 group-hover/section:opacity-100 group-active/section:opacity-100 sm:-mx-2 sm:my-1" />
-          </div>
+        <section
+          key={year}
+          className={cn(
+            'group/section grid grid-cols-[auto_1fr] gap-4 sm:gap-8',
+            'group-hover:text-mute group-active:text-mute'
+          )}
+        >
+          <span
+            className={cn(
+              'relative h-fit py-3 transition-colors duration-300 ease-out sm:text-lg',
+              'group-hover/section:text-main group-active/section:text-main',
+              'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 group-hover/section:before:opacity-100 group-active/section:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
+            )}
+          >
+            {year}
+          </span>
           <ul className="group/ul">
             {posts.map(({ frontmatter, slug }) => (
               <li
                 key={slug}
-                className="group/li relative group-hover:text-mute group-hover/section:text-main group-hover/ul:text-mute group-active:text-mute group-active/section:text-main group-active/ul:text-mute"
+                className={cn(
+                  'group/li relative',
+                  'group-hover/section:text-main group-active/section:text-main',
+                  'group-hover/ul:text-mute group-active/ul:text-mute',
+                  'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100 active:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
+                )}
               >
                 <Link
                   href={slug}
-                  className="relative z-10 flex justify-between gap-2 py-3 group-hover/li:text-main group-active/li:text-main"
+                  className="flex justify-between gap-2 py-3 group-hover/li:text-main group-active/li:text-main"
                 >
-                  <h2
-                    data-emoji={frontmatter.emoji}
-                    className="break-keep transition-colors duration-300 ease-out sm:text-lg"
-                  >
+                  <h2 className="break-keep transition-colors duration-300 ease-out sm:text-lg">
                     {frontmatter.title}
                     <span
                       data-emoji={frontmatter.emoji}
@@ -54,8 +66,6 @@ const List = ({ posts }: ListProps) => {
                     {format(frontmatter.date, 'MM.dd')}
                   </time>
                 </Link>
-
-                <div className="pointer-events-none absolute inset-0 -mx-1.5 my-2 rounded bg-surface opacity-0 transition-opacity duration-300 group-hover/li:opacity-100 group-active/li:opacity-100 sm:-mx-2 sm:my-1" />
               </li>
             ))}
           </ul>

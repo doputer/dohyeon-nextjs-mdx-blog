@@ -49,9 +49,9 @@
     @apply text-main;
     @apply bg-background;
 
+    @apply antialiased;
+
     font-synthesis: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 
     .katex-display {
       overflow-x: scroll;
