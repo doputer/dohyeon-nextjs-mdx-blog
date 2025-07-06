@@ -17,7 +17,7 @@ export async function GET(request: Request) {
           width: '100%',
           height: '100%',
           backgroundColor: 'white',
-          fontSize: 128,
+          fontSize: 512,
         }}
       >
         {emoji}
