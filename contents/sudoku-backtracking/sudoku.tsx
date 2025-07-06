@@ -90,7 +90,7 @@ const Sudoku = () => {
           ))
         )}
       </div>
-      <div className="flex h-8 gap-1">
+      <div className="flex h-8 justify-end gap-1">
         <button
           className="rounded px-2 text-lg font-medium select-none hover:bg-surface"
           onClick={increaseSpeed}
