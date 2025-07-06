@@ -37,11 +37,11 @@ export function* solve(board: Board): Generator<Board> {
   const [row, col] = emptyCell;
 
   for (let value = 1; value <= 9; value++) {
+    if (!isPlacementValid(board, row, col, value)) continue;
+
     const newBoard = cloneBoard(board);
     newBoard[row][col] = value;
     yield newBoard;
-
-    if (!isPlacementValid(board, row, col, value)) continue;
 
     const solved = yield* solve(newBoard);
     if (solved) return true;
