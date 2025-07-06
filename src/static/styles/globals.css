@@ -4,8 +4,11 @@
 @theme {
   --color-*: initial;
 
-  --color-yellow: oklch(94.5% 0.124 102deg);
+  --color-red: #ef233c;
   --color-orange: oklch(79.5% 0.162 86deg);
+  --color-yellow: oklch(94.5% 0.124 102deg);
+  --color-blue: oklch(46.8% 0.2 261deg);
+  --color-green: oklch(69.6% 0.149 162deg);
 
   --color-main: oklch(26.9% 0 0);
   --color-mute: oklch(26.9% 0 0 / 50%);

@@ -1,0 +1,91 @@
+---
+emoji: '🔢'
+title: '스도쿠 백트래킹'
+description: '제네레이터로 백트래킹 시각화하기'
+tags:
+  - backtracking
+  - algorithm
+  - visualization
+date: 2023-07-05
+---
+
+import Sudoku from './sudoku';
+import EditableSudoku from './editable-sudoku';
+
+제네레이터를 이용해서 스도쿠 백트래킹 과정을 시각화해 봤습니다.
+
+<Sudoku />
+
+## 백트래킹
+
+백트래킹(Backtracking)은 문제 해결 과정에서 막다른 길에 도달했을 때 이전 단계로 돌아가서 다른 선택지를 시도하는 알고리즘입니다.
+
+<Callout>
+
+아래 과정을 반복합니다.
+
+1. 선택: 현재 상황에서 가능한 선택지 중 하나를 선택
+2. 탐색: 선택한 결과로 다음 단계를 진행
+3. 되돌아가기: 현재 선택이 해답으로 이어지지 않는다면 선택을 취소하고 다른 선택지를 시도
+
+</Callout>
+
+예를 들어, 어떤 퍼즐의 특정 위치에 숫자를 넣었는데 그 숫자가 규칙을 위반한다면 이후 모든 탐색은 무의미해지므로 더 이상 진행하지 않고 이전 단계로 되돌아가서 다른 선택을 시도하게 됩니다.
+
+## 제네레이터를 이용한 시각화
+
+재귀 함수로 백트래킹을 구현하면 과정을 중간에 멈추거나 단계별로 보여주기 어렵습니다. 하지만 제네레이터를 사용하면 각 단계를 `yield`로 반환하여 실행을 일시 정지하고, 필요할 때마다 다음 단계를 진행할 수 있습니다.
+
+```ts
+function* solve(board: Board): Generator<Step> {
+  const emptyCell = findEmptyCell(board);
+  if (!emptyCell) {
+    // !mark
+    yield { board, row: -1, col: -1, status: 'done' };
+
+    return true;
+  }
+
+  const [row, col] = emptyCell;
+
+  for (let value = 1; value <= 9; value++) {
+    if (!isPlacementValid(board, row, col, value)) continue;
+
+    const newBoard = cloneBoard(board);
+    newBoard[row][col] = value;
+
+    // !mark
+    yield { board: newBoard, row, col, status: 'try' };
+
+    const solved = yield* solve(newBoard);
+    if (solved) return true;
+
+    // !mark
+    yield { board: newBoard, row, col, status: 'backtrack' };
+  }
+
+  return false;
+}
+```
+
+## 알고리즘의 시간 복잡도
+
+스도쿠 백트래킹은 최악의 경우 시간 복잡도는 $$O(9^{n^2})$$입니다. 여기서 n은 보드의 크기(9)입니다. 81개의 빈칸이 있다면 각 칸에 9개의 숫자를 시도할 수 있으므로 이론적으로는 $$ 9^{81} $$가지 경우의 수가 있습니다.
+
+하지만 실제로는 제약 조건 때문에 대부분은 조기에 제거되어 훨씬 빠르게 동작합니다.
+
+## 직접 해보기
+
+**스도쿠 규칙**
+
+- **9x9 격자판**에 1부터 9까지의 숫자를 채워 넣는 퍼즐입니다.
+- **각 가로줄**에는 1부터 9까지의 숫자가 겹치지 않게 한 번씩만 들어가야 합니다.
+- **각 세로줄**에도 1부터 9까지의 숫자가 겹치지 않게 한 번씩만 들어가야 합니다.
+- **각 3x3 블록**에도 1부터 9까지의 숫자가 겹치지 않게 한 번씩만 들어가야 합니다.
+- **모든 칸**을 규칙에 맞게 채우면 퍼즐이 완성됩니다.
+
+아래에서 각 셀에 초깃값을 입력하고, 스도쿠 백트래킹 과정을 관찰해보세요.
+
+시도할 때는 <span className='bg-surface text-blue dark:text-green'>회색 배경</span>, 되돌아갈 때는 <span className='bg-red/30 text-blue dark:text-green'>빨간 배경</span>이 표시됩니다.
+
+<EditableSudoku />
