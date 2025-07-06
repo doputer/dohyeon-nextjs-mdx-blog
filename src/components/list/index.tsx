@@ -53,13 +53,13 @@ const List = ({ posts }: ListProps) => {
               >
                 <Link
                   href={slug}
-                  className="flex justify-between gap-2 py-3 group-hover/li:text-main group-active/li:text-main"
+                  className="flex justify-between py-3 group-hover/li:text-main group-active/li:text-main"
                 >
-                  <h2 className="break-keep transition-colors duration-300 ease-out sm:text-lg">
+                  <h2 className="pr-7 break-keep transition-colors duration-300 ease-out sm:text-lg">
                     {frontmatter.title}
                     <span
                       data-emoji={frontmatter.emoji}
-                      className="relative after:absolute after:top-1/2 after:ml-2 after:opacity-0 after:transition-all after:duration-300 after:content-[attr(data-emoji)] group-hover/li:after:-translate-y-1/2 group-hover/li:after:opacity-100"
+                      className="relative after:absolute after:top-1/2 after:ml-2 after:opacity-0 after:transition-all after:duration-300 after:content-[attr(data-emoji)] group-hover/li:after:-translate-y-1/2 group-hover/li:after:opacity-100 group-active/li:after:-translate-y-1/2 group-active/li:after:opacity-100"
                     />
                   </h2>
                   <time dateTime={frontmatter.date} className="shrink-0 text-mute sm:text-lg">
