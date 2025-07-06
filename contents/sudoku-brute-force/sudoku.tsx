@@ -57,28 +57,22 @@ const Sudoku = () => {
   }, []);
 
   return (
-    <section className="flex flex-col items-center space-y-2">
-      <div className="grid aspect-square size-full max-w-100 grid-cols-9 grid-rows-9">
+    <section className="mx-auto space-y-2 sm:max-w-3/4">
+      <div className="grid aspect-square grid-cols-9 grid-rows-9">
         {board.map((row, i) =>
           row.map((cell, j) => (
             <div
               key={`${i}-${j}`}
               className={cn(
-                'relative flex items-center justify-center border-line',
+                'relative flex items-center justify-center border-line text-xl',
                 i % 3 === 0 ? 'border-t-4' : 'border-t-2',
                 j % 3 === 0 ? 'border-l-4' : 'border-l-2',
                 i === 8 && 'border-b-4',
-                j === 8 && 'border-r-4'
+                j === 8 && 'border-r-4',
+                initialBoard[i][j] === 0 && 'text-blue dark:text-green'
               )}
             >
-              <span
-                className={cn(
-                  'relative z-10',
-                  initialBoard[i][j] === 0 && 'text-blue dark:text-green'
-                )}
-              >
-                {cell || ''}
-              </span>
+              <span className="relative z-10">{cell || ''}</span>
               <div
                 className={cn(
                   'absolute inset-0',
@@ -88,7 +82,7 @@ const Sudoku = () => {
                     'bg-surface',
                   currentStep?.row === i &&
                     currentStep?.col === j &&
-                    currentStep.status === 'back' &&
+                    currentStep.status === 'backtrack' &&
                     'bg-red/30'
                 )}
               />

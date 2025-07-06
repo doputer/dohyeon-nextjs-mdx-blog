@@ -4,7 +4,7 @@ export type Step = {
   board: Board;
   row: number;
   col: number;
-  status: 'try' | 'back' | 'done';
+  status: 'try' | 'backtrack' | 'done';
 };
 
 const findEmptyCell = (board: Board) => {
@@ -37,7 +37,7 @@ export const cloneBoard = (board: Board) => board.map((row) => [...row]);
 export function* solve(board: Board): Generator<Step> {
   const emptyCell = findEmptyCell(board);
   if (!emptyCell) {
-    yield { board: cloneBoard(board), row: -1, col: -1, status: 'done' };
+    yield { board, row: -1, col: -1, status: 'done' };
 
     return true;
   }
@@ -55,7 +55,7 @@ export function* solve(board: Board): Generator<Step> {
     const solved = yield* solve(newBoard);
     if (solved) return true;
 
-    yield { board: newBoard, row, col, status: 'back' };
+    yield { board: newBoard, row, col, status: 'backtrack' };
   }
 
   return false;
