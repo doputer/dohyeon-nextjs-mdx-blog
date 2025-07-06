@@ -6,7 +6,7 @@ import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 
 import { cn } from '@/utils/cn';
 
-import { cloneBoard, sleep, solve } from './solver';
+import { sleep, solve, type Step } from './solver';
 
 const initialBoard = [
   [0, 5, 2, 0, 0, 7, 0, 9, 8],
@@ -24,12 +24,13 @@ const Sudoku = () => {
   const [board, setBoard] = useState(initialBoard);
   const [speed, setSpeed] = useState(1);
   const [paused, setPaused] = useState(false);
+  const [currentStep, setCurrentStep] = useState<Step>();
 
   const speedRef = useRef(speed);
   const pauseRef = useRef(paused);
 
   const increaseSpeed = useCallback(() => {
-    speedRef.current = (speedRef.current * 2) % 2 ** 5 || 1;
+    speedRef.current = (speedRef.current * 2) % 2 ** 4 || 1;
     setSpeed(speedRef.current);
   }, []);
 
@@ -42,10 +43,11 @@ const Sudoku = () => {
     const animate = async () => {
       const generator = solve(initialBoard);
 
-      for (const nextBoard of generator) {
+      for (const step of generator) {
         while (pauseRef.current) await sleep();
-        setBoard(cloneBoard(nextBoard));
-        await sleep(200 / speedRef.current);
+        setCurrentStep(step);
+        setBoard(step.board);
+        await sleep(500 / speedRef.current);
       }
 
       setTimeout(animate, 1500);
@@ -56,21 +58,40 @@ const Sudoku = () => {
 
   return (
     <section className="flex flex-col items-center space-y-2">
-      <div className="relative grid aspect-square size-full h-auto max-w-100 grid-cols-9 grid-rows-9">
+      <div className="grid aspect-square size-full max-w-100 grid-cols-9 grid-rows-9">
         {board.map((row, i) =>
           row.map((cell, j) => (
             <div
               key={`${i}-${j}`}
               className={cn(
-                'flex items-center justify-center border-line text-lg font-medium',
+                'relative flex items-center justify-center border-line',
                 i % 3 === 0 ? 'border-t-4' : 'border-t-2',
                 j % 3 === 0 ? 'border-l-4' : 'border-l-2',
                 i === 8 && 'border-b-4',
-                j === 8 && 'border-r-4',
-                initialBoard[i][j] === 0 && 'text-link'
+                j === 8 && 'border-r-4'
               )}
             >
-              {cell || ''}
+              <span
+                className={cn(
+                  'relative z-10',
+                  initialBoard[i][j] === 0 && 'text-blue dark:text-green'
+                )}
+              >
+                {cell || ''}
+              </span>
+              <div
+                className={cn(
+                  'absolute inset-0',
+                  currentStep?.row === i &&
+                    currentStep?.col === j &&
+                    currentStep.status === 'try' &&
+                    'bg-surface',
+                  currentStep?.row === i &&
+                    currentStep?.col === j &&
+                    currentStep.status === 'back' &&
+                    'bg-red/30'
+                )}
+              />
             </div>
           ))
         )}

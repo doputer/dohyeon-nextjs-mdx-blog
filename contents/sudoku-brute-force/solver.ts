@@ -1,5 +1,12 @@
 type Board = number[][];
 
+export type Step = {
+  board: Board;
+  row: number;
+  col: number;
+  status: 'try' | 'back' | 'done';
+};
+
 const findEmptyCell = (board: Board) => {
   for (let row = 0; row < board.length; row++) {
     for (let col = 0; col < board[row].length; col++) {
@@ -27,10 +34,11 @@ const isPlacementValid = (board: Board, row: number, col: number, value: number)
 
 export const cloneBoard = (board: Board) => board.map((row) => [...row]);
 
-export function* solve(board: Board): Generator<Board> {
+export function* solve(board: Board): Generator<Step> {
   const emptyCell = findEmptyCell(board);
   if (!emptyCell) {
-    yield board;
+    yield { board: cloneBoard(board), row: -1, col: -1, status: 'done' };
+
     return true;
   }
 
@@ -41,10 +49,13 @@ export function* solve(board: Board): Generator<Board> {
 
     const newBoard = cloneBoard(board);
     newBoard[row][col] = value;
-    yield newBoard;
+
+    yield { board: newBoard, row, col, status: 'try' };
 
     const solved = yield* solve(newBoard);
     if (solved) return true;
+
+    yield { board: newBoard, row, col, status: 'back' };
   }
 
   return false;

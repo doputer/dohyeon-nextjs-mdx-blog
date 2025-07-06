@@ -2,11 +2,11 @@
 
 import { useCallback, useRef, useState } from 'react';
 
-import { PauseIcon, PlayIcon, StopIcon } from '@heroicons/react/24/solid';
+import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 
 import { cn } from '@/utils/cn';
 
-import { cloneBoard, sleep, solve } from './solver';
+import { cloneBoard, sleep, solve, type Step } from './solver';
 
 const emptyBoard = Array.from({ length: 9 }, () => Array(9).fill(0));
 
@@ -15,17 +15,16 @@ const EditableSudoku = () => {
   const [speed, setSpeed] = useState(1);
   const [paused, setPaused] = useState(true);
   const [solving, setSolving] = useState(false);
+  const [currentStep, setCurrentStep] = useState<Step>();
 
   const boardRef = useRef<number[][]>(null);
   const speedRef = useRef(speed);
   const pauseRef = useRef(paused);
   const solvingRef = useRef(solving);
-  const cancelRef = useRef(false);
 
   const handleSolve = useCallback(() => {
     if (solvingRef.current) return;
 
-    cancelRef.current = false;
     boardRef.current = cloneBoard(board);
     solvingRef.current = true;
     pauseRef.current = false;
@@ -36,11 +35,11 @@ const EditableSudoku = () => {
     const animate = async () => {
       const generator = solve(board);
 
-      for (const nextBoard of generator) {
-        if (cancelRef.current) return;
+      for (const step of generator) {
         while (pauseRef.current) await sleep();
-        setBoard(cloneBoard(nextBoard));
-        await sleep(200 / speedRef.current);
+        setCurrentStep(step);
+        setBoard(step.board);
+        await sleep(500 / speedRef.current);
       }
 
       setTimeout(() => {
@@ -76,28 +75,15 @@ const EditableSudoku = () => {
     [board]
   );
 
-  const clearBoard = useCallback(() => {
-    cancelRef.current = true;
-    boardRef.current = cloneBoard(emptyBoard);
-    speedRef.current = 1;
-    pauseRef.current = true;
-    solvingRef.current = false;
-
-    setBoard(boardRef.current);
-    setSpeed(speedRef.current);
-    setPaused(pauseRef.current);
-    setSolving(solvingRef.current);
-  }, []);
-
   return (
     <section className="flex flex-col items-center space-y-2">
-      <div className="relative grid aspect-square size-full h-auto max-w-100 grid-cols-9 grid-rows-9">
+      <div className="relative grid aspect-square w-full max-w-100 grid-cols-9 grid-rows-9">
         {board.map((row, i) =>
           row.map((cell, j) => (
             <div
               key={`${i}-${j}`}
               className={cn(
-                'flex items-center justify-center border-line text-lg font-medium',
+                'relative flex items-center justify-center border-line',
                 i % 3 === 0 ? 'border-t-4' : 'border-t-2',
                 j % 3 === 0 ? 'border-l-4' : 'border-l-2',
                 i === 8 && 'border-b-4',
@@ -113,7 +99,20 @@ const EditableSudoku = () => {
                 disabled={solving}
                 value={cell || ''}
                 onChange={(e) => handleChange(i, j, e.target.value)}
-                className="size-full bg-transparent text-center outline-none"
+                className="relative z-10 size-full bg-transparent text-center outline-none"
+              />
+              <div
+                className={cn(
+                  'absolute inset-0',
+                  currentStep?.row === i &&
+                    currentStep?.col === j &&
+                    currentStep.status === 'try' &&
+                    'bg-surface',
+                  currentStep?.row === i &&
+                    currentStep?.col === j &&
+                    currentStep.status === 'back' &&
+                    'bg-red/30'
+                )}
               />
             </div>
           ))
@@ -129,9 +128,6 @@ const EditableSudoku = () => {
         </button>
         <button className="rounded px-2 select-none hover:bg-surface" onClick={togglePause}>
           {paused ? <PlayIcon className="size-5" /> : <PauseIcon className="size-5" />}
-        </button>
-        <button className="rounded px-2 select-none hover:bg-surface" onClick={clearBoard}>
-          <StopIcon className="size-5" />
         </button>
       </div>
     </section>
