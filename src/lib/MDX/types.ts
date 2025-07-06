@@ -8,7 +8,6 @@ export interface Frontmatter {
   emoji: string;
   title: string;
   description: string;
-  category: string;
   tags: string[];
   date: string;
 }
