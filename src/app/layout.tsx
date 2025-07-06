@@ -37,6 +37,7 @@ const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(config.siteUrl),
   title: config.title,
   description: config.description,
   openGraph: {
