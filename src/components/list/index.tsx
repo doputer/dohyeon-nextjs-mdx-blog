@@ -55,10 +55,7 @@ const List = ({ posts }: ListProps) => {
                   href={slug}
                   className="flex justify-between gap-2 py-3 group-hover/li:text-main group-active/li:text-main"
                 >
-                  <h2
-                    data-emoji={frontmatter.emoji}
-                    className="break-keep transition-colors duration-300 ease-out sm:text-lg"
-                  >
+                  <h2 className="break-keep transition-colors duration-300 ease-out sm:text-lg">
                     {frontmatter.title}
                     <span
                       data-emoji={frontmatter.emoji}
