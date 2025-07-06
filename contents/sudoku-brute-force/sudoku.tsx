@@ -22,14 +22,14 @@ const initialBoard = [
 
 const Sudoku = () => {
   const [board, setBoard] = useState(initialBoard);
-  const [speed, setSpeed] = useState(2);
+  const [speed, setSpeed] = useState(1);
   const [paused, setPaused] = useState(false);
 
   const speedRef = useRef(speed);
   const pauseRef = useRef(paused);
 
   const increaseSpeed = useCallback(() => {
-    speedRef.current = (speedRef.current * 2) % 2 ** 4 || 1;
+    speedRef.current = (speedRef.current * 2) % 2 ** 5 || 1;
     setSpeed(speedRef.current);
   }, []);
 
@@ -45,7 +45,7 @@ const Sudoku = () => {
       for (const nextBoard of generator) {
         while (pauseRef.current) await sleep();
         setBoard(cloneBoard(nextBoard));
-        await sleep(100 / speedRef.current);
+        await sleep(200 / speedRef.current);
       }
 
       setTimeout(animate, 1500);
