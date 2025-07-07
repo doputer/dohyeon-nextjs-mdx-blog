@@ -8,8 +8,8 @@ import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
 import ActionProvider from '@/contexts/action';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
-import { getCommentBySlug } from '@/lib/supabase/comment';
-import { getReactionBySlug } from '@/lib/supabase/reaction';
+import { getCommentBySlug } from '@/lib/supabase/server/comment';
+import { getReactionBySlug } from '@/lib/supabase/server/reaction';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
