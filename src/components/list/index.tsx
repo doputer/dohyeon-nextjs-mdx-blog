@@ -39,7 +39,7 @@ const List = ({ posts }: ListProps) => {
           >
             {year}
           </span>
-          <ul className={cn('group/ul', 'hover:text-soft')}>
+          <ul className="group-hover:text-inherit">
             {posts.map(({ frontmatter, slug }) => (
               <li
                 key={slug}
@@ -49,12 +49,7 @@ const List = ({ posts }: ListProps) => {
                 )}
               >
                 <Link href={slug} className="flex justify-between gap-4 py-3">
-                  <h2
-                    className={cn(
-                      'break-keep transition-colors duration-300 ease-out sm:text-lg',
-                      'group-hover/li:text-main'
-                    )}
-                  >
+                  <h2 className="break-keep transition-colors duration-300 ease-out sm:text-lg">
                     {frontmatter.title}
                     <span
                       data-emoji={frontmatter.emoji}
@@ -66,9 +61,7 @@ const List = ({ posts }: ListProps) => {
                     className={cn(
                       'shrink-0 text-mute transition-colors duration-300 ease-out sm:text-lg',
                       'group-hover:text-soft',
-                      'group-hover/section:text-mute',
-                      'group-hover/ul:text-soft',
-                      'group-hover/li:!text-mute'
+                      'group-hover/section:text-mute'
                     )}
                   >
                     {format(frontmatter.date, 'MM.dd')}
