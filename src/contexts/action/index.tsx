@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 
-import { getActionByUserId } from '@/lib/supabase/action';
+import { getActionByUserId } from '@/lib/supabase/client/action';
 import { getItem } from '@/utils/local-storage';
 
 type ActionMap = Record<string, string[]>;

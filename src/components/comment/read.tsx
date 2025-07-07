@@ -1,4 +1,4 @@
-import type { Comment } from '@/lib/supabase/comment';
+import type { Comment } from '@/lib/supabase/client/comment';
 
 interface Props {
   comments: Comment[];
