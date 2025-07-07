@@ -20,6 +20,7 @@
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.3.5",
     "@next/third-parties": "^15.3.5",
+    "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.50.3",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
