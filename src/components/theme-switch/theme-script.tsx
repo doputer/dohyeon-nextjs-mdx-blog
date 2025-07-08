@@ -14,6 +14,9 @@ const script = function () {
   function setTheme(newTheme: Theme) {
     document.documentElement.dataset.theme = newTheme;
 
+    const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement;
+    meta.content = newTheme === 'dark' ? 'oklch(22.5% 0.0074 248deg)' : 'oklch(100% 0 0)';
+
     window.__theme = newTheme;
     themeListeners.forEach((listener) => listener(newTheme));
   }
@@ -56,7 +59,12 @@ const script = function () {
 };
 
 const ThemeScript = () => {
-  return <script dangerouslySetInnerHTML={{ __html: `(${script})();` }}></script>;
+  return (
+    <>
+      <meta name="theme-color" />
+      <script dangerouslySetInnerHTML={{ __html: `(${script})();` }}></script>
+    </>
+  );
 };
 
 export default ThemeScript;
