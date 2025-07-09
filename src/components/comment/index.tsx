@@ -1,49 +1,47 @@
 'use client';
 
-import { use, useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import Read from '@/components/comment/read';
-import Write from '@/components/comment/write';
-import { useAction } from '@/contexts/action/use-action';
-import { postComment } from '@/lib/supabase/client/comment';
-import type { Comment } from '@/lib/supabase/server/comment';
-import { getItem } from '@/utils/local-storage';
-import { burst } from '@/utils/particle';
+import Giscus from '@giscus/react';
 
-interface Props {
-  initial: Promise<Comment[]>;
-  slug: string;
-}
+import config from '@/configs/config.json';
 
-const Comment = ({ initial, slug }: Props) => {
-  const [comments, setComments] = useState<Comment[]>(use(initial));
-  const { hasAction, setAction } = useAction();
+const Comment = () => {
+  const [theme, setTheme] = useState(global.window?.__theme || 'light');
 
-  const handleWrite = useCallback(
-    async (newComment: Comment) => {
-      if (process.env.NODE_ENV === 'development') return;
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+          setTheme(global.window?.__theme);
+        }
+      });
+    });
 
-      const id = getItem('UNIQUE_USER_ID');
-      if (!id) return;
-      if (hasAction(slug, 'comment')) return;
+    observer.observe(document.documentElement, { attributes: true });
 
-      burst();
-
-      setComments((state) => [newComment, ...state]);
-
-      await postComment(id, slug, newComment);
-
-      setAction(slug, 'comment');
-    },
-    [hasAction, setAction, slug]
-  );
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
-    <section className="space-y-4">
-      <div>댓글 {comments.length}</div>
-      <Write disabled={hasAction(slug, 'comment')} onSubmit={handleWrite} />
-      <Read comments={comments} />
-    </section>
+    <div>
+      <Giscus
+        repo={config.comment.repo as `${string}/${string}`}
+        repoId={config.comment.repoId}
+        category={config.comment.category}
+        categoryId={config.comment.categoryId}
+        mapping="title"
+        strict="0"
+        reactionsEnabled="0"
+        emitMetadata="0"
+        inputPosition="top"
+        theme={theme}
+        lang="ko"
+        loading="lazy"
+      />
+    </div>
   );
 };
 

@@ -8,7 +8,6 @@ import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
 import ActionProvider from '@/contexts/action';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
-import { getCommentBySlug } from '@/lib/supabase/server/comment';
 import { getReactionBySlug } from '@/lib/supabase/server/reaction';
 
 interface PageProps {
@@ -23,14 +22,13 @@ const Page = async (props: PageProps) => {
   const { title, date } = frontmatter;
 
   const reactionPromise = getReactionBySlug(params.slug);
-  const commentPromise = getCommentBySlug(params.slug);
 
   return (
     <ActionProvider>
       <Header title={title} date={date} />
       <Post toc={toc} MDX={MDX} />
       <Reaction initial={reactionPromise} slug={params.slug} />
-      <Comment initial={commentPromise} slug={params.slug} />
+      <Comment />
     </ActionProvider>
   );
 };
