@@ -18,17 +18,17 @@ const themes = [
   {
     type: 'reaction1',
     emoji: '😀',
-    colors: ['#16a34a', '#22c55e', '#4ade80', '#86efac', '#bbf7d0'],
+    colors: ['#facc15', '#fde047', '#fcd34d', '#fbbf24', '#f59e0b'],
   },
   {
     type: 'reaction2',
     emoji: '🔥',
-    colors: ['#ff4d00', '#ff6b00', '#ffa200', '#ffd700', '#ffb347'],
+    colors: ['#dc2626', '#ea580c', '#f97316', '#fb923c', '#facc15'],
   },
   {
     type: 'reaction3',
     emoji: '🚀',
-    colors: ['#4dabf7', '#74c0fc', '#a5d8ff', '#d0ebff', '#9775fa'],
+    colors: ['#3b0764', '#6b21a8', '#9333ea', '#4f46e5', '#22d3ee'],
   },
 ];
 
