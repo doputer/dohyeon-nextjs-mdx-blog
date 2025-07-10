@@ -5,7 +5,7 @@ const Me = () => {
     <section className="space-y-4 sm:text-lg">
       <p>
         안녕하세요, 프론트엔드 개발자{' '}
-        <a href={config.social.github} className="underline underline-offset-6">
+        <a href={config.social.github} target="_blank" className="underline underline-offset-5">
           김도현
         </a>{' '}
         입니다.
