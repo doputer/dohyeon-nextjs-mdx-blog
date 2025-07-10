@@ -48,7 +48,7 @@ const List = ({ posts }: ListProps) => {
                   'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
                 )}
               >
-                <Link href={slug} className="flex justify-between gap-4 py-3">
+                <Link href={`/${slug}`} className="flex justify-between gap-4 py-3">
                   <h2 className="break-keep transition-colors duration-300 ease-out sm:text-lg">
                     {frontmatter.title}
                     <span

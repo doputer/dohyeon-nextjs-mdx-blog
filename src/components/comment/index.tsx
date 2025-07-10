@@ -37,7 +37,7 @@ const Comment = () => {
         reactionsEnabled="0"
         emitMetadata="0"
         inputPosition="top"
-        theme={theme}
+        theme={theme === 'light' ? 'noborder_light' : 'noborder_dark'}
         lang="ko"
         loading="lazy"
       />
