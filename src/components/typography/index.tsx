@@ -5,6 +5,7 @@ import Callout from '@/components/typography/callout';
 import Code from '@/components/typography/code';
 import * as format from '@/components/typography/format';
 import Img from '@/components/typography/img';
+import Table from '@/components/typography/table';
 
 import type { MDXComponents } from 'mdx/types';
 
@@ -15,7 +16,7 @@ const components: MDXComponents = {
   ol: (props) => <ol className={format.ol} {...props} />,
   ul: (props) => <ul className={format.ul} {...props} />,
   p: (props) => <p className={format.p} {...props} />,
-  table: (props) => <table className={format.table} {...props} />,
+  table: (props) => <Table className={format.table} {...props} />,
   th: (props) => <th className={format.th} {...props} />,
   td: (props) => <td className={format.td} {...props} />,
   a: (props) => <a className={format.a} target="_blank" {...props} />,
