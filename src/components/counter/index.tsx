@@ -5,9 +5,10 @@ interface CounterProps {
 
 const Counter = ({ label, count }: CounterProps) => {
   return (
-    <section className="group w-fit text-2xl font-semibold tracking-tight capitalize select-none sm:text-3xl">
-      {label}
-      {count && <sup className="inline-block align-super text-base">{count}</sup>}
+    <section className="select-none">
+      <h1 className="text-3xl font-bold tracking-tight capitalize">
+        {label} {count && <sup>{count}</sup>}
+      </h1>
     </section>
   );
 };
