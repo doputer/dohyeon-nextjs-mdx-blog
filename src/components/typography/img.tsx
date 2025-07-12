@@ -1,13 +1,11 @@
 import Image, { type ImageProps } from 'next/image';
 
-import { cn } from '@/utils/cn';
-
 const Img = (props: ImageProps) => {
   const caption = props?.title;
   const isUnoptimized = /.gif$/.test(props.src as string);
 
   return (
-    <figure className={cn('space-y-4', props.className)}>
+    <figure className="space-y-4">
       <Image
         {...props}
         width={props.width || 0}
@@ -16,7 +14,6 @@ const Img = (props: ImageProps) => {
         priority
         alt=""
         unoptimized={isUnoptimized}
-        className="h-auto w-full"
       />
       {caption && <figcaption className="text-center text-sm text-mute">{caption}</figcaption>}
     </figure>
