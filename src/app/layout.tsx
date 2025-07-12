@@ -23,9 +23,9 @@ const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
         <ThemeScript />
       </head>
       <body>
-        <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-8 px-6 py-8 sm:gap-12 sm:py-12">
+        <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-12 px-6 py-12 sm:py-12">
           <Header />
-          <main className="flex flex-1 flex-col gap-8 sm:gap-12">{children}</main>
+          <main className="flex flex-1 flex-col gap-12">{children}</main>
           <Footer />
         </div>
         <Analytics />
