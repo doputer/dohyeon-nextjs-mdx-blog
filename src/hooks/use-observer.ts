@@ -11,7 +11,7 @@ const useObserver = () => {
     };
 
     const headings = document.querySelectorAll('h2, h3');
-    const rootMarginBottom = -(window.innerHeight - 36);
+    const rootMarginBottom = -(window.innerHeight - 48);
     const options: IntersectionObserverInit = { rootMargin: `0px 0px ${rootMarginBottom}px` };
     const observer = new IntersectionObserver(handleObserver, options);
 

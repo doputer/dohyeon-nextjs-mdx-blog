@@ -1,11 +1,13 @@
 import Image, { type ImageProps } from 'next/image';
 
+import { cn } from '@/utils/cn';
+
 const Img = (props: ImageProps) => {
   const caption = props?.title;
   const isUnoptimized = /.gif$/.test(props.src as string);
 
   return (
-    <figure className="space-y-4">
+    <figure className={cn('space-y-4', props.className)}>
       <Image
         {...props}
         width={props.width || 0}

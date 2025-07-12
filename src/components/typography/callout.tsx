@@ -9,10 +9,8 @@ interface Props {
 }
 
 const Callout = (props: PropsWithChildren<Props>) => {
-  const className = cn(props.className, 'group');
-
   return (
-    <blockquote {...props} className={className}>
+    <blockquote {...props} className={cn('group', props.className)}>
       <BoltIcon className="size-6 text-mute group-hover:animate-flip" />
       {props.children}
     </blockquote>

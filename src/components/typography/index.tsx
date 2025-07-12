@@ -11,7 +11,6 @@ import type { MDXComponents } from 'mdx/types';
 const components: MDXComponents = {
   h2: (props) => <h2 className={format.h2} {...props} />,
   h3: (props) => <h3 className={format.h3} {...props} />,
-  blockquote: (props) => <Blockquote className={format.blockquote} {...props} />,
   code: (props) => <code className={format.code} {...props} />,
   ol: (props) => <ol className={format.ol} {...props} />,
   ul: (props) => <ul className={format.ul} {...props} />,
@@ -23,8 +22,9 @@ const components: MDXComponents = {
   strong: (props) => <strong className={format.strong} {...props} />,
 
   img: (props) => <Img className={format.img} {...(props as ImageProps)} />,
+  blockquote: (props) => <Blockquote className={format.blockquote} {...props} />,
   Callout: (props) => <Callout className={format.blockquote} {...props} />,
-  Code: (props) => <Code {...props} />,
+  Code: (props) => <Code {...props} className={format.pre} />,
 };
 
 export default components;
