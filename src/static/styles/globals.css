@@ -14,7 +14,6 @@
   --color-mute: oklch(26.9% 0 0 / 65%);
   --color-soft: oklch(26.9% 0 0 / 30%);
   --color-line: oklch(26.9% 0 0 / 10%);
-  --color-link: oklch(46.8% 0.2 261deg);
   --color-surface: oklch(96.5% 0 0);
   --color-background: oklch(100% 0 0);
 
@@ -35,7 +34,6 @@
   --color-mute: oklch(97% 0 0 / 65%);
   --color-soft: oklch(97% 0 0 / 40%);
   --color-line: oklch(97% 0 0 / 10%);
-  --color-link: oklch(69.6% 0.149 162deg);
   --color-surface: oklch(28% 0 0);
   --color-background: oklch(22.5% 0.0074 248deg);
 }
