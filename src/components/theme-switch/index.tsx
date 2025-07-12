@@ -9,11 +9,11 @@ const ThemeSwitch = () => {
 
   return (
     <button
-      className="relative size-8 overflow-hidden transition-colors duration-300 hover:text-orange dark:hover:text-yellow"
+      className="relative size-8 overflow-hidden transition-soft-colors hover:text-orange dark:hover:text-yellow"
       onClick={toggleTheme}
       aria-label="Theme"
     >
-      <div className="absolute top-0 right-0 left-0 flex flex-col items-center transition-transform duration-300 dark:rotate-180">
+      <div className="absolute top-0 right-0 left-0 flex flex-col items-center transition-soft-transform dark:rotate-180">
         <SunIcon />
         <MoonIcon className="rotate-180" />
       </div>

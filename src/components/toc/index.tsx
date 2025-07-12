@@ -20,7 +20,7 @@ const TOC = ({ toc }: TOCProps) => {
           <li key={id} className={cn('list-disc lg:list-none', depth === 3 && 'pl-4')}>
             <button
               className={cn(
-                'transition-colors duration-300 ease-out lg:text-mute lg:hover:text-soft',
+                'transition-soft-colors lg:text-mute lg:hover:text-soft',
                 id === activeId && 'lg:font-medium lg:text-main lg:hover:text-main'
               )}
               onClick={() => scrollToTarget({ id })}
