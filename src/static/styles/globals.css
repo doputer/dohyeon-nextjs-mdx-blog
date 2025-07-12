@@ -63,10 +63,4 @@
   }
 }
 
-@utility transition-soft-* {
-  transition-property: var(--transition-(--value('all', 'colors', 'opacity', 'transform')));
-  transition-duration: 300ms;
-  transition-timing-function: var(--ease-out);
-}
-
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

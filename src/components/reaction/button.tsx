@@ -15,9 +15,11 @@ const Button = ({ ref, ...props }: PropsWithChildren<Props>) => {
     <button
       ref={ref}
       onClick={props.onClick}
-      className="group flex items-center justify-between gap-4 rounded border border-line px-2 py-1 transition-soft-colors select-none"
+      className="group flex items-center justify-between gap-4 rounded border border-line px-2 py-1 transition-colors duration-300 ease-out select-none"
     >
-      <div className="size-6 transition-soft-transform group-hover:scale-150">{View}</div>
+      <div className="size-6 transition-transform duration-300 ease-out group-hover:scale-150">
+        {View}
+      </div>
       {props.children}
     </button>
   );
