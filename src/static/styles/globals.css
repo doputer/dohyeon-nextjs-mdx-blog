@@ -4,7 +4,7 @@
 @theme {
   --color-*: initial;
 
-  --color-red: #ef233c;
+  --color-red: oklch(61.2% 0.231 22.6deg);
   --color-orange: oklch(79.5% 0.162 86deg);
   --color-yellow: oklch(94.5% 0.124 102deg);
   --color-blue: oklch(46.8% 0.2 261deg);
@@ -14,7 +14,6 @@
   --color-mute: oklch(26.9% 0 0 / 65%);
   --color-soft: oklch(26.9% 0 0 / 30%);
   --color-line: oklch(26.9% 0 0 / 10%);
-  --color-link: oklch(46.8% 0.2 261deg);
   --color-surface: oklch(96.5% 0 0);
   --color-background: oklch(100% 0 0);
 
@@ -35,7 +34,6 @@
   --color-mute: oklch(97% 0 0 / 65%);
   --color-soft: oklch(97% 0 0 / 40%);
   --color-line: oklch(97% 0 0 / 10%);
-  --color-link: oklch(69.6% 0.149 162deg);
   --color-surface: oklch(28% 0 0);
   --color-background: oklch(22.5% 0.0074 248deg);
 }

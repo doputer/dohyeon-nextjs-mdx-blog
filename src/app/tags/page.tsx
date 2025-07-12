@@ -26,8 +26,8 @@ const Page = async () => {
       <section className="flex flex-wrap gap-4">
         {tags.map(([tag, totalCount]) => (
           <Link key={tag} href={`/tags/${encode(tag)}`} className="space-x-1 text-sm">
-            <span className="text-link uppercase">{tag}</span>
-            <span>{totalCount}</span>
+            <span className="uppercase">{tag}</span>
+            <span className="font-medium">{totalCount}</span>
           </Link>
         ))}
       </section>

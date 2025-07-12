@@ -1,5 +1,8 @@
+import type { Metadata } from 'next';
+
 import Counter from '@/components/counter';
 import List from '@/components/list';
+import config from '@/configs/config.json';
 import { getPosts } from '@/lib/MDX';
 import { decode } from '@/utils/uri';
 
@@ -22,5 +25,19 @@ const Page = async (props: PageProps) => {
     </>
   );
 };
+
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
+  const { tag } = params;
+  const decodedTag = decode(tag);
+  const capitalizedTag = decodedTag.charAt(0).toUpperCase() + decodedTag.slice(1);
+
+  return {
+    title: [config.title, capitalizedTag].join(' | '),
+    openGraph: {
+      title: [config.title, capitalizedTag].join(' | '),
+    },
+  };
+}
 
 export default Page;

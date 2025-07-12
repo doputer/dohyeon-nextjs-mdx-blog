@@ -34,7 +34,7 @@ const List = ({ posts }: ListProps) => {
           <span
             className={cn(
               'relative h-fit py-3 transition-colors duration-300 ease-out select-none sm:text-lg',
-              'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 group-hover/section:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
+              'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 before:ease-out group-hover/section:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
             )}
           >
             {year}
@@ -45,7 +45,7 @@ const List = ({ posts }: ListProps) => {
                 key={slug}
                 className={cn(
                   'group/li relative',
-                  'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
+                  'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 before:ease-out hover:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
                 )}
               >
                 <Link href={`/${slug}`} className="flex justify-between gap-4 py-3">
@@ -53,7 +53,7 @@ const List = ({ posts }: ListProps) => {
                     {frontmatter.title}
                     <span
                       data-emoji={frontmatter.emoji}
-                      className="relative after:absolute after:top-1/2 after:ml-2 after:opacity-0 after:transition-all after:duration-300 after:content-[attr(data-emoji)] group-hover/li:after:-translate-y-1/2 group-hover/li:after:opacity-100"
+                      className="relative after:absolute after:top-1/2 after:ml-2 after:opacity-0 after:transition-all after:duration-300 after:ease-out after:content-[attr(data-emoji)] group-hover/li:after:-translate-y-1/2 group-hover/li:after:opacity-100"
                     />
                   </h2>
                   <time

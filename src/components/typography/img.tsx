@@ -14,7 +14,6 @@ const Img = (props: ImageProps) => {
         priority
         alt=""
         unoptimized={isUnoptimized}
-        className="h-auto w-full"
       />
       {caption && <figcaption className="text-center text-sm text-mute">{caption}</figcaption>}
     </figure>

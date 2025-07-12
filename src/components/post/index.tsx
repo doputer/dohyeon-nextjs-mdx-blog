@@ -8,9 +8,9 @@ interface PostProps {
 
 const Post = ({ toc, MDX }: PostProps) => {
   return (
-    <section className="relative space-y-6 sm:space-y-8">
+    <section className="relative space-y-12">
       {toc.length > 0 && <TOC toc={toc} />}
-      <article className="*:first:mt-0 *:last:mb-0">
+      <article className="space-y-6 *:first:mt-0 *:last:mb-0">
         <MDX />
       </article>
     </section>
