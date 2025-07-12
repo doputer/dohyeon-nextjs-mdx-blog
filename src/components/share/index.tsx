@@ -1,6 +1,6 @@
 'use client';
 
-import { ShareIcon } from '@heroicons/react/24/solid';
+import { LinkIcon } from '@heroicons/react/24/solid';
 
 interface ShareProps {
   title: string;
@@ -23,16 +23,16 @@ const Share = ({ title, description }: ShareProps) => {
   };
 
   return (
-    <div className="flex justify-center rounded-lg bg-surface py-8">
+    <section>
       <button
-        className="flex gap-2 hover:text-link"
+        className="mx-auto flex items-center gap-2"
         onClick={handleShareClick}
         aria-label="Share Button"
       >
         공유하기
-        <ShareIcon className="size-6" />
+        <LinkIcon className="size-5" />
       </button>
-    </div>
+    </section>
   );
 };
 
