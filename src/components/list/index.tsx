@@ -33,7 +33,7 @@ const List = ({ posts }: ListProps) => {
         >
           <span
             className={cn(
-              'relative h-fit py-3 transition-colors duration-300 ease-out select-none sm:text-lg',
+              'relative h-fit py-3 tabular-nums transition-colors duration-300 ease-out select-none sm:text-lg',
               'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 before:ease-out group-hover/section:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
             )}
           >
@@ -59,7 +59,7 @@ const List = ({ posts }: ListProps) => {
                   <time
                     dateTime={frontmatter.date}
                     className={cn(
-                      'shrink-0 text-mute transition-colors duration-300 ease-out sm:text-lg',
+                      'shrink-0 text-mute tabular-nums transition-colors duration-300 ease-out sm:text-lg',
                       'group-hover:text-soft',
                       'group-hover/section:text-mute'
                     )}

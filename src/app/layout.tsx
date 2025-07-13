@@ -1,5 +1,4 @@
 import '@/static/styles/globals.css';
-import 'katex/dist/katex.min.css';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
@@ -13,12 +12,11 @@ import Footer from '@/components/footer';
 import Header from '@/components/header';
 import ThemeScript from '@/components/theme-switch/theme-script';
 import config from '@/configs/config.json';
-import { mono, sans } from '@/static/fonts';
-import { cn } from '@/utils/cn';
+import { sans } from '@/static/fonts';
 
 const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
   return (
-    <html lang="ko-KR" className={cn(sans.variable, mono.variable)} suppressHydrationWarning>
+    <html lang="ko-KR" className={sans.variable} suppressHydrationWarning>
       <head>
         <ThemeScript />
       </head>
