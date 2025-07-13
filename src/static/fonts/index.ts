@@ -1,14 +1,19 @@
-import { Fira_Code, IBM_Plex_Sans_KR } from 'next/font/google';
+import { JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 
-const sans = IBM_Plex_Sans_KR({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+const sans = localFont({
+  src: [
+    { path: './Pretendard-Regular.subset.woff2', weight: '400' },
+    { path: './Pretendard-Medium.subset.woff2', weight: '500' },
+    { path: './Pretendard-SemiBold.subset.woff2', weight: '600' },
+    { path: './Pretendard-Bold.subset.woff2', weight: '700' },
+  ],
   variable: '--font-sans',
 });
 
-const mono = Fira_Code({
+const mono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['500', '600'],
+  weight: ['500', '700'],
   variable: '--font-mono',
 });
 
