@@ -16,6 +16,6 @@ export const table = cn('w-full divide-y divide-line text-left whitespace-nowrap
 export const th = cn('p-2');
 export const td = cn('p-2');
 export const a = cn('underline underline-offset-4');
-export const strong = cn('font-semibold');
+export const strong = cn('font-bold');
 export const img = cn('h-auto w-full rounded');
 export const pre = cn('text-sm leading-6');
