@@ -1,5 +1,4 @@
 import '@/static/styles/globals.css';
-import 'katex/dist/katex.min.css';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';

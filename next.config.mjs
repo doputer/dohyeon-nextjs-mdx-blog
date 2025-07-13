@@ -1,12 +1,10 @@
 import createMDX from '@next/mdx';
 
 import { remarkCodeHike } from 'codehike/mdx';
-import rehypeKatex from 'rehype-katex';
 import rehypeSlug from 'rehype-slug';
 import rehypeUnwrapImages from 'rehype-unwrap-images';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 
 import { redirects } from './scripts/redirects.mjs';
@@ -43,12 +41,11 @@ const withMDX = createMDX({
       remarkFrontmatter,
       remarkMdxFrontmatter,
       remarkGfm,
-      remarkMath,
       remarkToc,
       remarkPublicImage,
       [remarkCodeHike, codehikeConfig],
     ],
-    rehypePlugins: [rehypeSlug, rehypeKatex, rehypeUnwrapImages],
+    rehypePlugins: [rehypeSlug, rehypeUnwrapImages],
   },
 });
 
