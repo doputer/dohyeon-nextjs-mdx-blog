@@ -20,11 +20,12 @@ const rehypeImageSize = () => {
 
         const promise = (async () => {
           const buffer = await readFile(filePath);
+
           const dimensions = sizeOf(buffer);
 
           if (dimensions.width && dimensions.height) {
-            node.properties.width = width;
-            node.properties.height = height;
+            node.properties.width = dimensions.width;
+            node.properties.height = dimensions.height;
           }
         })();
 
