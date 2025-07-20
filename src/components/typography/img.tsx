@@ -11,7 +11,6 @@ const Img = (props: ImageProps) => {
         width={props.width || 0}
         height={props.height || 0}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-        priority
         alt=""
         unoptimized={isUnoptimized}
       />

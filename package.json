@@ -27,6 +27,7 @@
     "clsx": "^2.1.1",
     "codehike": "^1.0.7",
     "date-fns": "^4.1.0",
+    "image-size": "^2.0.2",
     "lottie-react": "^2.4.1",
     "next": "^15.3.5",
     "react": "^19.1.0",
