@@ -3,7 +3,7 @@
 import { use, useCallback, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
-import { useAction } from '@/contexts/action/use-action';
+import useAction from '@/hooks/use-action';
 import { postReaction } from '@/lib/supabase/client/reaction';
 import type { Reaction } from '@/lib/supabase/server/reaction';
 import { getItem } from '@/utils/local-storage';
