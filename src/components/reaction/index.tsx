@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useRef, useState } from 'react';
+import { use, useState } from 'react';
 
 import Button from '@/components/reaction/button';
 import useAction from '@/hooks/use-action';
@@ -14,30 +14,28 @@ interface Props {
   slug: string;
 }
 
-const themes = [
-  {
-    type: 'reaction1',
+type Theme = Record<string, { emoji: string; colors: string[] }>;
+
+const theme: Theme = {
+  reaction1: {
     emoji: '😀',
     colors: ['#facc15', '#fde047', '#fcd34d', '#fbbf24', '#f59e0b'],
   },
-  {
-    type: 'reaction2',
+  reaction2: {
     emoji: '🔥',
     colors: ['#dc2626', '#ea580c', '#f97316', '#fb923c', '#facc15'],
   },
-  {
-    type: 'reaction3',
+  reaction3: {
     emoji: '🚀',
     colors: ['#3b0764', '#6b21a8', '#9333ea', '#4f46e5', '#22d3ee'],
   },
-];
+};
 
 const Reaction = ({ initial, slug }: Props) => {
-  const ref = useRef<(HTMLButtonElement | null)[]>([]);
   const [reaction, setReaction] = useState<Reaction>(use(initial));
   const { hasAction, setAction } = useAction();
 
-  const playReactionEffect = (button: HTMLButtonElement, colors: string[]) => {
+  const playReaction = (button: HTMLButtonElement, colors: string[]) => {
     const rect = button.getBoundingClientRect();
     const x = (rect.left + rect.width / 2) / window.innerWidth;
     const y = (rect.top + rect.height / 2) / window.innerHeight;
@@ -51,13 +49,10 @@ const Reaction = ({ initial, slug }: Props) => {
     setAction(slug, type);
   };
 
-  const handleClick = (index: number) => {
-    const button = ref.current[index];
-    if (!button) return;
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>, type: string) => {
+    const { colors } = theme[type];
 
-    const { type, colors } = themes[index];
-
-    playReactionEffect(button, colors);
+    playReaction(e.currentTarget, colors);
 
     if (process.env.NODE_ENV === 'development') return;
 
@@ -70,14 +65,9 @@ const Reaction = ({ initial, slug }: Props) => {
 
   return (
     <section className="mx-auto grid auto-cols-min grid-flow-col gap-3">
-      {themes.map((theme, index) => (
-        <Button
-          key={theme.type}
-          ref={(element) => void (ref.current[index] = element)}
-          emoji={theme.emoji}
-          onClick={() => handleClick(index)}
-        >
-          {reaction[theme.type] ?? 0}
+      {Object.keys(theme).map((type) => (
+        <Button key={type} emoji={theme[type].emoji} onClick={(e) => handleClick(e, type)}>
+          {reaction[type] ?? 0}
         </Button>
       ))}
     </section>
