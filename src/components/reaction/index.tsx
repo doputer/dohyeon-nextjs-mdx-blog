@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useCallback, useRef, useState } from 'react';
+import { use, useRef, useState } from 'react';
 
 import Button from '@/components/reaction/button';
 import useAction from '@/hooks/use-action';
@@ -37,39 +37,42 @@ const Reaction = ({ initial, slug }: Props) => {
   const [reaction, setReaction] = useState<Reaction>(use(initial));
   const { hasAction, setAction } = useAction();
 
-  const handleClick = useCallback(
-    async (index: number) => {
-      const button = ref.current[index];
-      if (!button) return;
+  const playReactionEffect = (button: HTMLButtonElement, colors: string[]) => {
+    const rect = button.getBoundingClientRect();
+    const x = (rect.left + rect.width / 2) / window.innerWidth;
+    const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-      const { type, colors } = themes[index];
+    launch(colors, { x, y });
+  };
 
-      const rect = button.getBoundingClientRect();
-      const x = (rect.left + rect.width / 2) / window.innerWidth;
-      const y = (rect.top + rect.height / 2) / window.innerHeight;
+  const commitReaction = async (id: string, slug: string, type: string) => {
+    setReaction((state) => ({ ...state, [type]: (state[type] ?? 0) + 1 }));
+    await postReaction(id, slug, type);
+    setAction(slug, type);
+  };
 
-      launch(colors, { x, y });
+  const handleClick = (index: number) => {
+    const button = ref.current[index];
+    if (!button) return;
 
-      if (process.env.NODE_ENV === 'development') return;
+    const { type, colors } = themes[index];
 
-      const id = getItem('UNIQUE_USER_ID');
-      if (!id) return;
-      if (hasAction(slug, type)) return;
+    playReactionEffect(button, colors);
 
-      setReaction((state) => ({ ...state, [type]: (state[type] ?? 0) + 1 }));
+    if (process.env.NODE_ENV === 'development') return;
 
-      await postReaction(id, slug, type);
+    const id = getItem('UNIQUE_USER_ID');
+    if (!id) return;
+    if (hasAction(slug, type)) return;
 
-      setAction(slug, type);
-    },
-    [hasAction, setAction, slug]
-  );
+    commitReaction(id, slug, type);
+  };
 
   return (
     <section className="mx-auto grid auto-cols-min grid-flow-col gap-3">
       {themes.map((theme, index) => (
         <Button
-          key={index}
+          key={theme.type}
           ref={(element) => void (ref.current[index] = element)}
           emoji={theme.emoji}
           onClick={() => handleClick(index)}
