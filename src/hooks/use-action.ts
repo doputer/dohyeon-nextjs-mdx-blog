@@ -14,16 +14,17 @@ const useAction = () => {
   );
 
   const setAction = useCallback((slug: string, action: string) => {
-    setMap((prev) => {
-      const next = new Map(prev);
-      const set = prev.get(slug) ?? new Set<string>();
+    setMap((prevMap) => {
+      const prevSet = prevMap.get(slug) ?? new Set<string>();
+      if (prevSet.has(action)) return prevMap;
 
-      if (set.has(action)) return prev;
+      const nextMap = new Map(prevMap);
+      const nextSet = new Set(prevSet);
 
-      set.add(action);
-      next.set(slug, set);
+      nextSet.add(action);
+      nextMap.set(slug, nextSet);
 
-      return next;
+      return nextMap;
     });
   }, []);
 
