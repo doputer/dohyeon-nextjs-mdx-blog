@@ -6,7 +6,6 @@ import Post from '@/components/post';
 import Header from '@/components/post/header';
 import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
-import ActionProvider from '@/contexts/action';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
 import { getReactionBySlug } from '@/lib/supabase/server/reaction';
 
@@ -24,12 +23,12 @@ const Page = async (props: PageProps) => {
   const reactionPromise = getReactionBySlug(params.slug);
 
   return (
-    <ActionProvider>
+    <>
       <Header title={title} date={date} />
       <Post toc={toc} MDX={MDX} />
       <Reaction initial={reactionPromise} slug={params.slug} />
       <Comment />
-    </ActionProvider>
+    </>
   );
 };
 
