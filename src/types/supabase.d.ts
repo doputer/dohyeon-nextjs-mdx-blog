@@ -81,33 +81,6 @@ export type Database = {
         };
         Relationships: [];
       };
-      reactions: {
-        Row: {
-          count: number;
-          created_at: string;
-          id: string;
-          slug: string;
-          type: string;
-          updated_at: string;
-        };
-        Insert: {
-          count?: number;
-          created_at?: string;
-          id?: string;
-          slug: string;
-          type: string;
-          updated_at?: string;
-        };
-        Update: {
-          count?: number;
-          created_at?: string;
-          id?: string;
-          slug?: string;
-          type?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
     };
     Views: {
       [_ in never]: never;
@@ -115,10 +88,6 @@ export type Database = {
     Functions: {
       increment_like: {
         Args: { _slug: string; _user_id: string };
-        Returns: undefined;
-      };
-      increment_reaction: {
-        Args: { _slug: string; _type: string; _user_id: string };
         Returns: undefined;
       };
     };
