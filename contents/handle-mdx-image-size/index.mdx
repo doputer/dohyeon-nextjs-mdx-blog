@@ -42,10 +42,10 @@ const Img = (props: ImageProps) => {
 
 ```json
 {
-  className: 'mx-auto rounded',
-  src: '/images/~/0.png',
-  alt: '',
-  title: '',
+  "className": "mx-auto rounded",
+  "src": "/images/~/0.png",
+  "alt": "",
+  "title": ""
 }
 ```
 
@@ -98,13 +98,13 @@ const rehypeImageSize = () => {
 
 ```json
 {
-  className: 'mx-auto rounded',
-  src: '/images/~/0.png',
-  alt: '',
-  title: '',
+  "className": "mx-auto rounded",
+  "src": "/images/~/0.png",
+  "alt": "",
+  "title": "",
   // !mark(1:2)
-  width: '634',
-  height: '370'
+  "width": "634",
+  "height": "370"
 }
 ```
 
@@ -213,11 +213,11 @@ const rehypeImageSize = () => {
 이 여정을 아래와 같이 코드로 표현할 수 있습니다.
 
 ```ts
-import * as fs from "node:fs";
-import * as path from "node:path";
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 const process = async () => {
-  const handle = await fs.promises.open(path.resolve("./image.png"), "r");
+  const handle = await fs.promises.open(path.resolve('./image.png'), 'r');
   const { size } = await handle.stat();
   const input = new Uint8Array(size);
 
@@ -228,8 +228,8 @@ const process = async () => {
   return imageSize;
 };
 
-const pngSignature = "PNG\r\n\x1a\n";
-const ihdrChunkType = "IHDR";
+const pngSignature = 'PNG\r\n\x1a\n';
+const ihdrChunkType = 'IHDR';
 
 const parser = (input: Uint8Array) => {
   // File signature가 PNG인지 검사
