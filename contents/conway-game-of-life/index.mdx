@@ -1,0 +1,153 @@
+---
+emoji: '🧬'
+title: '콘웨이의 생명 게임'
+description: '시뮬레이션 해보기'
+tags:
+  - automaton
+date: 2023-10-26
+---
+
+import Game from '#/conway-game-of-life/game';
+import Layout from '#/conway-game-of-life/game/layout';
+
+## 콘웨이의 생명 게임
+
+[콘웨이의 생명 게임](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)은 1970년 영국의 수학자 **존 호턴 콘웨이(John Horton Conway)** 가 고안한 셀룰러 오토마톤(Cellular Automaton)입니다.
+
+"생명"의 탄생과 소멸을 아주 단순한 규칙으로 시뮬레이션하는 모델로 복잡한 행동이 단순한 규칙에서 어떻게 나타나는지를 보여주는 대표적인 예로 유명합니다.
+
+2차원 격자 위에서 각 셀은 **살아 있거나 죽어 있는** 두 상태 중 하나를 가지며, 모든 셀은 자신의 **이웃**을 관찰해 다음 세대의 상태를 결정합니다.
+
+### 규칙
+
+모든 셀은 동시에 다음 세대로 갱신되는데요. 주변 **8칸의 이웃**에 따라 운명이 결정됩니다.
+
+| 현재 상태 | 주변의 살아 있는 셀 수 | 다음 세대의 상태 |
+|------------|-------------------------|------------------|
+| 살아 있음 | < 2 | 죽음 |
+| 살아 있음 | 2 or 3 | 생존 |
+| 살아 있음 | > 3 | 죽음 |
+| 죽어 있음 | = 3 | 탄생 |
+
+**살아 있는 셀**은 이웃이 너무 적거나 많아도 죽고, **죽은 셀**은 정확히 세 명의 이웃이 있을 때만 다시 살아납니다.
+
+이 네 가지 규칙만으로 무작위 셀들이 모여 스스로 움직이는 세계처럼 만들어집니다.
+
+## 시각화
+
+대표적인 몇 가지 패턴을 시각화해 봤습니다.
+
+<Callout>
+
+그리드를 누르면 다음 세대로 갱신됩니다.
+
+</Callout>
+
+### 정물(Still life)
+
+정물은 변하지 않는 안정된 구조를 가집니다.
+
+<Layout>
+    <Game pattern="Block" />
+    <Game pattern="Boat" />
+    <Game pattern="Tub" />
+    <Game pattern="Beehive" />
+    <Game pattern="Loaf" />
+</Layout>
+
+### 진동자(Oscillator)
+
+진동자는 주기적으로 반복되는 구조를 가집니다.
+
+<Layout>
+    <Game pattern="Blinker" />
+    <Game pattern="Toad" />
+    <Game pattern="Beacon" />
+</Layout>
+
+### 우주선(Spaceships)
+
+우주선은 세대를 거듭하며 이동하는 구조를 가집니다.
+
+<Layout>
+    <Game pattern="Glider" />
+</Layout>
+
+### 장수(Methuselah)
+
+장수는 작은 초기 배치로 시작하지만, 오랜 세대를 거쳐서 안정화되는 구조를 가집니다.
+
+아래 `R-Pentomino`는 초기에는 3x3 그리드에 그려지지만 1103세대에 안정화 된다고 합니다. 그리드도 훨씬 큰 영역이 필요한데 블로그 영역 상 최소 크기만 표현했습니다.
+
+<Layout>
+    <Game pattern="R-Pentomino" />
+</Layout>
+
+[이 영상](https://www.youtube.com/watch?v=RvPrVPoLTe0)에서 전체 세대를 확인하실 수 있습니다.
+
+## 코드
+
+직접 테스트해 보실 분들을 위해 코드를 공유해 드립니다.
+
+```ts automaton.ts
+export type Cell = 1 | 0;
+
+const NEIGHBOR_OFFSETS = [
+  [-1, -1], [0, -1], [1, -1],
+  [-1,  0],          [1,  0],
+  [-1,  1], [0,  1], [1,  1],
+] as const;
+
+const BIRTH = new Set([3]);
+const SURVIVE = new Set([2, 3]);
+
+class Automaton {
+  private cell: Cell[][];
+  private width: number;
+  private height: number;
+
+  constructor(seed: Cell[][]) {
+    this.cell = seed;
+    this.width = seed[0].length;
+    this.height = seed.length;
+  }
+
+  private get(x: number, y: number) {
+    if (x < 0 || x >= this.width || y < 0 || y >= this.height) return 0;
+    return this.cell[y][x];
+  }
+
+  private neighbor(x: number, y: number) {
+    let n = 0;
+
+    for (const [dx, dy] of NEIGHBOR_OFFSETS) {
+      n += this.get(x + dx, y + dy);
+      if (n > 3) return n;
+    }
+
+    return n;
+  }
+
+  next() {
+    const nextCell = this.cell.map((row) => row.slice());
+
+    for (let y = 0; y < this.height; y++) {
+      const row = this.cell[y];
+      const nextRow = nextCell[y];
+
+      for (let x = 0; x < this.width; x++) {
+        const alive = row[x] === 1;
+        const n = this.neighbor(x, y);
+
+        nextRow[x] = (alive ? SURVIVE.has(n) : BIRTH.has(n)) ? 1 : 0;
+      }
+    }
+
+    this.cell = nextCell;
+  }
+
+  view() {
+    return this.cell;
+  }
+}
+```

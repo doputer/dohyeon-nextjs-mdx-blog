@@ -7,13 +7,13 @@ const NEIGHBOR_OFFSETS = [
   [-1,  1], [0,  1], [1,  1],
 ] as const;
 
+const BIRTH = new Set([3]);
+const SURVIVE = new Set([2, 3]);
+
 class Automaton {
   private cell: Cell[][];
   private width: number;
   private height: number;
-
-  private birth = new Set([3]);
-  private survive = new Set([2, 3]);
 
   constructor(seed: Cell[][]) {
     this.cell = seed;
@@ -48,7 +48,7 @@ class Automaton {
         const alive = row[x] === 1;
         const n = this.neighbor(x, y);
 
-        nextRow[x] = (alive ? this.survive.has(n) : this.birth.has(n)) ? 1 : 0;
+        nextRow[x] = (alive ? SURVIVE.has(n) : BIRTH.has(n)) ? 1 : 0;
       }
     }
 
