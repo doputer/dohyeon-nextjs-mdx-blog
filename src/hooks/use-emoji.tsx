@@ -35,7 +35,7 @@ const useEmoji = (emoji: string) => {
     </div>
   );
 
-  return { View };
+  return View;
 };
 
 export default useEmoji;
