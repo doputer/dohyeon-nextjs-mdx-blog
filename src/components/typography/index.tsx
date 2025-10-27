@@ -12,6 +12,7 @@ import type { MDXComponents } from 'mdx/types';
 const components: MDXComponents = {
   h2: (props) => <h2 className={format.h2} {...props} />,
   h3: (props) => <h3 className={format.h3} {...props} />,
+  h4: (props) => <h4 className={format.h4} {...props} />,
   code: (props) => <code className={format.code} {...props} />,
   ol: (props) => <ol className={format.ol} {...props} />,
   ul: (props) => <ul className={format.ul} {...props} />,

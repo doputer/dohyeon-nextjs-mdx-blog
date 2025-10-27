@@ -1,0 +1,349 @@
+---
+emoji: '🤔'
+title: 'Context API의 오해와 진실'
+description: 'Context API에 대해 정확히 알아봅시다'
+tags:
+  - react
+  - context
+date: 2025-10-27
+---
+
+import Problem1 from '#/context-api-misconceptions/example/problem1';
+import Problem2 from '#/context-api-misconceptions/example/problem2';
+import Solve1 from '#/context-api-misconceptions/example/solve1';
+import Solve2 from '#/context-api-misconceptions/example/solve2';
+
+## Props Drilling과 Context API
+
+`React`에서 컴포넌트 간 데이터를 전달할 때 가장 기본적인 방법은 `Props`를 사용하는 것입니다.
+
+하지만 애플리케이션의 규모가 커지면서 컴포넌트 트리의 깊이가 깊어질 때, 중간 단계의 컴포넌트들이 실제로 해당 데이터를 사용하지 않음에도 불구하고 단순히 전달만을 위해 `Props`를 받아야 하는 `Props Drilling` 문제가 발생합니다.
+
+```jsx
+const App = () => {
+  const [theme, setTheme] = useState('light');
+
+  return <Layout theme={theme} />;
+};
+
+const Layout = ({ theme }) => {
+  // !mark
+  return <Header theme={theme} />; // 사용하지 않지만 전달
+};
+
+const Header = ({ theme }) => {
+  // !mark
+  return <Profile theme={theme} />; // 사용하지 않지만 전달
+};
+
+const Profile = ({ theme }) => {
+  return <div>{theme}</div>; // 실제 사용
+};
+```
+
+이러한 문제를 해결하기 위해 `React`는 [Context API](https://ko.react.dev/learn/passing-data-deeply-with-context)를 제공합니다.
+
+`Context API`를 사용하면 중간 컴포넌트를 거치지 않고도 필요한 곳에서 직접 데이터에 접근할 수 있습니다.
+
+```jsx
+const ThemeContext = createContext();
+
+const App = () => {
+  const [theme, setTheme] = useState('light');
+
+  return (
+    // !mark
+    <ThemeContext.Provider value={theme}>
+      <Layout />
+    </ThemeContext.Provider>
+  );
+}
+
+...
+
+const Profile = () => {
+  // !mark
+  const theme = useContext(ThemeContext);
+
+  return <div>{theme}</div>;
+}
+```
+
+하지만 `Context API`에 대해 학습하다 보면 여러 오해와 잘못된 인식을 접하게 됩니다.
+
+## 몇 가지 오해
+
+### Context API는 전역 상태를 관리한다
+
+흔히 `Context API`와 전역 상태 관리 라이브러리(Redux, Zustand, Zotai, ...)를 동일한 목적을 가진 도구로 생각합니다.
+
+Context API는 **Props Drilling 문제를 해결하기 위한 데이터 전달 메커니즘**이고, 앞서 언급한 라이브러리들은 **애플리케이션 전반의 전역 상태를 관리하기 위한 도구**입니다. 즉, 두 방식은 문제의 초점과 목적이 서로 다릅니다.
+
+**Context API의 목적**
+
+- 이미 존재하는 데이터를 컴포넌트 트리에 전달
+- Props Drilling 문제 해결
+- 의존성 주입 패턴
+
+**전역 상태 관리 라이브러리의 목적**
+
+- 애플리케이션의 전역 상태를 관리
+- 상태 변경 로직 중앙화
+- 상태 구독 및 선택적 렌더링 최적화
+
+다시 말해 `Context API`는 이미 존재하는 상태를 어디서든 접근할 수 있게 만드는 것이고, **전역 상태 관리 라이브러리**는 상태 자체를 관리하고 최적화하는 것입니다.
+
+```jsx
+// Context API - 데이터 전달
+const ThemeContext = createContext();
+
+const App = () => {
+  // !mark
+  const [theme, setTheme] = useState('light');
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <Layout />
+    </ThemeContext.Provider>
+  );
+};
+
+// Zustand - 상태 관리
+// !mark(1:4)
+const useThemeStore = create((set) => ({
+  theme: 'light',
+  setTheme: (theme) => set({ theme }),
+}));
+
+const App = () => {
+  return <Layout />;
+};
+```
+
+### Context API는 불필요한 리렌더링을 유발한다
+
+"`Context API`를 사용하면 값이 바뀔 때마다 하위 컴포넌트가 모두 리렌더링된다"는 말을 자주 듣습니다.
+
+부분적으로 맞는 말이지만, 이는 `Context API` 자체의 문제라기 보다는 사용 방식의 문제일 수도 있습니다.
+
+#### 문제 1. Context API가 아니라 일반적인 상태 리렌더링
+
+아래 코드에선 `Foo` 컴포넌트의 `Provider`를 통해 `Baz` 컴포넌트로 상태를 전달하고 있습니다.
+
+그래서 `Baz` 컴포넌트의 버튼을 눌렀을 때 `Bar` 컴포넌트는 리렌더링 되지 않을 거라 기대합니다.
+
+그러나 단순하게도 `Foo` 컴포넌트의 상태가 변경되었기 때문에 리렌더링이 발생하고, 자식 컴포넌트들로 리렌더링이 전파됩니다.
+
+```jsx
+const Context = createContext();
+
+const Foo = () => {
+  const [value, setValue] = useState(0);
+
+  return (
+    <Context.Provider value={{ value, setValue }}>
+      <div>Foo</div>
+      <Bar />
+    </Context.Provider>
+  );
+};
+
+const Bar = () => {
+  return (
+    <>
+      <div>Bar</div>
+      <Baz />
+    </>
+  );
+};
+
+const Baz = () => {
+  const { value, setValue } = useContext(Context);
+
+  return (
+    <>
+      <div>Baz</div>
+      <button onClick={() => setValue(value + 1)}>Button</button>
+    </>
+  );
+};
+```
+
+<Callout>
+
+버튼을 눌러서 리렌더링 되는 컴포넌트를 확인해 보세요.
+
+</Callout>
+
+<Problem1 />
+
+#### 해결
+
+이는 `Foo` 컴포넌트에서 상태가 변경되지 않도록 `Provider`를 분리하는 패턴으로 해결할 수 있습니다.
+
+`children`을 그대로 렌더링하는 경우 자식 컴포넌트의 참조가 이전과 동일하면 리렌더링 되지 않습니다. 결국 상태가 바뀌었을 때 `Context`를 구독하고 있는 `Baz`만 리렌더링 되게 됩니다.
+
+`useContext`는 기존과 동일하게 `Context`를 매개 변수로 받아서 가장 가까운 부모의 `Provider`를 찾습니다.
+
+```jsx
+const Context = createContext();
+
+// !mark(1:5)
+const Provider = ({ children }) => {
+  const [value, setValue] = useState(0);
+
+  return <Context.Provider value={{ value, setValue }}>{children}</Context.Provider>;
+};
+
+const Foo = () => {
+  return (
+    <Provider>
+      <div>Foo</div>
+      <Bar />
+    </Provider>
+  );
+};
+
+const Bar = () => {
+  return (
+    <>
+      <div>Bar</div>
+      <Baz />
+    </>
+  );
+};
+
+const Baz = () => {
+  const { value, setValue } = useContext(Context);
+
+  return (
+    <>
+      <div>Baz</div>
+      <button onClick={() => setValue(value + 1)}>Button</button>
+    </>
+  );
+};
+```
+
+<Callout>
+
+차이를 비교해 보세요.
+
+</Callout>
+
+<Solve1 />
+
+#### 문제 2. 독립적인 상태를 하나의 객체로 묶기
+
+아래 코드에선 `value1`과 `value2` 상태를 하나의 객체로 묶어서 전달하고 있습니다. 그리고 `Bar` 컴포넌트에서는 `value1`만 사용하고 있죠.
+
+그래서 `Baz` 컴포넌트에서 `value2` 상태를 바꿔도 `Bar` 컴포넌트에서는 리렌더링 되지 않을 거라 기대합니다.
+
+그러나 `React`는 `Context`가 변경되면 이를 구독하고 있는 모든 컴포넌트를 리렌더링시킵니다.
+
+```jsx
+const Context = createContext();
+
+const Provider = ({ children }) => {
+  const [value1, setValue1] = useState(0);
+  const [value2, setValue2] = useState(0);
+
+  return (
+    <Context.Provider value={{ value1, setValue1, value2, setValue2 }}>{children}</Context.Provider>
+  );
+};
+
+const Foo = () => {
+  return (
+    <Provider>
+      <div>Foo</div>
+      <Bar />
+      <Baz />
+    </Provider>
+  );
+};
+
+const Bar = () => {
+  const { value1 } = useContext(Context);
+
+  return <div>Bar</div>;
+};
+
+const Baz = () => {
+  const { value2, setValue2 } = useContext(Context);
+
+  return (
+    <>
+      <div>Baz</div>
+      <button onClick={() => setValue2(value2 + 1)}>Button</button>
+    </>
+  );
+};
+```
+
+<Problem2 />
+
+#### 해결
+
+이는 `Provider`를 상태별로 분리해서 해결할 수 있습니다.
+
+필요한 `Context`만 구독하기 때문에 다른 `Context`가 변경되고, 리렌더링이 일어난다고 해도 문제가 발생하지 않습니다.
+
+```jsx
+// !mark(1:5)
+const Provider1 = ({ children }) => {
+  const [value1, setValue1] = useState(0);
+
+  return <Context1.Provider value={{ value1, setValue1 }}>{children}</Context1.Provider>;
+};
+
+// !mark(1:5)
+const Provider2 = ({ children }) => {
+  const [value2, setValue2] = useState(0);
+
+  return <Context2.Provider value={{ value2, setValue2 }}>{children}</Context2.Provider>;
+};
+
+const Foo = () => {
+  return (
+    <Provider1>
+      <Provider2>
+        <div>Foo</div>
+        <Bar />
+        <Baz />
+      </Provider2>
+    </Provider1>
+  );
+};
+
+const Bar = () => {
+  const { value1 } = useContext(Context1);
+
+  return <div>Bar</div>;
+};
+
+const Baz = () => {
+  const { value2, setValue2 } = useContext(Context2);
+
+  return (
+    <>
+      <div>Baz</div>
+      <button onClick={() => setValue2(value2 + 1)}>Button</button>
+    </>
+  );
+};
+```
+
+<Solve2 />
+
+## 결론
+
+정리하자면 아래와 같습니다.
+
+- `Context API`는 데이터를 효율적으로 전달하기 위한 도구다.
+- 전역 상태 관리 라이브러리는 상태를 효율적으로 관리하기 위한 도구다.
+- 두 도구는 목적이 다르며, 서로 대체하는 관계가 아니다.
+
+`Context API`는 많은 오해와 달리 목적에 맞게 사용하면 매우 강력한 도구입니다.
+
+문제는 **도구 자체**가 아니라 **도구를 어떤 상황에서 어떤 구조로 사용하느냐**에 있습니다.
