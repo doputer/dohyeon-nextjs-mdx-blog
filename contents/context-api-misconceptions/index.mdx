@@ -8,10 +8,10 @@ tags:
 date: 2025-10-27
 ---
 
-import Problem1 from '#/context-api-misconceptions/example/problem1'
-import Problem2 from '#/context-api-misconceptions/example/problem2'
-import Solve1 from '#/context-api-misconceptions/example/solve1'
-import Solve2 from '#/context-api-misconceptions/example/solve2'
+import Problem1 from '#/context-api-misconceptions/example/problem1';
+import Problem2 from '#/context-api-misconceptions/example/problem2';
+import Solve1 from '#/context-api-misconceptions/example/solve1';
+import Solve2 from '#/context-api-misconceptions/example/solve2';
 
 ## Props Drilling과 Context API
 
@@ -24,21 +24,21 @@ const App = () => {
   const [theme, setTheme] = useState('light');
 
   return <Layout theme={theme} />;
-}
+};
 
 const Layout = ({ theme }) => {
   // !mark
   return <Header theme={theme} />; // 사용하지 않지만 전달
-}
+};
 
 const Header = ({ theme }) => {
   // !mark
   return <Profile theme={theme} />; // 사용하지 않지만 전달
-}
+};
 
 const Profile = ({ theme }) => {
   return <div>{theme}</div>; // 실제 사용
-}
+};
 ```
 
 이러한 문제를 해결하기 위해 `React`는 [Context API](https://ko.react.dev/learn/passing-data-deeply-with-context)를 제공합니다.
@@ -106,18 +106,18 @@ const App = () => {
       <Layout />
     </ThemeContext.Provider>
   );
-}
+};
 
 // Zustand - 상태 관리
 // !mark(1:4)
 const useThemeStore = create((set) => ({
   theme: 'light',
-  setTheme: (theme) => set({ theme })
+  setTheme: (theme) => set({ theme }),
 }));
 
 const App = () => {
   return <Layout />;
-}
+};
 ```
 
 ### 오해 2: Context API는 불필요한 리렌더링을 유발한다
@@ -146,7 +146,7 @@ const Foo = () => {
       <Bar />
     </Context.Provider>
   );
-}
+};
 
 const Bar = () => {
   return (
@@ -155,7 +155,7 @@ const Bar = () => {
       <Baz />
     </>
   );
-}
+};
 
 const Baz = () => {
   const { value, setValue } = useContext(Context);
@@ -166,7 +166,7 @@ const Baz = () => {
       <button onClick={() => setValue(value + 1)}>Button</button>
     </>
   );
-}
+};
 ```
 
 <Callout>
@@ -202,7 +202,7 @@ const Foo = () => {
       <Bar />
     </Provider>
   );
-}
+};
 
 const Bar = () => {
   return (
@@ -211,7 +211,7 @@ const Bar = () => {
       <Baz />
     </>
   );
-}
+};
 
 const Baz = () => {
   const { value, setValue } = useContext(Context);
@@ -222,7 +222,7 @@ const Baz = () => {
       <button onClick={() => setValue(value + 1)}>Button</button>
     </>
   );
-}
+};
 ```
 
 <Callout>
@@ -248,7 +248,9 @@ const Provider = ({ children }) => {
   const [value1, setValue1] = useState(0);
   const [value2, setValue2] = useState(0);
 
-  return <Context.Provider value={{ value1, setValue1, value2, setValue2 }}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={{ value1, setValue1, value2, setValue2 }}>{children}</Context.Provider>
+  );
 };
 
 const Foo = () => {
@@ -259,13 +261,13 @@ const Foo = () => {
       <Baz />
     </Provider>
   );
-}
+};
 
 const Bar = () => {
   const { value1 } = useContext(Context);
 
   return <div>Bar</div>;
-}
+};
 
 const Baz = () => {
   const { value2, setValue2 } = useContext(Context);
@@ -276,7 +278,7 @@ const Baz = () => {
       <button onClick={() => setValue2(value2 + 1)}>Button</button>
     </>
   );
-}
+};
 ```
 
 <Problem2 />
@@ -326,13 +328,11 @@ const Baz = () => {
   return (
     <>
       <div>Baz</div>
-      <button onClick={() => setValue2(value2 + 1)}>
-        Button
-      </button>
+      <button onClick={() => setValue2(value2 + 1)}>Button</button>
     </>
   );
 };
-````
+```
 
 <Solve2 />
 
