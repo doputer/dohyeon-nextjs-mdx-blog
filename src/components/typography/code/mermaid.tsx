@@ -16,36 +16,31 @@ const Mermaid = ({ code }: Props) => {
   const { theme } = useTheme();
 
   useEffect(() => {
+    let canceled = false;
+
     mermaid.initialize({
       startOnLoad: false,
-      securityLevel: 'strict',
       theme: theme === 'light' ? 'neutral' : 'dark',
+      look: 'handDrawn',
     });
 
-    let cancelled = false;
-
     (async () => {
+      if (canceled) return;
+
       try {
         const { svg } = await mermaid.render(`mmd-${id}`, code);
-        if (!cancelled) setSvg(svg);
-      } catch (e) {
-        if (!cancelled) setSvg(`<pre>${escapeHtml(String(e))}\n${escapeHtml(code)}</pre>`);
+        setSvg(svg);
+      } catch (error) {
+        setSvg(`<pre>${String(error)}</pre>`);
       }
     })();
 
     return () => {
-      cancelled = true;
+      canceled = true;
     };
   }, [code, id, theme]);
 
   return <div dangerouslySetInnerHTML={{ __html: svg }} />;
-};
-
-const escapeHtml = (s: string) => {
-  return s.replace(
-    /[&<>"']/g,
-    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!
-  );
 };
 
 export default Mermaid;
