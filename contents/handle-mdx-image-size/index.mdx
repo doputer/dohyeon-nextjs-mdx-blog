@@ -140,7 +140,7 @@ const rehypeImageSize = () => {
 
 [PNG SPEC v1.2](https://www.libpng.org/pub/png/spec/1.2/PNG-Contents.html) 문서를 보면 PNG 포맷의 자세한 스팩이 적혀있습니다.
 
-**PNG file signature**
+#### PNG file signature
 
 처음 8 byte에는 항상 아래와 같은 값(10진수)이 포함됩니다.
 
@@ -156,7 +156,7 @@ const rehypeImageSize = () => {
 
 이 파일 서명을 통해 해당 파일이 PNG 포맷인지 알 수 있게 됩니다.
 
-**Chunk layout**
+#### Chunk layout
 
 이어서 여러 종류의 `Chunk`가 등장하는데요. 역할별로 구분되어 있습니다. 그리고 `Chunk`는 아래와 같이 구성되어 있습니다.
 
