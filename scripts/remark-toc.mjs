@@ -3,12 +3,15 @@ import GithubSlugger from 'github-slugger';
 import { visit } from 'unist-util-visit';
 
 const slugs = new GithubSlugger();
+const AvailableDepth = new Set([2, 3]);
 
 const remarkToc = () => {
   return (tree) => {
     const toc = [];
 
     visit(tree, 'heading', (node) => {
+      if (!AvailableDepth.has(node.depth)) return;
+
       slugs.reset();
 
       const text = node.children
