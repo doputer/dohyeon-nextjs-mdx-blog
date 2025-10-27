@@ -1,29 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import Giscus from '@giscus/react';
 
 import config from '@/configs/config.json';
+import useTheme from '@/hooks/use-theme';
 
 const Comment = () => {
-  const [theme, setTheme] = useState(global.window?.__theme || 'light');
-
-  useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          setTheme(global.window?.__theme);
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, { attributes: true });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const { theme } = useTheme();
 
   return (
     <div>

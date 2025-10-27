@@ -3,6 +3,7 @@ import { type HighlightedCode, Pre } from 'codehike/code';
 import collapse from '@/components/typography/code/handlers/collapse';
 import fold from '@/components/typography/code/handlers/fold';
 import mark from '@/components/typography/code/handlers/mark';
+import Mermaid from '@/components/typography/code/mermaid';
 import { cn } from '@/utils/cn';
 
 interface Props {
@@ -12,6 +13,8 @@ interface Props {
 
 const Code = ({ codeblock, className }: Props) => {
   const handlers = [mark, fold, collapse];
+
+  if (codeblock.lang === 'mermaid') return <Mermaid code={codeblock.code} />;
 
   return (
     <div className="relative rounded border border-line bg-background">
