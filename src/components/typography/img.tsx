@@ -8,10 +8,10 @@ const Img = (props: ImageProps) => {
     <figure className="space-y-4">
       <Image
         {...props}
+        alt={props.alt}
         width={props.width || 0}
         height={props.height || 0}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-        alt=""
         unoptimized={isUnoptimized}
       />
       {caption && <figcaption className="text-center text-sm text-mute">{caption}</figcaption>}
