@@ -27,25 +27,25 @@ const List = ({ posts }: ListProps) => {
         <section
           key={year}
           className={cn(
-            'group/section grid grid-cols-[auto_1fr] gap-4 hover:text-main sm:gap-8',
-            'group-hover:text-soft'
+            'group/section grid grid-cols-[auto_1fr] gap-6 hover:text-main active:text-main sm:gap-8',
+            'group-hover:text-soft group-active:text-soft'
           )}
         >
           <span
             className={cn(
               'relative h-fit py-3 tabular-nums transition-colors duration-300 ease-out select-none sm:text-lg',
-              'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 before:ease-out group-hover/section:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
+              'before:absolute before:-inset-x-2 before:inset-y-1 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 before:ease-out group-hover/section:before:opacity-100 group-active/section:before:opacity-100'
             )}
           >
             {year}
           </span>
-          <ul className="group-hover:text-inherit">
+          <ul className="group-hover:text-inherit group-active:text-inherit">
             {posts.map(({ frontmatter, slug }) => (
               <li
                 key={slug}
                 className={cn(
                   'group/li relative',
-                  'before:absolute before:-inset-x-1 before:inset-y-2 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 before:ease-out hover:before:opacity-100 sm:before:-inset-x-2 sm:before:inset-y-1'
+                  'before:absolute before:-inset-x-2 before:inset-y-1 before:-z-10 before:rounded before:bg-surface before:opacity-0 before:transition-opacity before:duration-300 before:ease-out hover:before:opacity-100 active:before:opacity-100'
                 )}
               >
                 <Link href={`/${slug}`} className="flex justify-between gap-4 py-3">
@@ -60,8 +60,8 @@ const List = ({ posts }: ListProps) => {
                     dateTime={frontmatter.date}
                     className={cn(
                       'shrink-0 text-mute tabular-nums transition-colors duration-300 ease-out sm:text-lg',
-                      'group-hover:text-soft',
-                      'group-hover/section:text-mute'
+                      'group-hover:text-soft group-active:text-soft',
+                      'group-hover/section:text-mute group-active/section:text-mute'
                     )}
                   >
                     {format(frontmatter.date, 'MM.dd')}

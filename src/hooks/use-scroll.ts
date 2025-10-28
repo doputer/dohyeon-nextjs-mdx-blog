@@ -1,13 +1,7 @@
 import { useCallback } from 'react';
 
-interface ScrollOption {
-  id?: string;
-}
-
 const useScroll = () => {
-  return useCallback(({ id }: ScrollOption) => {
-    if (!id) return;
-
+  return useCallback((id: string) => {
     const element = document.getElementById(id);
 
     if (!(element instanceof HTMLHeadingElement)) return;

@@ -15,15 +15,15 @@ const TOC = ({ toc }: TOCProps) => {
 
   return (
     <aside className="left-full h-full lg:absolute">
-      <ul className="sticky top-32 flex w-fit list-inside flex-col gap-2 text-nowrap lg:ml-8">
+      <ul className="sticky top-32 flex list-inside flex-col gap-2 lg:ml-8 lg:text-nowrap">
         {toc.map(({ id, text, depth }) => (
           <li key={id} className={cn('list-disc lg:list-none', depth === 3 && 'pl-4')}>
             <button
               className={cn(
-                'transition-colors duration-300 ease-out lg:text-mute lg:hover:text-soft',
+                'contents transition-colors duration-300 ease-out lg:text-mute lg:hover:text-soft',
                 id === activeId && 'lg:font-medium lg:text-main lg:hover:text-main'
               )}
-              onClick={() => scrollToTarget({ id })}
+              onClick={() => scrollToTarget(id)}
             >
               {text}
             </button>
