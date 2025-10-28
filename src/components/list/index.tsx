@@ -27,8 +27,8 @@ const List = ({ posts }: ListProps) => {
         <section
           key={year}
           className={cn(
-            'group/section grid grid-cols-[auto_1fr] gap-6 hover:text-main sm:gap-8',
-            'group-hover:text-soft'
+            'group/section grid grid-cols-[auto_1fr] gap-6 hover:text-main active:text-main sm:gap-8',
+            'group-hover:text-soft group-active:text-soft'
           )}
         >
           <span
@@ -39,7 +39,7 @@ const List = ({ posts }: ListProps) => {
           >
             {year}
           </span>
-          <ul className="group-hover:text-inherit">
+          <ul className="group-hover:text-inherit group-active:text-inherit">
             {posts.map(({ frontmatter, slug }) => (
               <li
                 key={slug}
@@ -60,8 +60,8 @@ const List = ({ posts }: ListProps) => {
                     dateTime={frontmatter.date}
                     className={cn(
                       'shrink-0 text-mute tabular-nums transition-colors duration-300 ease-out sm:text-lg',
-                      'group-hover:text-soft',
-                      'group-hover/section:text-mute'
+                      'group-hover:text-soft group-active:text-soft',
+                      'group-hover/section:text-mute group-active/section:text-mute'
                     )}
                   >
                     {format(frontmatter.date, 'MM.dd')}
