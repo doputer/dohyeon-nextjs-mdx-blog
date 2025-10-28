@@ -23,7 +23,7 @@ const TOC = ({ toc }: TOCProps) => {
                 'transition-colors duration-300 ease-out lg:text-mute lg:hover:text-soft',
                 id === activeId && 'lg:font-medium lg:text-main lg:hover:text-main'
               )}
-              onClick={() => scrollToTarget({ id })}
+              onClick={() => scrollToTarget(id)}
             >
               {text}
             </button>
