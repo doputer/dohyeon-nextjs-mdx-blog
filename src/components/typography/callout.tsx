@@ -5,16 +5,14 @@ import { BoltIcon } from '@heroicons/react/24/solid';
 import { cn } from '@/utils/cn';
 
 interface Props {
-  className?: string | undefined;
+  className?: string;
 }
 
 const Callout = (props: PropsWithChildren<Props>) => {
   return (
     <blockquote {...props} className={cn('group bg-orange/20', props.className)}>
-      <div className="pt-0.5 pb-1.5">
-        <BoltIcon className="size-6 text-mute group-hover:animate-flip" />
-      </div>
-      <div className="flex flex-col gap-6">{props.children}</div>
+      <BoltIcon className="mt-0.5 size-6 shrink-0 text-mute group-hover:animate-flip" />
+      <div className="space-y-6 overflow-hidden">{props.children}</div>
     </blockquote>
   );
 };
