@@ -341,3 +341,147 @@ const Person = () => {
 ```
 
 <Example4 />
+
+## 더 나아가기
+
+이제 어느정도 구색을 갖춘 상태 저장소가 되었습니다.
+
+여기까지 구현한 코드만으로도 전역 상태를 다루기에 충분하지만 조금 더 편리하게 쓰기 위해 개선해보겠습니다.
+
+### store와 useStore를 하나로 묶기
+
+현재는 이렇게 상태 저장소를 사용하고 있습니다.
+
+```ts
+const store = createStore({ value: 0 });
+const value = useStore(store, (state) => state.value);
+```
+
+`store`와 `useStore`를 매번 따로 불러오는 건 번거롭습니다. 이때 `create` 함수를 만들어서 `store`는 내부에서 생성하고, 클로저만 반환하면 깔끔해집니다.
+
+```ts global-store.ts
+export const create = <T>(initialState: T) => {
+  const store = createStore(initialState);
+
+  return <U = T>(selector?: Selector<T, U>) => useStore(store, selector);
+};
+```
+
+이제 `create` 함수만 불러와서 상태 저장소를 만들고 사용할 수 있습니다.
+
+```tsx
+const useStore = create({
+  name: '김도현',
+});
+
+const Person = () => {
+  const name = useStore((state) => state.name);
+
+  return <>{name}</>;
+};
+```
+
+점점 실제로 사용하는 `Zustand`와 비슷해지죠?
+
+### 컴포넌트 외부에서 접근하기
+
+지금은 컴포넌트 내부에서 `Hook`으로만 사용할 수 있는데요. 컴포넌트 외부에서는 사용할 수 없을까요?
+
+사실 상태를 관리하는 코어 로직은 Vanilla로 이미 작성되어 있어서 이 인터페이스를 노출해주기만 하면되는데요. 그렇다고 애써 없앤 `store` 불러오는 로직을 다시 만들고 싶지는 않습니다.
+
+그래서 반환 중인 클로저에 Vanilla 로직을 붙여서 하나의 함수를 `Hook`처럼 사용하면서 `getState`, `setState`, `subscribe` 같은 메서드까지 함께 노출하는 구조로 만들어보겠습니다.
+
+```ts global-store.ts
+export const create = <T>(initialState: T) => {
+  const store = createStore(initialState);
+
+  const useBoundStore = <U = T>(selector?: Selector<T, U>) => useStore(store, selector);
+
+  // !mark
+  Object.assign(useBoundStore, store);
+
+  return useBoundStore as typeof useBoundStore & typeof store;
+};
+```
+
+`store`의 모든 프로퍼티를 복사해서 클로저에 넘겨주었습니다.
+
+이제 컴포넌트 외부에서도 접근할 수 있습니다.
+
+```tsx
+const useStore = create({
+  name: '김도현',
+});
+
+useStore.getState().name; // '김도현'
+```
+
+### getter와 setter
+
+끝으로 지금까지는 `Hook`을 통해서만 상태를 가져오거나 변경했습니다. 하지만 같은 상태의 최신 값을 읽어야하거나 컴포넌트 내부에서 `Hook`이 들어갈 수 없는 위치에서도 상태를 변경해야하는 요구 사항이 있습니다.
+
+그래서 상태 저장소를 생성하면서 내부에서 직접 상태를 읽고 쓸 수 있는 메서드를 제공해보겠습니다.
+
+```ts global-store.ts
+// !mark
+type StateCreator<T> = (set: Store<T>['setState'], get: Store<T>['getState']) => T;
+
+// !mark
+const createStore = <T>(createState: StateCreator<T>) => {
+  const listeners = new Set<() => void>();
+
+  const getState: Store<T>['getState'] = () => {
+    return state;
+  };
+
+  const setState: Store<T>['setState'] = (value) => {
+    const nextState = typeof value === 'function' ? (value as (state: T) => T)(state) : value;
+
+    if (Object.is(nextState, state)) return;
+
+    state = nextState;
+
+    listeners.forEach((listener) => listener());
+  };
+
+  const subscribe: Store<T>['subscribe'] = (listener) => {
+    listeners.add(listener);
+
+    return () => listeners.delete(listener);
+  };
+
+  // !mark
+  let state = createState(setState, getState);
+
+  return { getState, setState, subscribe };
+};
+
+...
+
+// !mark
+export const create = <T>(createState: StateCreator<T>) => {
+  const store = createStore(createState);
+
+  const useBoundStore = <U = T>(selector?: Selector<T, U>) => useStore(store, selector);
+
+  Object.assign(useBoundStore, store);
+
+  return useBoundStore as typeof useBoundStore & typeof store;
+};
+```
+
+이제 저장소를 생성할 때 `initialState`를 넘기는 것이 아닌 `getter`와 `setter`를 매개변수로 갖는 콜백 함수를 넘기게 됩니다.
+
+```tsx
+const useStore = create((set, get) => ({
+  name: '김도현',
+  age: 0,
+  increase: () => set((state) => ({ ...state, age: get().age + 1 })),
+}));
+```
+
+## 느낀점
+
+두렵게만 느껴졌던 라이브러리의 내부를 직접 들여다보니 생각보다 훨씬 단순하고 명확한 원리로 동작한다는 것을 알게되었습니다. 특별한 마법이 아니라 제가 알고 있던 개념들이 잘 조합되어서 만들어져 있었습니다.
+
+기회가 되면 비슷한 목적을 가진 다른 라이브러리들도 구경해봐야겠습니다. 즐거운 시간이었습니다!
