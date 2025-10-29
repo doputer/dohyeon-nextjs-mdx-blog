@@ -11,6 +11,7 @@ date: 2025-10-29
 import Example1 from '#/create-state-store/example/example1';
 import Example2 from '#/create-state-store/example/example2';
 import Example3 from '#/create-state-store/example/example3';
+import Example4 from '#/create-state-store/example/example4';
 
 라이브러리의 동작 원리를 이해하는 방법에는 어떤 것들이 있을까요? 여러가지가 있겠지만 다시 만들어보는 것도 그 중 하나라고 생각합니다.
 
@@ -225,6 +226,19 @@ export const useStore = <T, U = T>(
 };
 ```
 
+<Callout>
+    **제네릭 타입 `U`**
+
+    `selector`는 객체에서 일부만 선택할 수 있기 때문에 이때 타입을 안전하게 추론하기 위해서 사용했습니다.
+
+    `T`는 `Store`에서 추론되고 `U`는 `Selector`에서 추론됩니다.
+
+    ```ts
+    useStore(store) // T = { name: string; age: number }, U = T
+    useStore(store, (state) => state.name) // T = { name: string; age: number }, U = string
+    ```
+</Callout>
+
 이제 컴포넌트에서 객체의 원하는 값만 잘라서 구독할 수 있고, 불필요한 리렌더링도 발생하지 않습니다.
 
 ```tsx Person.tsx
@@ -257,15 +271,73 @@ const Age = () => {
 
 <Example3 />
 
+## 최적화된 상태 저장소
+
+`selector`를 추가하면서 이제 필요한 부분만 구독할 수 있는 저장소가 되었습니다. 하지만 여전히 문제가 남아있는데요.
+
+```ts
+useStore(store, (state) => ({ name: state.name, age: state.age }));
+```
+
+이렇게 여러 값을 객체로 묶어서 반환하면 객체의 참조가 매번 새로 생성돼서 무한 리렌더링이 발생합니다.
+
+`React`는 기본적으로 참조 동등성(Object.is)으로 상태 변화를 감지하기 때문에 다른 새로운 객체가 만들어질 때마다 `useSyncExternalStore`는 "값이 달라졌다" 라고 평가합니다.
+
+이를 해결하기 위해 `shallow` 개념을 도입해보겠습니다. `React`의 코드를 바꿀 수는 없는 노릇이니 컴포넌트에서 객체의 값이 바뀌지 않았다면 동일한 참조를 가진 객체를 전달해주면 됩니다.
+
+```ts use-shallow.ts
+const equal = <T>(value1: T, value2: T) => {
+  if (JSON.stringify(value1) === JSON.stringify(value2)) return true;
+
+  return false;
+};
+
+export const useShallow = <T, U = T>(selector: Selector<T, U>) => {
+  const prev = useRef<U>(null);
+
+  return (state: T) => {
+    const next = selector(state);
+
+    return equal(prev.current, next) ? (prev.current as U) : (prev.current = next);
+  };
+};
+```
+
 <Callout>
-    **제네릭 타입 `U`**
+    **JSON.stringify**
 
-    `selector`는 객체에서 일부만 선택할 수 있기 때문에 이때 타입을 안전하게 추론하기 위해서 사용했습니다.
-
-    `T`는 `Store`에서 추론되고 `U`는 `Selector`에서 추론됩니다.
-
-    ```ts
-    useStore(store) // T = { name: string; age: number }, U = T
-    useStore(store, (state) => state.name) // T = { name: string; age: number }, U = string
-    ```
+    여기선 간단하게 비교하기 위해 사용했습니다. 객체가 깊어지면 비효율적인 연산이 되기 때문에 `Zustand`에서는 자체 구현한 [shallow](https://github.com/pmndrs/zustand/blob/main/src/vanilla/shallow.ts) 함수를 통해서 비교 연산을 수행합니다.
 </Callout>
+
+이전 값을 `useShallow` 속 `prev`에 저장한 후 새로 들어오는 `next`와 비교해서 동일하다면 이전 값을 반환하고, 다르다면 새 값을 반환합니다.
+
+이제 문제없이 객체의 여러 값을 한번에 구독할 수 있습니다.
+
+```tsx Person.tsx
+const store = createStore({
+  name: '김도현',
+  age: 0,
+});
+
+const Person = () => {
+  const { name, age } = useStore(
+    store,
+    // !mark
+    useShallow((state) => ({ name: state.name, age: state.age }))
+  );
+
+  const increase = () => {
+    store.setState((prev) => ({ ...prev, age: prev.age + 1 }));
+  };
+
+  return (
+    <>
+      <div>Name: {name}</div>
+      <div>Age: {age}</div>
+      <button onClick={increase}>Increase Button</button>
+    </>
+  );
+};
+```
+
+<Example4 />
