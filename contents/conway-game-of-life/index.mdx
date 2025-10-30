@@ -37,11 +37,11 @@ import Layout from '#/conway-game-of-life/game/layout';
 
 대표적인 몇 가지 패턴을 시각화해 봤습니다.
 
-<Callout>
+:::callout
 
 그리드를 누르면 다음 세대로 갱신됩니다.
 
-</Callout>
+:::
 
 ### 정물(Still life)
 
@@ -92,6 +92,7 @@ import Layout from '#/conway-game-of-life/game/layout';
 ```ts automaton.ts
 export type Cell = 1 | 0;
 
+// prettier-ignore
 const NEIGHBOR_OFFSETS = [
   [-1, -1], [0, -1], [1, -1],
   [-1,  0],          [1,  0],
