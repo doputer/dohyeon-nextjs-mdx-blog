@@ -165,7 +165,7 @@ const withMDX = createMDX({
 export default withMDX(nextConfig);
 ```
 
-<Callout>
+:::callout
 
 MDX 문법으로 작성만 했는데 어떻게 브라우저에 렌더링 되는걸까요?
 
@@ -175,7 +175,7 @@ MDX 문법으로 작성만 했는데 어떻게 브라우저에 렌더링 되는�
 
 플러그인들은 이런 변환 과정에 개입해서 추상 구문 트리를 조작 할 수 있습니다. 제가 플러그인을 만들면서 `unist-util-visit`을 통해 `src`를 수정 할 수 있었던 이유입니다.
 
-</Callout>
+:::
 
 이제 마무리되었습니다. 그런데 실행 시 `public` 디렉토리에 이미지들이 자동으로 생성되기 때문에 원격 저장소에 올릴 필요가 없습니다. `.gitignore`에도 추가해줍니다.
 

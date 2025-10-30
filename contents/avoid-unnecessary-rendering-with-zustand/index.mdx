@@ -73,7 +73,7 @@ function Bar() {
 
 Zustand는 selector에서 실행된 값을 [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is?retiredLocale=it)로 비교하고 변경되었을 경우 리렌더링 합니다. 위 코드는 실제로 스토어의 객체 전체를 구독하고 있는 셈입니다.
 
-<Callout>
+:::callout
 
 Zustand는 React의 `useState`와 마찬가지로 상태를 불변하게 업데이트 해야 합니다.
 
@@ -88,7 +88,7 @@ set((state) => ({ ...state, a: state.a + 1 }));
 
 [Immutable state and merging](https://zustand.docs.pmnd.rs/guides/immutable-state-and-merging)
 
-</Callout>
+:::
 
 ## 객체에서 값 구독하기
 
@@ -146,10 +146,10 @@ useShallow에서 반환하는 함수 `(state) => { ... }`는 useShallow가 호�
 
 만약 비교한 값이 같아서 `prev`를 반환했다면 기존 객체의 참조를 그대로 반환한 것이기 때문에 이를 구독하고 있는 컴포넌트에서 리렌더링이 일어나지 않습니다.
 
-<Callout>
+:::callout
 
 이 부분에서 **값을 비교한다**라는 표현은 앞선 `Object.is`와 다릅니다.
 
 Zustand는 자체 구현한 [shallow](https://github.com/pmndrs/zustand/blob/main/src/vanilla/shallow.ts) 함수를 통해서 비교 연산을 수행합니다. 이때 단순히 객체의 참조만 비교하는 것이 아니라 객체의 첫 번째 깊이까지 키-값쌍이나 요소를 순회하면서 비교합니다.
 
-</Callout>
+:::

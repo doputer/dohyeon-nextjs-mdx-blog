@@ -129,9 +129,11 @@ const Counter = () => {
 };
 ```
 
-<Callout>
-    `Increase Button`을 눌러서 변화를 확인해 보세요.
-</Callout>
+:::callout
+
+`Increase Button`을 눌러서 변화를 확인해 보세요.
+
+:::
 
 <Example1 />
 
@@ -145,11 +147,8 @@ const Counter = () => {
 
 ```ts primitive-store.ts
 const setState: Store<T>['setState'] = (value) => {
-  // !mark(1:4)
-  const nextState =
-    typeof value === "function"
-      ? (value as (state: T) => T)(state)
-      : value;
+  // !mark
+  const nextState = typeof value === 'function' ? (value as (state: T) => T)(state) : value;
 
   if (Object.is(nextState, state)) return;
 
@@ -163,7 +162,7 @@ const setState: Store<T>['setState'] = (value) => {
 
 ```tsx Counter.tsx
 const increase = () => {
-  store.setState(prev => prev + 1);
+  store.setState((prev) => prev + 1);
 };
 ```
 
@@ -226,18 +225,20 @@ export const useStore = <T, U = T>(
 };
 ```
 
-<Callout>
-    **제네릭 타입 `U`**
+:::callout
 
-    `selector`는 객체에서 일부만 선택할 수 있기 때문에 이때 타입을 안전하게 추론하기 위해서 사용했습니다.
+**제네릭 타입 `U`**
 
-    `T`는 `Store`에서 추론되고 `U`는 `Selector`에서 추론됩니다.
+`selector`는 객체에서 일부만 선택할 수 있기 때문에 이때 타입을 안전하게 추론하기 위해서 사용했습니다.
 
-    ```ts
-    useStore(store) // T = { name: string; age: number }, U = T
-    useStore(store, (state) => state.name) // T = { name: string; age: number }, U = string
-    ```
-</Callout>
+`T`는 `Store`에서 추론되고 `U`는 `Selector`에서 추론됩니다.
+
+```ts
+useStore(store); // T = { name: string; age: number }, U = T
+useStore(store, (state) => state.name); // T = { name: string; age: number }, U = string
+```
+
+:::
 
 이제 컴포넌트에서 객체의 원하는 값만 잘라서 구독할 수 있고, 불필요한 리렌더링도 발생하지 않습니다.
 
@@ -303,11 +304,12 @@ export const useShallow = <T, U = T>(selector: Selector<T, U>) => {
 };
 ```
 
-<Callout>
-    **JSON.stringify**
+:::callout
+**JSON.stringify**
 
-    여기선 간단하게 비교하기 위해 사용했습니다. 객체가 깊어지면 비효율적인 연산이 되기 때문에 `Zustand`에서는 자체 구현한 [shallow](https://github.com/pmndrs/zustand/blob/main/src/vanilla/shallow.ts) 함수를 통해서 비교 연산을 수행합니다.
-</Callout>
+여기선 간단하게 비교하기 위해 사용했습니다. 객체가 깊어지면 비효율적인 연산이 되기 때문에 `Zustand`에서는 자체 구현한 [shallow](https://github.com/pmndrs/zustand/blob/main/src/vanilla/shallow.ts) 함수를 통해서 비교 연산을 수행합니다.
+
+:::
 
 이전값을 `useShallow` 속 `prev`에 저장한 후 새로 들어오는 `next`와 비교해서 동일하다면 이전값을 반환하고, 다르다면 새 값을 반환합니다.
 

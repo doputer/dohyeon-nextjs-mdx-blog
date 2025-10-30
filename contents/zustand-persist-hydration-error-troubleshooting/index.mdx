@@ -54,13 +54,13 @@ test-storage { value: 1 }
 
 동작을 간단하게 설명하면 훅의 첫 번째 인자에서 callback을 전달해서 store를 구독합니다. 이후 store에서 값이 변경되었을 때 전달받은 callback을 호출(React에 store 변경을 알림) 하면 React는 getSnapshot을 통해 값을 받습니다. 만약 값이 달라진 경우 리렌더링 합니다.
 
-<Callout>
+:::callout
 
 `useSyncExternalStore`는 React 18의 Feature 중 하나인 동시성 렌더링(Concurrent Rendering)에서 발생하는 문제를 해결하기 위해 추가되었습니다.
 
 이와 관련한 내용은 다른 글에서 다뤄보겠습니다.
 
-</Callout>
+:::
 
 여기서 자세히 봐야 되는 부분은 세 번째 인자인 `getServerSnapshot`입니다. 이 인자는 공식 문서에 나와있는 것처럼 **서버 렌더링 도중**과 **클라이언트에서 서버 렌더링 된 콘텐츠의 하이드레이션 중**에만 사용됩니다.
 
