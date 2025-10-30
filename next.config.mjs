@@ -12,7 +12,7 @@ import { redirects } from './scripts/redirects.mjs';
 import rehypeImageSize from './scripts/rehype-image-size.mjs';
 import remarkPublicImage from './scripts/remark-public-image.mjs';
 import remarkToc from './scripts/remark-toc.mjs';
-import remarkTypography from './scripts/remark-typeography.mjs';
+import remarkTypography from './scripts/remark-typography.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
