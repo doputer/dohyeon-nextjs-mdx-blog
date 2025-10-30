@@ -24,16 +24,18 @@ import Example4 from '#/create-state-store/example/example4';
 3. 상태가 변경되면 `Zustand`가 모든 구독자에게 알림
 4. `React`가 변경을 감지하고 컴포넌트를 리렌더링
 
-```mermaid
-flowchart TD
-  A["Zustand"] --Create--> B["Store"]
-  B --Notify--> C["Component"]
-  C --Subscribe--> B
+:::mermaid
 
-  A["Zustand"] --Create--> D["Store"]
-  D --Notify--> E["Component"]
-  E --Subscribe--> D
-```
+flowchart TD
+A["Zustand"] --Create--> B["Store"]
+B --Notify--> C["Component"]
+C --Subscribe--> B
+
+A["Zustand"] --Create--> D["Store"]
+D --Notify--> E["Component"]
+E --Subscribe--> D
+
+:::
 
 ## 기본 상태 저장소
 
