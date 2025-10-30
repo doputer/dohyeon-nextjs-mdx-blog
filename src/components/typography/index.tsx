@@ -5,6 +5,7 @@ import Callout from '@/components/typography/callout';
 import Code from '@/components/typography/code';
 import * as format from '@/components/typography/format';
 import Img from '@/components/typography/img';
+import Mermaid from '@/components/typography/mermaid';
 import Table from '@/components/typography/table';
 
 import type { MDXComponents } from 'mdx/types';
@@ -22,11 +23,11 @@ const components: MDXComponents = {
   td: (props) => <td className={format.td} {...props} />,
   a: (props) => <a className={format.a} target="_blank" {...props} />,
   strong: (props) => <strong className={format.strong} {...props} />,
-
   img: (props) => <Img className={format.img} {...(props as ImageProps)} />,
   blockquote: (props) => <Blockquote className={format.blockquote} {...props} />,
-  Callout: (props) => <Callout className={format.blockquote} {...props} />,
   Code: (props) => <Code className={format.pre} {...props} />,
+  Callout: (props) => <Callout className={format.blockquote} {...props} />,
+  Mermaid: (props) => <Mermaid {...props} />,
 };
 
 export default components;
