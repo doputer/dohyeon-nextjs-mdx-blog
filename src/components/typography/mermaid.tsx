@@ -10,7 +10,7 @@ interface Props {
   code: string;
 }
 
-const Mermaid = ({ code }: Props) => {
+const Mermaid = (props: Props) => {
   const id = useId();
   const [svg, setSvg] = useState<string>('');
   const { theme } = useTheme();
@@ -28,7 +28,7 @@ const Mermaid = ({ code }: Props) => {
       if (canceled) return;
 
       try {
-        const { svg } = await mermaid.render(`mmd-${id}`, code);
+        const { svg } = await mermaid.render(`mmd-${id}`, props.code);
         setSvg(svg);
       } catch (error) {
         setSvg(`<pre>${String(error)}</pre>`);
@@ -38,7 +38,7 @@ const Mermaid = ({ code }: Props) => {
     return () => {
       canceled = true;
     };
-  }, [code, id, theme]);
+  }, [props.code, id, theme]);
 
   return <div dangerouslySetInnerHTML={{ __html: svg }} />;
 };
