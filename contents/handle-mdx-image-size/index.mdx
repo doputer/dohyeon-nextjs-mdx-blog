@@ -49,9 +49,9 @@ const Img = (props: ImageProps) => {
 }
 ```
 
-Next.js 공식 문서의 [Image Optimization - Local images](https://nextjs.org/docs/app/getting-started/images#local-images)를 보면 정적으로 import 한 이미지는 Next.js에서 변환해서 `StaticImageData` 객체로 만든다는 것을 알 수 있는데요. 이 경우에는 Next.js가 알아서 이미지의 사이즈를 읽어서 Layout Shift 문제가 발생하지 않게 됩니다.
+Next.js 공식 문서의 [Image Optimization - Local images](https://nextjs.org/docs/app/getting-started/images#local-images)를 보면 정적으로 import 한 이미지는 Next.js에서 변환해서 `StaticImageData` 객체로 만드는데요. 이 경우에는 Next.js가 알아서 이미지 사이즈를 읽어서 Layout Shift 문제가 발생하지 않게 됩니다.
 
-하지만 제 블로그는 MDX에서 작성한 이미지를 직접 가져오기 때문에 Next.js 이미지 변환 파이프라인이 동작하지 않고, 위와 같은 정보들만 남게 됩니다. 그래서 현재와 같은 구조를 유지하기 위해서 직접 이미지 사이즈를 넣어주기로 했습니다.
+하지만 제 블로그는 MDX에서 작성한 이미지를 직접 가져오기 때문에 Next.js 이미지 변환 파이프라인이 동작하지 않고, 위와 같은 정보들만 남게 됩니다. 그래서 현재 구조를 유지하면서 직접 이미지 사이즈를 넣어주기로 했습니다.
 
 ## 플러그인으로 해결하기
 
@@ -94,7 +94,7 @@ const rehypeImageSize = () => {
 };
 ```
 
-이제 이 플러그인을 적용하면 아래와 같이 `props` 이미지의 `width`와 `height`가 추가된 게 보입니다.
+이제 이 플러그인을 적용하면 아래와 같이 `props`에 이미지의 `width`와 `height`가 추가됩니다.
 
 ```json
 {
@@ -114,17 +114,17 @@ const rehypeImageSize = () => {
 
 ## image-size 라이브러리
 
-그런데 손쉽게 이미지 사이즈를 구해준 [image-size](https://github.com/image-size/image-size) 라이브러리는 어떻게 동작하는 걸까요?
+그런데 손쉽게 이미지 사이즈를 구해준 [image-size](https://github.com/image-size/image-size) 라이브러리는 어떻게 동작할까요?
 
-결론부터 이야기하자면 라이브러리는 이미지 파일을 읽고, 파일의 헤더를 분석해서 이미지의 사이즈를 추출합니다. 헤더를 분석 방법은 파일의 포맷에 따라 다양한 방법으로 구현되어 있습니다.
+결론부터 이야기하자면 라이브러리는 이미지 파일을 읽고, 파일의 헤더를 분석해서 이미지 사이즈를 추출합니다. 헤더 분석 방법은 파일 포맷에 따라 다양하게 구현되어 있습니다.
 
 코드가 잘 분리되어 있어서 읽는 데 어려움은 없으실 텐데요. `v2.0.2` 기준으로 `lib`의 `fromFile -> lookup -> detector` 순으로 흐름을 따라가 봤습니다.
 
 1. processQueue: 파일을 읽고, 바이너리 데이터를 [Uint8Array](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)에 저장합니다.
-2. detector: 바이너리 데이터에서 파일의 포맷을 추출합니다.
-3. calculate: 포맷에 맞춰 헤더를 분석해서 이미지의 사이즈를 추출합니다.
+2. detector: 바이너리 데이터에서 파일 포맷을 추출합니다.
+3. calculate: 포맷에 맞춰 헤더를 분석해서 이미지 사이즈를 추출합니다.
 
-생각보다 간단한 흐름인데요. 파일의 포맷을 추출하고, 헤더를 분석하는 과정이 재밌습니다.
+생각보다 간단한 흐름인데요. 파일 포맷을 추출하고, 헤더를 분석하는 과정이 재밌습니다.
 
 ## PNG 다뤄보기
 
@@ -134,11 +134,11 @@ const rehypeImageSize = () => {
 
 ![](2.png)
 
-아무 의미 없어 보이는 데이터 같은데요. PNG의 구조를 알고 나면 의미 있는 데이터로 변합니다.
+아무 의미 없어 보이는 데이터 같죠? PNG의 구조를 알고 나면 의미 있는 데이터로 변합니다.
 
 ### PNG 구조
 
-[PNG SPEC v1.2](https://www.libpng.org/pub/png/spec/1.2/PNG-Contents.html) 문서를 보면 PNG 포맷의 자세한 스팩이 적혀있습니다.
+[PNG SPEC v1.2](https://www.libpng.org/pub/png/spec/1.2/PNG-Contents.html) 문서를 보면 PNG 포맷의 자세한 스펙이 적혀있습니다.
 
 #### PNG file signature
 
@@ -204,13 +204,13 @@ const rehypeImageSize = () => {
 
 이제 위 구조를 실제 코드로 검증해 보겠습니다.
 
-주어진 정보를 종합해서 PNG 이미지 사이즈를 구하는 여정을 정리하면 아래와 같습니다.
+주어진 정보를 종합해서 PNG 이미지 사이즈를 구하는 과정을 정리하면 아래와 같습니다.
 
 1. File signature가 PNG인지 검사
 2. Chunk Type이 IHDR인지 검사
 3. Width, Height 추출
 
-이 여정을 아래와 같이 코드로 표현할 수 있습니다.
+이 과정을 아래와 같이 코드로 표현할 수 있습니다.
 
 ```ts
 import * as fs from 'node:fs';
@@ -262,7 +262,7 @@ const readUInt32BE = (input: Uint8Array, offset = 0) => {
 await process();
 ```
 
-## 느낀점
+## 마치며
 
 블로그에서 발생한 Layout Shift를 해결하는 과정에서 이미지 포맷의 구조와 바이너리 데이터 해석까지 공부해 볼 수 있어서 즐거웠습니다.
 
