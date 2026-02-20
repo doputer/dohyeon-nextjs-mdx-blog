@@ -8,23 +8,19 @@ export async function GET(request: Request) {
   const emoji = hasEmoji ? searchParams.get('emoji') : '🏷️';
 
   return new ImageResponse(
-    (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-          fontSize: 512,
-        }}
-      >
-        {emoji}
-      </div>
-    ),
-    {
-      ...size,
-    }
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'white',
+        fontSize: 512,
+      }}
+    >
+      {emoji}
+    </div>,
+    { ...size }
   );
 }
