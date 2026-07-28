@@ -1,14 +1,15 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
+import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
 import prettierPlugin from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
 
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
-
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
+  /* Ignores */
+  {
+    ignores: ['.next/**', 'node_modules/**', 'next-env.d.ts'],
+  },
+
   /* JavaScript */
   eslint.configs.recommended,
 
@@ -78,7 +79,7 @@ export default tseslint.config(
   },
 
   /* Next.js */
-  ...compat.config({ extends: ['next', 'next/core-web-vitals'] }),
+  ...nextCoreWebVitals,
 
   //   /* Prettier */
   {

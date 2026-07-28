@@ -13,7 +13,7 @@ const getMDXDirs = async () => {
 };
 
 const parseMDX = async (slug: string) => {
-  const MDXModule = await import(`/contents/${slug}/index.mdx`);
+  const MDXModule = await import(`../../../contents/${slug}/index.mdx`);
   const { frontmatter, toc, default: MDX } = MDXModule;
 
   return { frontmatter, toc, slug, MDX } as Post;
