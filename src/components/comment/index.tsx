@@ -1,11 +1,20 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import config from '@/configs/config.json';
 import useTheme from '@/hooks/use-theme';
 import Giscus from '@giscus/react';
 
 const Comment = () => {
   const { theme } = useTheme();
+
+  // Vercel Preview 등 배포 환경에서도 커스텀 테마 CSS를 현재 도메인에서 불러온다
+  const [origin, setOrigin] = useState(config.siteUrl);
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
 
   return (
     <div>
@@ -19,7 +28,7 @@ const Comment = () => {
         reactionsEnabled="0"
         emitMetadata="0"
         inputPosition="top"
-        theme={`${config.siteUrl}/giscus/ink-${theme === 'light' ? 'light' : 'dark'}.css`}
+        theme={`${origin}/giscus/ink-${theme === 'light' ? 'light' : 'dark'}.css`}
         lang="ko"
         loading="lazy"
       />
