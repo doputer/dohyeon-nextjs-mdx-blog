@@ -50,6 +50,10 @@
     scrollbar-gutter: stable;
   }
 
+  ::selection {
+    background: color-mix(in srgb, var(--color-accent) 24%, transparent);
+  }
+
   body {
     @apply text-main;
     @apply bg-background;
