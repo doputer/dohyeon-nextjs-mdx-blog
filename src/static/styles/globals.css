@@ -10,12 +10,16 @@
   --color-blue: oklch(46.8% 0.2 261deg);
   --color-green: oklch(69.6% 0.149 162deg);
 
-  --color-main: oklch(26.9% 0 0);
-  --color-mute: oklch(26.9% 0 0 / 65%);
-  --color-soft: oklch(26.9% 0 0 / 30%);
-  --color-line: oklch(26.9% 0 0 / 10%);
-  --color-surface: oklch(96.5% 0 0);
-  --color-background: oklch(100% 0 0);
+  /* 먹과 종이 — 종이(canvas)·먹(ink)·잉크(accent) 팔레트 */
+  --color-main: #21201d;
+  --color-mute: #4d4b46;
+  --color-soft: #8f8c84;
+  --color-line: #e8e6e0;
+  --color-surface: #f1efe9;
+  --color-background: #faf9f7;
+  --color-accent: #cf5417;
+  --color-code-bg: #24211c;
+  --color-code-inline: #a8430f;
 
   --animate-flip: flip 1s ease-in-out infinite;
 
@@ -30,12 +34,15 @@
 }
 
 [data-theme~='dark'] {
-  --color-main: oklch(97% 0 0);
-  --color-mute: oklch(97% 0 0 / 65%);
-  --color-soft: oklch(97% 0 0 / 40%);
-  --color-line: oklch(97% 0 0 / 10%);
-  --color-surface: oklch(28% 0 0);
-  --color-background: oklch(22.5% 0.0074 248deg);
+  --color-main: #ece9e3;
+  --color-mute: #b3afa6;
+  --color-soft: #7d7a71;
+  --color-line: #2b2925;
+  --color-surface: #211f1b;
+  --color-background: #171512;
+  --color-accent: #f08c4b;
+  --color-code-bg: #201d18;
+  --color-code-inline: #f0a36b;
 }
 
 @layer base {
@@ -46,6 +53,9 @@
   body {
     @apply text-main;
     @apply bg-background;
+
+    /* 종이 질감: 배경색 위에 feTurbulence 그레인 한 겹 */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.035'/></svg>");
 
     @apply antialiased;
 
