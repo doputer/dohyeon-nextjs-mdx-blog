@@ -26,7 +26,7 @@ const components: MDXComponents = {
   img: (props) => <Img className={format.img} {...(props as ImageProps)} />,
   blockquote: (props) => <Blockquote className={format.blockquote} {...props} />,
   Code: (props) => <Code className={format.pre} {...props} />,
-  Callout: (props) => <Callout className={format.blockquote} {...props} />,
+  Callout: (props) => <Callout className={format.callout} {...props} />,
   Mermaid: (props) => <Mermaid {...props} />,
 };
 
