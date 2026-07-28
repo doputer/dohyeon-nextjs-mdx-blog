@@ -22,9 +22,15 @@ const List = ({ posts }: ListProps) => {
   const list = Object.entries(group).toSorted(([a], [b]) => Number(b) - Number(a));
 
   return (
-    <section>
+    <section className="group">
       {list.map(([year, posts]) => (
-        <section key={year} className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8">
+        <section
+          key={year}
+          className={cn(
+            'grid grid-cols-[auto_1fr] gap-6 sm:gap-8',
+            'transition-opacity duration-300 ease-out group-hover:opacity-40 hover:opacity-100!'
+          )}
+        >
           <span className="h-fit py-3 font-medium text-accent tabular-nums select-none sm:text-lg">
             {year}
           </span>
