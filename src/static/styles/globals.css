@@ -18,7 +18,6 @@
   --color-surface: #f1efe9;
   --color-background: #faf9f7;
   --color-accent: #cf5417;
-  --color-code-bg: #24211c;
   --color-code-inline: #a8430f;
 
   --animate-flip: flip 1s ease-in-out infinite;
@@ -41,7 +40,6 @@
   --color-surface: #211f1b;
   --color-background: #171512;
   --color-accent: #f08c4b;
-  --color-code-bg: #201d18;
   --color-code-inline: #f0a36b;
 }
 

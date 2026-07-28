@@ -13,7 +13,7 @@ const Code = ({ codeblock, className }: Props) => {
   const handlers = [mark, fold, collapse];
 
   return (
-    <div className="relative rounded-xl bg-code-bg dark:border dark:border-line">
+    <div className="relative rounded border border-line bg-background">
       {codeblock.meta && (
         <span className="absolute right-0 bottom-full -translate-x-3 translate-y-1/2 rounded bg-background px-1 font-mono text-xs tracking-tight text-mute">
           {codeblock.meta}
