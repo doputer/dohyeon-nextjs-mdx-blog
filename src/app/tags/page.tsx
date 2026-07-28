@@ -17,7 +17,7 @@ const Page = async () => {
       }
     }
 
-    return [...map.entries()].sort(([a], [b]) => a.localeCompare(b));
+    return [...map.entries()].toSorted(([a], [b]) => a.localeCompare(b));
   })();
 
   return (

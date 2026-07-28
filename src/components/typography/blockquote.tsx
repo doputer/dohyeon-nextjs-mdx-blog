@@ -1,8 +1,7 @@
 import type { PropsWithChildren } from 'react';
 
-import { ChatBubbleOvalLeftIcon } from '@heroicons/react/24/solid';
-
 import { cn } from '@/utils/cn';
+import { ChatBubbleOvalLeftIcon } from '@heroicons/react/24/solid';
 
 interface Props {
   className?: string;

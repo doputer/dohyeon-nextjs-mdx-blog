@@ -1,11 +1,11 @@
-import path from 'node:path';
-
 import createMDX from '@next/mdx';
 import type { NextConfig } from 'next';
 
-import { redirects } from './scripts/redirects.mjs';
-
 import type { CodeHikeConfig } from 'codehike/mdx';
+
+import path from 'node:path';
+
+import { redirects } from './scripts/redirects.mjs';
 
 const local = (script: string) => path.join(__dirname, 'scripts', script);
 

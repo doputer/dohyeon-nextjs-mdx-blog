@@ -1,7 +1,6 @@
 import { readFile } from 'fs/promises';
-import path from 'node:path';
-
 import sizeOf from 'image-size';
+import path from 'node:path';
 import { visit } from 'unist-util-visit';
 
 const dir = path.join(process.cwd(), 'public');

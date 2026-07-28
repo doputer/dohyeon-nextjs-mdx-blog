@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-import { format } from 'date-fns';
-
 import type { Post } from '@/lib/MDX/types';
+
 import { cn } from '@/utils/cn';
+import { format } from 'date-fns';
 
 interface ListProps {
   posts: Post[];
@@ -19,7 +19,7 @@ const List = ({ posts }: ListProps) => {
     return acc;
   }, {});
 
-  const list = Object.entries(group).sort(([a], [b]) => Number(b) - Number(a));
+  const list = Object.entries(group).toSorted(([a], [b]) => Number(b) - Number(a));
 
   return (
     <section className="group">

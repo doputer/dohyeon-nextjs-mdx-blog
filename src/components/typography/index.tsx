@@ -1,5 +1,7 @@
 import type { ImageProps } from 'next/image';
 
+import type { MDXComponents } from 'mdx/types';
+
 import Blockquote from '@/components/typography/blockquote';
 import Callout from '@/components/typography/callout';
 import Code from '@/components/typography/code';
@@ -7,8 +9,6 @@ import * as format from '@/components/typography/format';
 import Img from '@/components/typography/img';
 import Mermaid from '@/components/typography/mermaid';
 import Table from '@/components/typography/table';
-
-import type { MDXComponents } from 'mdx/types';
 
 const components: MDXComponents = {
   h2: (props) => <h2 className={format.h2} {...props} />,

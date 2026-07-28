@@ -1,8 +1,9 @@
 'use client';
 
+import type { Post } from '@/lib/MDX/types';
+
 import useObserver from '@/hooks/use-observer';
 import useScroll from '@/hooks/use-scroll';
-import type { Post } from '@/lib/MDX/types';
 import { cn } from '@/utils/cn';
 
 interface TOCProps {
