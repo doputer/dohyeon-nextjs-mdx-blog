@@ -1,9 +1,9 @@
 'use client';
 
-import { use, useCallback } from 'react';
+import { use, useCallback, useState } from 'react';
 
-import useEmoji from '@/hooks/use-emoji';
 import useLike from '@/hooks/use-like';
+import { cn } from '@/utils/cn';
 import { launch } from '@/utils/particle';
 
 interface Props {
@@ -12,8 +12,8 @@ interface Props {
 }
 
 const Reaction = ({ initial, slug }: Props) => {
-  const Emoji = useEmoji('❤️');
   const { like, addLike } = useLike(use(initial));
+  const [pressed, setPressed] = useState(false);
 
   const playReaction = useCallback((button: HTMLButtonElement) => {
     const rect = button.getBoundingClientRect();
@@ -26,19 +26,34 @@ const Reaction = ({ initial, slug }: Props) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     playReaction(e.currentTarget);
     addLike(slug);
+    setPressed(true);
   };
 
   return (
-    <section className="mx-auto">
-      <button
-        className="group flex items-center justify-between gap-2 rounded border border-line px-2 py-1 transition-colors duration-300 ease-out select-none"
-        onClick={handleClick}
-      >
-        <span className="size-5 transition-transform duration-300 ease-out group-hover:scale-150">
-          {Emoji}
-        </span>
-        <span className="text-sm tabular-nums">{like ?? 0}</span>
-      </button>
+    <section className="flex flex-col items-center gap-8">
+      <div aria-hidden className="flex gap-3 text-accent select-none">
+        <span>·</span>
+        <span>·</span>
+        <span>·</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <button
+          aria-label="좋아요"
+          className={cn(
+            'flex size-14 -rotate-3 items-center justify-center rounded-[10px] select-none',
+            'border-[1.5px] border-accent bg-accent/5 text-xl text-accent',
+            'transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+            'hover:-translate-y-0.5 hover:rotate-0 hover:bg-accent/10',
+            'motion-reduce:animate-none motion-reduce:transition-none',
+            pressed && 'animate-seal-press'
+          )}
+          onAnimationEnd={() => setPressed(false)}
+          onClick={handleClick}
+        >
+          ♥
+        </button>
+        <span className="text-[13px] font-semibold text-accent tabular-nums">{like ?? 0}</span>
+      </div>
     </section>
   );
 };

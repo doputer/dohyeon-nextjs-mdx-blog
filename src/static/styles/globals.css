@@ -10,7 +10,6 @@
   --color-blue: oklch(46.8% 0.2 261deg);
   --color-green: oklch(69.6% 0.149 162deg);
 
-  /* 먹과 종이 — 종이(canvas)·먹(ink)·잉크(accent) 팔레트 */
   --color-main: #21201d;
   --color-mute: #4d4b46;
   --color-soft: #8f8c84;
@@ -21,6 +20,7 @@
   --color-code-inline: #a8430f;
 
   --animate-flip: flip 1s ease-in-out infinite;
+  --animate-seal-press: seal-press 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
 
   @keyframes flip {
     0% {
@@ -28,6 +28,18 @@
     }
     100% {
       transform: rotateY(360deg);
+    }
+  }
+
+  @keyframes seal-press {
+    0% {
+      transform: rotate(-3deg) scale(1);
+    }
+    35% {
+      transform: rotate(-1deg) scale(0.82);
+    }
+    100% {
+      transform: rotate(-3deg) scale(1);
     }
   }
 }

@@ -5,7 +5,6 @@ import Comment from '@/components/comment';
 import Post from '@/components/post';
 import Header from '@/components/post/header';
 import Progress from '@/components/post/progress';
-import Stamp from '@/components/post/stamp';
 import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
@@ -20,7 +19,7 @@ const Page = async (props: PageProps) => {
   if (!(await accessPost(params.slug))) notFound();
 
   const { frontmatter, toc, MDX } = await getPost(params.slug);
-  const { title, date, emoji } = frontmatter;
+  const { title, date } = frontmatter;
 
   const likePromise = getLikeBySlug(params.slug);
 
@@ -29,7 +28,6 @@ const Page = async (props: PageProps) => {
       <Progress />
       <Header title={title} date={date} />
       <Post toc={toc} MDX={MDX} />
-      <Stamp emoji={emoji} />
       <Reaction initial={likePromise} slug={params.slug} />
       <Comment />
     </>
