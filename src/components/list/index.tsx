@@ -36,9 +36,9 @@ const List = ({ posts }: ListProps) => {
                     <span
                       className={cn(
                         'bg-no-repeat transition-[background-size] duration-300 ease-out',
-                        '[background-image:linear-gradient(var(--color-accent),var(--color-accent))]',
-                        '[background-size:0%_1.5px] [background-position:0_100%]',
-                        'group-hover/li:[background-size:100%_1.5px]'
+                        'bg-[linear-gradient(var(--color-accent),var(--color-accent))]',
+                        'bg-size-[0%_1.5px] bg-position-[0_100%]',
+                        'group-hover/li:bg-size-[100%_1.5px]'
                       )}
                     >
                       {frontmatter.title}
