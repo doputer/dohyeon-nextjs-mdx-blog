@@ -1,7 +1,7 @@
+import type { Post } from '@/lib/MDX/types';
+
 import { access, constants, readdir } from 'fs/promises';
 import path from 'path';
-
-import type { Post } from '@/lib/MDX/types';
 
 const DIR = path.join(process.cwd(), 'contents');
 
@@ -13,7 +13,7 @@ const getMDXDirs = async () => {
 };
 
 const parseMDX = async (slug: string) => {
-  const MDXModule = await import(`/contents/${slug}/index.mdx`);
+  const MDXModule = await import(`../../../contents/${slug}/index.mdx`);
   const { frontmatter, toc, default: MDX } = MDXModule;
 
   return { frontmatter, toc, slug, MDX } as Post;
@@ -39,7 +39,7 @@ const getPost = async (slug: string) => {
 const getPosts = async () => {
   const allDir = await getMDXDirs();
   const allPost = await Promise.all(allDir.map(getPost));
-  const allSortedPost = allPost.sort((a, b) => {
+  const allSortedPost = allPost.toSorted((a, b) => {
     return new Date(a.frontmatter.date) > new Date(b.frontmatter.date) ? -1 : 1;
   });
 

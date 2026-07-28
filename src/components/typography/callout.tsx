@@ -1,8 +1,7 @@
 import type { PropsWithChildren } from 'react';
 
-import { BoltIcon } from '@heroicons/react/24/solid';
-
 import { cn } from '@/utils/cn';
+import { BoltIcon } from '@heroicons/react/24/solid';
 
 interface Props {
   className?: string;

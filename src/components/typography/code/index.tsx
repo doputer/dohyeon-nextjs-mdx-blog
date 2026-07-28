@@ -1,9 +1,8 @@
-import { type HighlightedCode, Pre } from 'codehike/code';
-
 import collapse from '@/components/typography/code/handlers/collapse';
 import fold from '@/components/typography/code/handlers/fold';
 import mark from '@/components/typography/code/handlers/mark';
 import { cn } from '@/utils/cn';
+import { type HighlightedCode, Pre } from 'codehike/code';
 
 interface Props {
   codeblock: HighlightedCode;

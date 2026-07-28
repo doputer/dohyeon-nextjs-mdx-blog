@@ -1,8 +1,7 @@
 'use client';
 
-import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
-
 import useTheme from '@/hooks/use-theme';
+import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
 
 const ThemeSwitch = () => {
   const { toggleTheme } = useTheme();

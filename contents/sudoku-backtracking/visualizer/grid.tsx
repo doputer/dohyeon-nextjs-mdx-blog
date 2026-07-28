@@ -1,6 +1,6 @@
-import { cn } from '@/utils/cn';
-
 import type { Step } from '#/sudoku-backtracking/engine/solver';
+
+import { cn } from '@/utils/cn';
 
 export type Board = number[][];
 export type Mask = boolean[][];

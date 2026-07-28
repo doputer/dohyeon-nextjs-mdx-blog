@@ -1,12 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-
 import { useEffect, useRef, useState } from 'react';
 
-import { type LottieOptions, useLottie } from 'lottie-react';
-
 import { loadLottie, toCodePoint } from '@/utils/lottie';
+import { type LottieOptions, useLottie } from 'lottie-react';
 
 const useEmoji = (emoji: string) => {
   const ref = useRef<HTMLDivElement>(null);

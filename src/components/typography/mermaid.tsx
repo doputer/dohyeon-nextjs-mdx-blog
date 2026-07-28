@@ -2,9 +2,8 @@
 
 import { useEffect, useId, useState } from 'react';
 
-import mermaid from 'mermaid';
-
 import useTheme from '@/hooks/use-theme';
+import mermaid from 'mermaid';
 
 interface Props {
   code: string;
