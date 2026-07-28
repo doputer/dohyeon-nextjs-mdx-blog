@@ -19,7 +19,7 @@ const Comment = () => {
         reactionsEnabled="0"
         emitMetadata="0"
         inputPosition="top"
-        theme={theme === 'light' ? 'noborder_light' : 'noborder_dark'}
+        theme={`${config.siteUrl}/giscus/ink-${theme === 'light' ? 'light' : 'dark'}.css`}
         lang="ko"
         loading="lazy"
       />
