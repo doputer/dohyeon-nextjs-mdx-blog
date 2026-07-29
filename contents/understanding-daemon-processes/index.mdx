@@ -43,7 +43,7 @@ node app.js &
 
 터미널이 종료되거나 접속 세션이 끊기면 프로세스가 종료되는 이유가 무엇일까요? 터미널을 종료하거나 접속 세션이 끊어지면 Bash에게 [SIGHUP 시그널](https://www.gnu.org/software/bash/manual/html_node/Signals.html)이 전달되고, Bash는 관리 중인 모든 프로세스 그룹에 SIGHUP 시그널을 전송한 뒤 종료됩니다. 시그널을 받은 프로세스 그룹은 [고아 프로세스 그룹](https://www.gnu.org/software/libc/manual/html_node/Orphaned-Process-Groups.html)이 되고, 이 그룹에 속한 프로세스는 마찬가지로 SIGHUP 시그널을 받고 종료됩니다.
 
-> SIGNUP(HUP)은 전화선이 끊어졌을 때 발생하는 시그널인데 기본 동작(default action)이 종료이다. 이 때문에 별다른 설정을 하지 않고, 이 시그널을 받는 프로세스는 종료된다.
+> SIGHUP(HUP)은 전화선이 끊어졌을 때 발생하는 시그널인데 기본 동작(default action)이 종료이다. 이 때문에 별다른 설정을 하지 않고, 이 시그널을 받는 프로세스는 종료된다.
 
 정리하자면 터미널이 종료되거나 접속 세션이 끊긴 경우 프로세스가 종료 시그널을 받게 되므로 기본 동작에 따라 프로세스가 종료됩니다.
 
