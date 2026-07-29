@@ -8,7 +8,6 @@ import Progress from '@/components/post/progress';
 import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
 import { accessPost, getPost, getPosts } from '@/lib/MDX';
-import { getLikeBySlug } from '@/lib/supabase/server/like';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -21,14 +20,12 @@ const Page = async (props: PageProps) => {
   const { frontmatter, toc, MDX } = await getPost(params.slug);
   const { title, date } = frontmatter;
 
-  const likePromise = getLikeBySlug(params.slug);
-
   return (
     <>
       <Progress />
       <Header title={title} date={date} />
       <Post toc={toc} MDX={MDX} />
-      <Reaction initial={likePromise} slug={params.slug} />
+      <Reaction slug={params.slug} />
       <Comment />
     </>
   );

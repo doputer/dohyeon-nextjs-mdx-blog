@@ -1,18 +1,17 @@
 'use client';
 
-import { use, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import useLike from '@/hooks/use-like';
 import { cn } from '@/utils/cn';
 import { launch } from '@/utils/particle';
 
 interface Props {
-  initial: Promise<number>;
   slug: string;
 }
 
-const Reaction = ({ initial, slug }: Props) => {
-  const { like, addLike } = useLike(use(initial));
+const Reaction = ({ slug }: Props) => {
+  const { like, addLike } = useLike(slug);
   const [pressed, setPressed] = useState(false);
 
   const playReaction = useCallback((button: HTMLButtonElement) => {
