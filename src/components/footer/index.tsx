@@ -3,7 +3,7 @@ const Footer = () => {
     <>
       <hr className="border-line" />
       <footer className="flex justify-center text-sm text-mute">
-        ⓒ 2025. 김도현. All Rights Reserved.
+        ⓒ 2026. 김도현. All Rights Reserved.
       </footer>
     </>
   );

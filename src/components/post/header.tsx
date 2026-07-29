@@ -11,7 +11,7 @@ const Header = ({ title, date }: HeaderProps) => {
   return (
     <section className="space-y-2">
       <h1 className="text-3xl font-bold tracking-tight break-keep">{title}</h1>
-      <time dateTime={date} className="text-sm font-medium text-accent tabular-nums">
+      <time dateTime={date} className="text-sm font-medium text-mute tabular-nums">
         {format(date, 'yyyy.MM.dd')}
       </time>
     </section>
