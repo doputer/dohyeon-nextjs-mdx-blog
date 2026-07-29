@@ -27,13 +27,13 @@ import Example4 from '#/create-state-store/example/example4';
 :::mermaid
 
 flowchart TD
-A["Zustand"] --Create--> B["Store"]
-B --Notify--> C["Component"]
-C --Subscribe--> B
+A["Zustand"] -->|Create| B["Store"]
+B -->|Notify| C["Component"]
+C -->|Subscribe| B
 
-A["Zustand"] --Create--> D["Store"]
-D --Notify--> E["Component"]
-E --Subscribe--> D
+A["Zustand"] -->|Create| D["Store"]
+D -->|Notify| E["Component"]
+E -->|Subscribe| D
 
 :::
 
