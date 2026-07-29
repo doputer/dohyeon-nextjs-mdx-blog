@@ -19,12 +19,12 @@ const copyImages = async () => {
 
   if (await exists(TARGET_DIR)) await rm(TARGET_DIR, { recursive: true });
 
-  for await (const dir of dirs) {
+  for (const dir of dirs) {
     const sourceDirPath = path.resolve(path.join(SOURCE_DIR, dir));
     const targetDirPath = path.resolve(path.join(TARGET_DIR, dir));
     const entries = await readdir(sourceDirPath, { withFileTypes: true });
     const files = entries.filter((entry) => !entry.isDirectory()).map((entry) => entry.name);
-    const imageFiles = files.filter((file) => /.(png|gif)$/.test(file));
+    const imageFiles = files.filter((file) => /\.(png|gif)$/.test(file));
 
     if (imageFiles.length === 0) continue;
 
@@ -35,7 +35,7 @@ const copyImages = async () => {
         const sourceFilePath = path.resolve(path.join(sourceDirPath, imageFile));
         const targetFilePath = path.resolve(path.join(targetDirPath, imageFile));
 
-        copyFile(sourceFilePath, targetFilePath);
+        return copyFile(sourceFilePath, targetFilePath);
       })
     );
   }
