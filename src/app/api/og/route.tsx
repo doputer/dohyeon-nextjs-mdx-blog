@@ -4,8 +4,7 @@ const size = { width: 1200, height: 630 };
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const hasEmoji = searchParams.has('emoji');
-  const emoji = hasEmoji ? searchParams.get('emoji') : '🏷️';
+  const emoji = searchParams.get('emoji') || '🏷️';
 
   return new ImageResponse(
     <div
