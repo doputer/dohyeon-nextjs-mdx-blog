@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import config from '@/configs/config.json';
 import { getPosts } from '@/lib/MDX';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 export async function GET() {
   const posts = await getPosts();
