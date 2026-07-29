@@ -37,7 +37,11 @@ const useLike = (slug: string) => {
       setLike((state) => (state ?? 0) + 1);
       setAction(slug, type);
 
-      await postLike(id, slug);
+      try {
+        await postLike(id, slug);
+      } catch {
+        setLike((state) => (state ?? 1) - 1);
+      }
     },
     [hasAction, setAction]
   );

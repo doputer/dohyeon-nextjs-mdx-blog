@@ -42,13 +42,12 @@ const Mermaid = (props: Props) => {
     });
 
     (async () => {
-      if (canceled) return;
-
       try {
         const { svg } = await mermaid.render(`mmd-${id}`, props.code);
-        setSvg(svg);
+        if (!canceled) setSvg(svg);
       } catch (error) {
-        setSvg(`<pre>${String(error)}</pre>`);
+        const message = String(error).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+        if (!canceled) setSvg(`<pre>${message}</pre>`);
       }
     })();
 

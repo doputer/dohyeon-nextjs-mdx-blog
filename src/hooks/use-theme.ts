@@ -6,7 +6,7 @@ const useTheme = () => {
   const [theme, setTheme] = useState(global.window?.__theme || 'light');
 
   const toggleTheme = () => {
-    global.window?.__setPreferredTheme(theme === 'light' ? 'dark' : 'light');
+    global.window?.__setPreferredTheme?.(theme === 'light' ? 'dark' : 'light');
   };
 
   useEffect(() => {
@@ -16,20 +16,8 @@ const useTheme = () => {
 
     global.window?.__addThemeListener?.(handleTheme);
 
-    // const observer = new MutationObserver((mutations) => {
-    //   for (const m of mutations) {
-    //     if (m.type === 'attributes' && m.attributeName === 'data-theme') {
-    //       const newTheme = document.documentElement.getAttribute('data-theme') as Theme;
-    //       if (newTheme && newTheme !== theme) setTheme(newTheme);
-    //     }
-    //   }
-    // });
-
-    // observer.observe(document.documentElement, { attributes: true });
-
     return () => {
       global.window?.__removeThemeListener?.(handleTheme);
-      // observer.disconnect();
     };
   }, []);
 

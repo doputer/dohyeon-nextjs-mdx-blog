@@ -108,9 +108,6 @@ importers:
       estree-util-value-to-estree:
         specifier: ^3.5.0
         version: 3.5.0
-      github-slugger:
-        specifier: ^2.0.0
-        version: 2.0.0
       oxfmt:
         specifier: ^0.60.0
         version: 0.60.0

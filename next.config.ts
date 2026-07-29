@@ -36,13 +36,17 @@ const withMDX = createMDX({
       'remark-frontmatter',
       'remark-mdx-frontmatter',
       'remark-gfm',
-      local('remark-toc.mjs'),
       local('remark-public-image.mjs'),
       'remark-directive',
       local('remark-typography.mjs'),
       [local('remark-codehike.mjs'), codehikeConfig],
     ],
-    rehypePlugins: ['rehype-slug', local('rehype-image-size.mjs'), 'rehype-unwrap-images'],
+    rehypePlugins: [
+      'rehype-slug',
+      local('rehype-toc.mjs'),
+      local('rehype-image-size.mjs'),
+      'rehype-unwrap-images',
+    ],
   },
 });
 

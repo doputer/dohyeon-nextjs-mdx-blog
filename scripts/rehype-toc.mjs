@@ -1,27 +1,26 @@
 import { valueToEstree } from 'estree-util-value-to-estree';
-import GithubSlugger from 'github-slugger';
 import { visit } from 'unist-util-visit';
 
-const slugs = new GithubSlugger();
 const AvailableDepth = new Set([2, 3]);
 
-const remarkToc = () => {
+const toText = (node) => {
+  if (node.type === 'text') return node.value;
+  return (node.children ?? []).map(toText).join('');
+};
+
+const rehypeToc = () => {
   return (tree) => {
     const toc = [];
 
-    visit(tree, 'heading', (node) => {
-      if (!AvailableDepth.has(node.depth)) return;
+    visit(tree, 'element', (node) => {
+      const match = /^h(\d)$/.exec(node.tagName);
+      if (!match) return;
 
-      slugs.reset();
+      const depth = Number(match[1]);
 
-      const text = node.children
-        .filter((child) => child.type === 'text')
-        .map((child) => child.value)
-        .join('');
-      const id = slugs.slug(text);
-      const depth = node.depth;
+      if (!AvailableDepth.has(depth)) return;
 
-      toc.push({ id, text, depth });
+      toc.push({ id: node.properties.id, text: toText(node), depth });
     });
 
     tree.children.unshift({
@@ -54,4 +53,4 @@ const remarkToc = () => {
   };
 };
 
-export default remarkToc;
+export default rehypeToc;

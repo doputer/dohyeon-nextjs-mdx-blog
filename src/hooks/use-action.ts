@@ -40,9 +40,11 @@ const useAction = () => {
     const id = getItem('UNIQUE_USER_ID', fallback);
     if (!id) return;
 
-    getActionByUserId(id).then((data) => {
-      data.forEach(({ slug, action }) => setAction(slug, action));
-    });
+    getActionByUserId(id)
+      .then((data) => {
+        data.forEach(({ slug, action }) => setAction(slug, action));
+      })
+      .catch(() => {});
   }, [setAction]);
 
   return { hasAction, setAction };

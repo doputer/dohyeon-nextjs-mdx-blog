@@ -2,7 +2,7 @@ import Image, { type ImageProps } from 'next/image';
 
 const Img = (props: ImageProps) => {
   const caption = props?.title;
-  const isUnoptimized = /.gif$/.test(props.src as string);
+  const isUnoptimized = (props.src as string).endsWith('.gif');
 
   return (
     <figure className="space-y-4">

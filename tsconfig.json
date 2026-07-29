@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
-    "target": "es6",
+    "target": "es2022",
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -30,5 +30,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "gatsby"]
+  "exclude": ["node_modules"]
 }

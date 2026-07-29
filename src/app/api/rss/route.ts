@@ -5,6 +5,10 @@ import { getPosts } from '@/lib/MDX';
 
 export const dynamic = 'force-static';
 
+const escapeXml = (value: string) => {
+  return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+};
+
 export async function GET() {
   const posts = await getPosts();
 
@@ -12,7 +16,7 @@ export async function GET() {
     .map(
       ({ frontmatter, slug }) => `
   <item>
-    <title>${frontmatter.title}</title>
+    <title>${escapeXml(frontmatter.title)}</title>
     <link>${config.siteUrl}/${slug}</link>
     <guid>${config.siteUrl}/${slug}</guid>
     <pubDate>${new Date(frontmatter.date).toUTCString()}</pubDate>
