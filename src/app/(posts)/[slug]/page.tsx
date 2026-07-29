@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 
 import Comment from '@/components/comment';
 import Post from '@/components/post';
@@ -7,7 +6,7 @@ import Header from '@/components/post/header';
 import Progress from '@/components/post/progress';
 import Reaction from '@/components/reaction';
 import config from '@/configs/config.json';
-import { accessPost, getPost, getPosts } from '@/lib/MDX';
+import { getPost, getPosts } from '@/lib/MDX';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -15,7 +14,6 @@ interface PageProps {
 
 const Page = async (props: PageProps) => {
   const params = await props.params;
-  if (!(await accessPost(params.slug))) notFound();
 
   const { frontmatter, toc, MDX } = await getPost(params.slug);
   const { title, date } = frontmatter;
@@ -31,6 +29,8 @@ const Page = async (props: PageProps) => {
   );
 };
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const posts = await getPosts();
 
@@ -39,7 +39,6 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const params = await props.params;
-  if (!(await accessPost(params.slug))) notFound();
 
   const { frontmatter } = await getPost(params.slug);
   const { emoji, title, description } = frontmatter;

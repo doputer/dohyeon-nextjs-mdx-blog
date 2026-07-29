@@ -1,49 +1,29 @@
+import { cache } from 'react';
+
 import type { Post } from '@/lib/MDX/types';
 
-import { access, constants, readdir } from 'fs/promises';
+import { readdir } from 'fs/promises';
 import path from 'path';
 
 const DIR = path.join(process.cwd(), 'contents');
 
-const getMDXDirs = async () => {
-  const entries = await readdir(DIR, { withFileTypes: true });
-  const dirs = entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
-
-  return dirs;
-};
-
-const parseMDX = async (slug: string) => {
+const getPost = cache(async (slug: string) => {
   const MDXModule = await import(`../../../contents/${slug}/index.mdx`);
   const { frontmatter, toc, default: MDX } = MDXModule;
 
   return { frontmatter, toc, slug, MDX } as Post;
-};
+});
 
-const accessPost = async (slug: string) => {
-  const filePath = path.resolve(path.join(DIR, slug));
+const getPosts = cache(async () => {
+  const entries = await readdir(DIR, { withFileTypes: true });
+  const dirs = entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
 
-  try {
-    await access(filePath, constants.F_OK);
-    return true;
-  } catch {
-    return false;
-  }
-};
+  const posts = await Promise.all(dirs.map(getPost));
+  const sortedPosts = posts.toSorted(
+    (a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
+  );
 
-const getPost = async (slug: string) => {
-  const post = await parseMDX(slug);
+  return sortedPosts;
+});
 
-  return post;
-};
-
-const getPosts = async () => {
-  const allDir = await getMDXDirs();
-  const allPost = await Promise.all(allDir.map(getPost));
-  const allSortedPost = allPost.toSorted((a, b) => {
-    return new Date(a.frontmatter.date) > new Date(b.frontmatter.date) ? -1 : 1;
-  });
-
-  return allSortedPost;
-};
-
-export { accessPost, getPost, getPosts };
+export { getPost, getPosts };

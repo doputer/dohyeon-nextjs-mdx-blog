@@ -1,7 +1,6 @@
 import type { run } from '@mdx-js/mdx';
 
-type AwaitType<T> = T extends Promise<infer U> ? U : T;
-type MDXModule = AwaitType<ReturnType<typeof run>>;
+type MDXModule = Awaited<ReturnType<typeof run>>;
 type MDXContent = MDXModule['default'];
 
 export interface Frontmatter {
