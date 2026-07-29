@@ -17,10 +17,28 @@ const Mermaid = (props: Props) => {
   useEffect(() => {
     let canceled = false;
 
+    const styles = getComputedStyle(document.documentElement);
+    const token = (name: string) => styles.getPropertyValue(name).trim();
+
     mermaid.initialize({
       startOnLoad: false,
-      theme: theme === 'light' ? 'neutral' : 'dark',
+      theme: 'base',
       look: 'handDrawn',
+      themeVariables: {
+        darkMode: theme === 'dark',
+        background: token('--color-background'),
+        primaryColor: token('--color-surface'),
+        primaryTextColor: token('--color-main'),
+        primaryBorderColor: token('--color-soft'),
+        secondaryColor: token('--color-line'),
+        tertiaryColor: token('--color-background'),
+        lineColor: token('--color-mute'),
+        textColor: token('--color-main'),
+        noteBkgColor: token('--color-surface'),
+        noteTextColor: token('--color-main'),
+        noteBorderColor: token('--color-line'),
+        fontFamily: 'inherit',
+      },
     });
 
     (async () => {

@@ -1,0 +1,105 @@
+main {
+  --color-prettylights-syntax-comment: #6e7781;
+  --color-prettylights-syntax-constant: #0550ae;
+  --color-prettylights-syntax-entity: #8250df;
+  --color-prettylights-syntax-storage-modifier-import: #24292f;
+  --color-prettylights-syntax-entity-tag: #116329;
+  --color-prettylights-syntax-keyword: #cf222e;
+  --color-prettylights-syntax-string: #0a3069;
+  --color-prettylights-syntax-variable: #953800;
+  --color-prettylights-syntax-brackethighlighter-unmatched: #82071e;
+  --color-prettylights-syntax-invalid-illegal-text: #f6f8fa;
+  --color-prettylights-syntax-invalid-illegal-bg: #82071e;
+  --color-prettylights-syntax-carriage-return-text: #f6f8fa;
+  --color-prettylights-syntax-carriage-return-bg: #cf222e;
+  --color-prettylights-syntax-string-regexp: #116329;
+  --color-prettylights-syntax-markup-list: #3b2300;
+  --color-prettylights-syntax-markup-heading: #0550ae;
+  --color-prettylights-syntax-markup-italic: #24292f;
+  --color-prettylights-syntax-markup-bold: #24292f;
+  --color-prettylights-syntax-markup-deleted-text: #82071e;
+  --color-prettylights-syntax-markup-deleted-bg: #ffebe9;
+  --color-prettylights-syntax-markup-inserted-text: #116329;
+  --color-prettylights-syntax-markup-inserted-bg: #dafbe1;
+  --color-prettylights-syntax-markup-changed-text: #953800;
+  --color-prettylights-syntax-markup-changed-bg: #ffd8b5;
+  --color-prettylights-syntax-markup-ignored-text: #eaeef2;
+  --color-prettylights-syntax-markup-ignored-bg: #0550ae;
+  --color-prettylights-syntax-meta-diff-range: #8250df;
+  --color-prettylights-syntax-brackethighlighter-angle: #57606a;
+  --color-prettylights-syntax-sublimelinter-gutter-mark: #8c959f;
+  --color-prettylights-syntax-constant-other-reference-link: #0a3069;
+
+  --color-btn-text: #21201d;
+  --color-btn-bg: #f1efe9;
+  --color-btn-border: #21201d26;
+  --color-btn-shadow: 0 1px 0 #21201d0a;
+  --color-btn-inset-shadow: inset 0 1px 0 #ffffff40;
+  --color-btn-hover-bg: #ece9e1;
+  --color-btn-hover-border: #21201d33;
+  --color-btn-active-bg: #e6e2d9;
+  --color-btn-active-border: #21201d33;
+  --color-btn-selected-bg: #e9e5dd;
+  --color-btn-primary-text: #faf9f7;
+  --color-btn-primary-bg: #21201d;
+  --color-btn-primary-border: #21201d26;
+  --color-btn-primary-shadow: 0 1px 0 #21201d1a;
+  --color-btn-primary-inset-shadow: inset 0 1px 0 #ffffff08;
+  --color-btn-primary-hover-bg: #35322c;
+  --color-btn-primary-hover-border: #21201d26;
+  --color-btn-primary-selected-bg: #2b2925;
+  --color-btn-primary-selected-shadow: inset 0 1px 0 #00000033;
+  --color-btn-primary-disabled-text: #faf9f7cc;
+  --color-btn-primary-disabled-bg: #8f8c84;
+  --color-btn-primary-disabled-border: #21201d26;
+
+  --color-action-list-item-default-hover-bg: #e8e6e052;
+  --color-segmented-control-bg: #f1efe9;
+  --color-segmented-control-button-bg: #faf9f7;
+  --color-segmented-control-button-selected-border: #8f8c84;
+
+  --color-fg-default: #21201d;
+  --color-fg-muted: #8f8c84;
+  --color-fg-subtle: #8f8c84;
+  --color-canvas-default: transparent;
+  --color-canvas-overlay: #faf9f7;
+  --color-canvas-inset: #f1efe9;
+  --color-canvas-subtle: #f1efe9;
+  --color-border-default: #e8e6e0;
+  --color-border-muted: #efede7;
+  --color-neutral-muted: #8f8c8426;
+
+  --color-accent-fg: #cf5417;
+  --color-accent-emphasis: #cf5417;
+  --color-accent-muted: #cf541766;
+  --color-accent-subtle: #cf541714;
+
+  --color-success-fg: #1a7f37;
+  --color-attention-fg: #9a6700;
+  --color-attention-muted: #d4a72c66;
+  --color-attention-subtle: #fff8c5;
+  --color-danger-fg: #d1242f;
+  --color-danger-muted: #ff818266;
+  --color-danger-subtle: #ffebe9;
+  --color-primer-shadow-inset: inset 0 1px 0 #e8e6e033;
+  --color-scale-gray-1: #ece9e1;
+  --color-scale-blue-1: #f6d9c4;
+
+  /*! Extensions from @primer/css/alerts/flash.scss */
+  --color-social-reaction-bg-hover: var(--color-scale-gray-1);
+  --color-social-reaction-bg-reacted-hover: var(--color-scale-blue-1);
+}
+
+main .pagination-loader-container {
+  background-image: url(https://github.com/images/modules/pulls/progressive-disclosure-line.svg);
+}
+
+main .gsc-loading-image {
+  background-image: url(https://github.githubassets.com/images/mona-loading-default.gif);
+}
+
+main .btn-primary {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+}

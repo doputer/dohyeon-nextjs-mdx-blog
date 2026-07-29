@@ -1,14 +1,30 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import useAction from '@/hooks/use-action';
-import { postLike } from '@/lib/supabase/client/like';
+import { getLikeBySlug, postLike } from '@/lib/supabase/client/like';
 import { getItem } from '@/utils/local-storage';
 
 const type = 'like';
 
-const useLike = (initial: number) => {
-  const [like, setLike] = useState(initial);
+const useLike = (slug: string) => {
+  const [like, setLike] = useState<number | null>(null);
   const { hasAction, setAction } = useAction();
+
+  useEffect(() => {
+    let canceled = false;
+
+    getLikeBySlug(slug)
+      .then((count) => {
+        if (!canceled) setLike(count);
+      })
+      .catch(() => {
+        if (!canceled) setLike(0);
+      });
+
+    return () => {
+      canceled = true;
+    };
+  }, [slug]);
 
   const addLike = useCallback(
     async (slug: string) => {
@@ -18,7 +34,7 @@ const useLike = (initial: number) => {
       if (!id) return;
       if (hasAction(slug, type)) return;
 
-      setLike((state) => state + 1);
+      setLike((state) => (state ?? 0) + 1);
       setAction(slug, type);
 
       await postLike(id, slug);

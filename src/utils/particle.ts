@@ -1,6 +1,6 @@
 import confetti from 'canvas-confetti';
 
-const colors = ['#B91C1C', '#E11D48', '#FF4D6D', '#FB7185', '#FF6B6B'];
+const colors = ['#CF5417', '#E06A2B', '#F08C4B', '#F7B580', '#8F8C84'];
 const count = 300;
 
 const fire = (options: confetti.Options, ratio: number) => {

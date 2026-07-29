@@ -4,7 +4,7 @@ import Counter from '@/components/counter';
 import List from '@/components/list';
 import config from '@/configs/config.json';
 import { getPosts } from '@/lib/MDX';
-import { decode } from '@/utils/uri';
+import { decode, encode } from '@/utils/uri';
 
 interface PageProps {
   params: Promise<{ tag: string }>;
@@ -25,6 +25,13 @@ const Page = async (props: PageProps) => {
     </>
   );
 };
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  const tags = new Set(posts.flatMap((post) => post.frontmatter.tags));
+
+  return [...tags].map((tag) => ({ tag: encode(tag) }));
+}
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const params = await props.params;

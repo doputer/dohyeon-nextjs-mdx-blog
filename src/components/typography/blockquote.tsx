@@ -1,7 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
 import { cn } from '@/utils/cn';
-import { ChatBubbleOvalLeftIcon } from '@heroicons/react/24/solid';
 
 interface Props {
   className?: string;
@@ -9,8 +8,7 @@ interface Props {
 
 const Blockquote = (props: PropsWithChildren<Props>) => {
   return (
-    <blockquote {...props} className={cn('group bg-surface', props.className)}>
-      <ChatBubbleOvalLeftIcon className="mt-0.5 size-6 shrink-0 text-mute group-hover:animate-flip" />
+    <blockquote {...props} className={cn(props.className)}>
       <div className="space-y-6 overflow-hidden">{props.children}</div>
     </blockquote>
   );
