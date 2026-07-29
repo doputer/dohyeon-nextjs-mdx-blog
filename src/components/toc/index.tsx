@@ -43,7 +43,7 @@ const TOC = ({ toc }: TOCProps) => {
             : 'pointer-events-none opacity-0 transition-opacity duration-150 ease-out motion-reduce:transition-none'
         )}
       >
-        <ul className="flex max-h-72 scrollbar-none flex-col gap-2 overflow-y-auto text-sm lg:max-h-96 lg:gap-2.5 lg:text-[15px]">
+        <ul className="scrollbar-none flex max-h-72 flex-col gap-2 overflow-y-auto text-sm lg:max-h-96 lg:gap-2.5 lg:text-[15px]">
           {toc.map(({ id, text, depth }) => (
             <li key={id} className={cn('relative', depth === 3 && 'pl-3.5')}>
               <button
