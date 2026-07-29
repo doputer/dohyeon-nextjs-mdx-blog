@@ -27,13 +27,11 @@ import Example4 from '#/create-state-store/example/example4';
 :::mermaid
 
 flowchart TD
-A["Zustand"] -->|Create| B["Store"]
-B -->|Notify| C["Component"]
-C -->|Subscribe| B
-
-A["Zustand"] -->|Create| D["Store"]
-D -->|Notify| E["Component"]
-E -->|Subscribe| D
+Zustand["Zustand"] -->|"① 저장소 생성"| Store["Store"]
+Store -->|"② useSyncExternalStore로 구독"| Hook["useSyncExternalStore"]
+Hook -->|"③ 변경 알림"| A["Component A 리렌더링"]
+Hook -->|"③ 변경 알림"| B["Component B 리렌더링"]
+A -->|"setState"| Store
 
 :::
 
