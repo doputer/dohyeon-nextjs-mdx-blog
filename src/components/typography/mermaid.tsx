@@ -1,62 +1,41 @@
-'use client';
-
-import { useEffect, useId, useState } from 'react';
-
-import useTheme from '@/hooks/use-theme';
-import mermaid from 'mermaid';
+import * as format from '@/components/typography/format';
+import { renderMermaidSVG } from 'beautiful-mermaid';
 
 interface Props {
   code: string;
 }
 
+const colors = {
+  bg: 'var(--color-background)',
+  fg: 'var(--color-main)',
+  line: 'var(--color-soft)',
+  accent: 'var(--color-accent)',
+  muted: 'var(--color-soft)',
+  surface: 'var(--color-surface)',
+  border: 'var(--color-line)',
+  transparent: true,
+};
+
+const inheritFont = (svg: string) =>
+  svg
+    .replace(/^\s*@import url\('https:\/\/fonts\.googleapis\.com[^']*'\);$/gm, '')
+    .replace(/text \{ font-family:[^}]*\}/, 'text { font-family: inherit; }');
+
 const Mermaid = (props: Props) => {
-  const id = useId();
-  const [svg, setSvg] = useState<string>('');
-  const { theme } = useTheme();
+  let svg: string;
 
-  useEffect(() => {
-    let canceled = false;
+  try {
+    svg = inheritFont(renderMermaidSVG(props.code, colors));
+  } catch (error) {
+    return <pre className={format.pre}>{String(error)}</pre>;
+  }
 
-    const styles = getComputedStyle(document.documentElement);
-    const token = (name: string) => styles.getPropertyValue(name).trim();
-
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: 'base',
-      look: 'handDrawn',
-      themeVariables: {
-        darkMode: theme === 'dark',
-        background: token('--color-background'),
-        primaryColor: token('--color-surface'),
-        primaryTextColor: token('--color-main'),
-        primaryBorderColor: token('--color-soft'),
-        secondaryColor: token('--color-line'),
-        tertiaryColor: token('--color-background'),
-        lineColor: token('--color-mute'),
-        textColor: token('--color-main'),
-        noteBkgColor: token('--color-surface'),
-        noteTextColor: token('--color-main'),
-        noteBorderColor: token('--color-line'),
-        fontFamily: 'inherit',
-      },
-    });
-
-    (async () => {
-      try {
-        const { svg } = await mermaid.render(`mmd-${id}`, props.code);
-        if (!canceled) setSvg(svg);
-      } catch (error) {
-        const message = String(error).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-        if (!canceled) setSvg(`<pre>${message}</pre>`);
-      }
-    })();
-
-    return () => {
-      canceled = true;
-    };
-  }, [props.code, id, theme]);
-
-  return <div dangerouslySetInnerHTML={{ __html: svg }} />;
+  return (
+    <div
+      className="overflow-x-auto [&>svg]:h-auto [&>svg]:max-w-full"
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
 };
 
 export default Mermaid;
