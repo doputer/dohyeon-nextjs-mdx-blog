@@ -51,13 +51,13 @@ const Img = (props: ImageProps) => {
 
 Next.js 공식 문서의 [Image Optimization - Local images](https://nextjs.org/docs/app/getting-started/images#local-images)를 보면 정적으로 import 한 이미지는 Next.js에서 변환해서 `StaticImageData` 객체로 만드는데요. 이 경우에는 Next.js가 알아서 이미지 사이즈를 읽어서 Layout Shift 문제가 발생하지 않게 됩니다.
 
-하지만 제 블로그는 MDX에서 작성한 이미지를 직접 가져오기 때문에 Next.js 이미지 변환 파이프라인이 동작하지 않고, 위와 같은 정보들만 남게 됩니다. 그래서 현재 구조를 유지하면서 직접 이미지 사이즈를 넣어주기로 했습니다.
+하지만 제 블로그는 MDX에서 작성한 이미지를 직접 가져오기 때문에 Next.js 이미지 변환 파이프라인이 동작하지 않고 위와 같은 정보들만 남게 됩니다. 그래서 현재 구조를 유지하면서 직접 이미지 사이즈를 넣어주기로 했습니다.
 
 ## 플러그인으로 해결하기
 
 MDX는 MDAST -> HAST 과정을 거쳐서 JSX로 변환되는데요. HAST에 위와 같은 객체 정보가 남아있고, 이때 트리를 순회하면서 `src`로 이미지를 불러와서 사이즈를 계산 후 추가해 줄 수 있습니다.
 
-이 과정에 쉽게 개입하기 위해 `rehype` 플러그인을 구현했고, 이미지 사이즈 계산을 위해 [image-size](https://github.com/image-size/image-size) 라이브러리를 이용했습니다.
+이 과정에 쉽게 개입하기 위해 `rehype` 플러그인을 구현했고 이미지 사이즈 계산에는 [image-size](https://github.com/image-size/image-size) 라이브러리를 이용했습니다.
 
 ```js rehype-image-size.mjs
 const rehypeImageSize = () => {
@@ -116,15 +116,15 @@ const rehypeImageSize = () => {
 
 그런데 손쉽게 이미지 사이즈를 구해준 [image-size](https://github.com/image-size/image-size) 라이브러리는 어떻게 동작할까요?
 
-결론부터 이야기하자면 라이브러리는 이미지 파일을 읽고, 파일의 헤더를 분석해서 이미지 사이즈를 추출합니다. 헤더 분석 방법은 파일 포맷에 따라 다양하게 구현되어 있습니다.
+결론부터 이야기하자면 라이브러리는 이미지 파일을 읽고 파일의 헤더를 분석해서 이미지 사이즈를 추출합니다. 헤더 분석 방법은 파일 포맷에 따라 다양하게 구현되어 있습니다.
 
 코드가 잘 분리되어 있어서 읽는 데 어려움은 없으실 텐데요. `v2.0.2` 기준으로 `lib`의 `fromFile -> lookup -> detector` 순으로 흐름을 따라가 봤습니다.
 
-1. processQueue: 파일을 읽고, 바이너리 데이터를 [Uint8Array](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)에 저장합니다.
+1. processQueue: 파일을 읽고 바이너리 데이터를 [Uint8Array](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)에 저장합니다.
 2. detector: 바이너리 데이터에서 파일 포맷을 추출합니다.
 3. calculate: 포맷에 맞춰 헤더를 분석해서 이미지 사이즈를 추출합니다.
 
-생각보다 간단한 흐름인데요. 파일 포맷을 추출하고, 헤더를 분석하는 과정이 재밌습니다.
+생각보다 간단한 흐름인데요. 파일 포맷을 추출하고 헤더를 분석하는 과정이 재밌습니다.
 
 ## PNG 다뤄보기
 
@@ -182,7 +182,7 @@ const rehypeImageSize = () => {
 ...
 ```
 
-이제 `Chunk Type`을 식별하고, `Chunk Data`에서 정보를 가져올 수 있게 됩니다.
+이제 `Chunk Type`을 식별하고 `Chunk Data`에서 정보를 가져올 수 있게 됩니다.
 
 너비와 높이에 대한 정보는 `IHDR Chunk`의 데이터 안에 있습니다.
 
