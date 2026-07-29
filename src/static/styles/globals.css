@@ -10,13 +10,13 @@
   --color-blue: oklch(46.8% 0.2 261deg);
   --color-green: oklch(69.6% 0.149 162deg);
 
-  --color-main: #21201d;
-  --color-mute: #4d4b46;
-  --color-soft: #8f8c84;
-  --color-line: #e8e6e0;
-  --color-surface: #f1efe9;
-  --color-background: #faf9f7;
-  --color-accent: #cf5417;
+  --color-main: #1b1d24;
+  --color-mute: #464b56;
+  --color-soft: #868c9a;
+  --color-line: #e3e7ee;
+  --color-surface: #eef1f6;
+  --color-background: #f8f9fc;
+  --color-accent: #c2551b;
 
   --animate-flip: flip 1s ease-in-out infinite;
   --animate-seal-press: seal-press 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -55,14 +55,24 @@
   }
 }
 
+:root {
+  --blob-1: hsla(190, 62%, 64%, 0.18);
+  --blob-2: hsla(212, 64%, 68%, 0.17);
+  --blob-3: hsla(172, 52%, 62%, 0.13);
+}
+
 [data-theme~='dark'] {
-  --color-main: #ece9e3;
-  --color-mute: #b3afa6;
-  --color-soft: #7d7a71;
-  --color-line: #2b2925;
-  --color-surface: #211f1b;
-  --color-background: #171512;
-  --color-accent: #f08c4b;
+  --color-main: #e7e9f0;
+  --color-mute: #a8aebb;
+  --color-soft: #767c8a;
+  --color-line: #262b35;
+  --color-surface: #1a1e27;
+  --color-background: #121620;
+  --color-accent: #e8814a;
+
+  --blob-1: hsla(190, 60%, 50%, 0.17);
+  --blob-2: hsla(212, 62%, 54%, 0.16);
+  --blob-3: hsla(172, 50%, 46%, 0.12);
 }
 
 @layer base {
@@ -79,8 +89,30 @@
     @apply bg-background;
     @apply antialiased;
 
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.035'/></svg>");
+    position: relative;
     font-synthesis: none;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -80px;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(38vw 38vw at 6% 2%, var(--blob-1), transparent 66%),
+      radial-gradient(34vw 34vw at 98% 34%, var(--blob-2), transparent 66%),
+      radial-gradient(32vw 32vw at 44% 104%, var(--blob-3), transparent 66%);
+    filter: blur(90px);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.035'/></svg>");
   }
 
   button {
