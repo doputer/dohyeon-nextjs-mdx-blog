@@ -1,4 +1,4 @@
-import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
+import { ArrowPathIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 
 interface Props {
   state: {
@@ -8,21 +8,44 @@ interface Props {
   control: {
     increaseSpeed: () => void;
     togglePause: () => void;
+    reset?: () => void;
   };
 }
 
+const buttonStyle =
+  'flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-[13px] font-semibold text-mute select-none hover:bg-surface hover:text-main';
+
 const Controller = ({ state, control }: Props) => {
   return (
-    <div className="flex h-8 justify-end gap-1">
-      <button
-        className="rounded px-2 text-lg font-medium select-none hover:bg-surface"
-        onClick={control.increaseSpeed}
-      >
-        X{state.speed}
-      </button>
-      <button className="rounded px-2 select-none hover:bg-surface" onClick={control.togglePause}>
-        {state.paused ? <PlayIcon className="size-5" /> : <PauseIcon className="size-5" />}
-      </button>
+    <div className="flex items-center justify-between rounded-full border border-line bg-surface/55 py-1 pr-1.5 pl-3.5">
+      <div className="flex items-center gap-3 text-xs text-mute select-none">
+        <span className="flex items-center gap-1.5">
+          <i className="size-2 rounded-xs bg-accent/55" />
+          시도
+        </span>
+        <span className="flex items-center gap-1.5">
+          <i className="size-2 rounded-xs bg-red/45" />
+          되돌아가기
+        </span>
+      </div>
+
+      <div className="flex items-center gap-1">
+        {control.reset && (
+          <button aria-label="처음부터" className={buttonStyle} onClick={control.reset}>
+            <ArrowPathIcon className="size-3.5" />
+          </button>
+        )}
+        <button className={`${buttonStyle} tabular-nums`} onClick={control.increaseSpeed}>
+          ×{state.speed}
+        </button>
+        <button
+          aria-label={state.paused ? '재생' : '일시정지'}
+          className="flex size-7 items-center justify-center rounded-full bg-accent text-background select-none hover:opacity-85"
+          onClick={control.togglePause}
+        >
+          {state.paused ? <PlayIcon className="size-3.5" /> : <PauseIcon className="size-3.5" />}
+        </button>
+      </div>
     </div>
   );
 };
