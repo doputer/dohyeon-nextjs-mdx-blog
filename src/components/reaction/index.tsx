@@ -39,7 +39,7 @@ const Reaction = ({ slug }: Props) => {
         <button
           aria-label="좋아요"
           className={cn(
-            'flex size-14 -rotate-3 items-center justify-center rounded-[10px] select-none',
+            'flex size-14 -rotate-3 items-center justify-center rounded-lg select-none',
             'border-[1.5px] border-accent bg-accent/5 text-xl text-accent',
             'transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
             'hover:-translate-y-0.5 hover:rotate-0 hover:bg-accent/10',

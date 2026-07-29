@@ -14,11 +14,7 @@ const Img = (props: ImageProps) => {
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
         unoptimized={isUnoptimized}
       />
-      {caption && (
-        <figcaption className="text-center text-sm text-soft before:text-accent before:content-['—_']">
-          {caption}
-        </figcaption>
-      )}
+      {caption && <figcaption className="text-center text-sm text-soft">{caption}</figcaption>}
     </figure>
   );
 };
