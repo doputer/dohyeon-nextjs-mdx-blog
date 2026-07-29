@@ -1,19 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import config from '@/configs/config.json';
 import useTheme from '@/hooks/use-theme';
 import Giscus from '@giscus/react';
 
 const Comment = () => {
   const { theme } = useTheme();
-
-  const [origin, setOrigin] = useState(config.siteUrl);
-
-  useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
 
   return (
     <div>
@@ -27,7 +19,7 @@ const Comment = () => {
         reactionsEnabled="0"
         emitMetadata="0"
         inputPosition="top"
-        theme={`${origin}/giscus/ink-${theme}.css`}
+        theme={`${config.siteUrl}/giscus/ink-${theme}.css`}
         lang="ko"
         loading="lazy"
       />

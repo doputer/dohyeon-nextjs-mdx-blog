@@ -22,6 +22,7 @@ const Sudoku = () => {
   const [board, setBoard] = useState(initialBoard);
   const [speed, setSpeed] = useState(1);
   const [paused, setPaused] = useState(false);
+  const [runId, setRunId] = useState(0);
   const [currentStep, setCurrentStep] = useState<Step>();
 
   const speedRef = useRef(speed);
@@ -37,32 +38,53 @@ const Sudoku = () => {
     setPaused(pauseRef.current);
   }, []);
 
+  const reset = useCallback(() => {
+    pauseRef.current = false;
+    setPaused(false);
+    setBoard(initialBoard);
+    setCurrentStep(undefined);
+    setRunId((id) => id + 1);
+  }, []);
+
   useEffect(() => {
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout>;
+
     const animate = async () => {
       const generator = solve(initialBoard);
 
       for (const step of generator) {
-        while (pauseRef.current) await sleep();
+        while (pauseRef.current) {
+          if (cancelled) return;
+          await sleep();
+        }
+        if (cancelled) return;
+
         setCurrentStep(step);
         setBoard(step.board);
         await sleep(500 / speedRef.current);
       }
 
-      setTimeout(animate, 1500);
+      timeoutId = setTimeout(animate, 1500);
     };
 
     animate();
-  }, []);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
+  }, [runId]);
 
   return (
-    <section className="mx-auto w-full max-w-sm space-y-2">
+    <section className="mx-auto w-full max-w-xs space-y-2.5">
       <Grid
         board={board}
         currentStep={currentStep}
         lockedMask={makeLockedMask(initialBoard)}
         readOnly
       />
-      <Controller state={{ speed, paused }} control={{ increaseSpeed, togglePause }} />
+      <Controller state={{ speed, paused }} control={{ increaseSpeed, togglePause, reset }} />
     </section>
   );
 };

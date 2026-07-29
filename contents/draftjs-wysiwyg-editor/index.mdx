@@ -16,7 +16,7 @@ date: 2021-09-03
 
 ![](0.png)
 
-HTML `<textarea>` 태그에서 bold, italic 등을 적용할 수 있고, 적용되자마자 보인다고 생각하면 편합니다.
+HTML `<textarea>` 태그에서 bold, italic 등을 적용할 수 있고 적용되자마자 보인다고 생각하면 편합니다.
 
 ## 위지윅 에디터를 이용하기에 앞서
 
@@ -32,7 +32,7 @@ document.execCommand('bold');
 // 선택영역(텍스트를 드래그 한 영역)의 양쪽에 <b> 태그 혹은 <strong> 태그를 삽입한다.
 ```
 
-그런데 `contentEditable`은 표준이 아니기 때문에 브라우저마다 다르게 동작합니다. 예를 들어 브라우저마다 bold를 표시할 때 `<b>` 태그를 사용하기도 하고, `<strong>` 태그를 사용하기도 합니다. 그뿐만 아니라 줄 바꿈 또한 `<br>`와 `<div>`를 사용하는 등 마찬가지입니다. 심지어 `document.execCommand()`의 명령어 동작도 브라우저마다 다르다고 합니다.
+그런데 `contentEditable`은 표준이 아니기 때문에 브라우저마다 다르게 동작합니다. 예를 들어 브라우저마다 bold를 표시할 때 `<b>` 태그를 사용하기도 하고 `<strong>` 태그를 사용하기도 합니다. 그뿐만 아니라 줄 바꿈 또한 `<br>`와 `<div>`를 사용하는 등 마찬가지입니다. 심지어 `document.execCommand()`의 명령어 동작도 브라우저마다 다르다고 합니다.
 
 그리고 `document.execCommand()`의 동작 방식은 선택영역의 양쪽에 태그를 삽입하는 식이기 때문에 아래와 같은 불상사가 발생했을 때 대처하기 힘듭니다. 태그끼리 꼬이는 현상입니다.
 
@@ -40,7 +40,7 @@ document.execCommand('bold');
 가나<b>다<i>라</b>마</i>사아자카타파하
 ```
 
-물론 이런 부분들을 직접 해결할 수 있었지만, 시간적인 제약도 있고, 요즘에는 잘 구현되어있는 WYSIWYG 에디터들이 많아서 이것 중에 하나를 이용하기로 했습니다.
+물론 이런 부분들을 직접 해결할 수 있었지만 시간적인 제약도 있고, 요즘에는 잘 구현되어있는 WYSIWYG 에디터들이 많아서 이것 중에 하나를 이용하기로 했습니다.
 
 - Quill
 - Draft.js
@@ -53,7 +53,7 @@ document.execCommand('bold');
 
 ![](1.gif)
 
-[문서](https://draftjs.org/)도 잘 되어있고, 막히는 부분은 개발 커뮤니티를 통해서 충분히 해결 가능했습니다. 기본적으로 다양한 블록 스타일과 선택 영역 스타일을 제공합니다.
+[문서](https://draftjs.org/)도 잘 되어있고 막히는 부분은 개발 커뮤니티를 통해서 충분히 해결 가능했습니다. 기본적으로 다양한 블록 스타일과 선택 영역 스타일을 제공합니다.
 
 > 블록 스타일: h1~h6, ul, ol, blockquote, code
 >
@@ -61,7 +61,7 @@ document.execCommand('bold');
 
 저는 추가적으로 `text-align`이 필요했기 때문에 커스텀 블록 스타일로 left, center, right를 추가했습니다. 필요에 따라서 첨부 파일, 링크, 주석, 테이블 스타일을 추가할 수 있습니다. 문서화가 잘 되어있기 때문에 손쉽게 추가할 수 있습니다.
 
-작성한 내용을 추출하거나(HTML 혹은 Markdown), 추출된 내용을 다시 에디터로 불러오는 부분은 외부 패키지를 이용하면 됩니다. 저는 [draftjs-to-html](https://www.npmjs.com/package/draftjs-to-html)과 [html-to-draftjs](https://www.npmjs.com/package/html-to-draftjs)를 이용해서 추출한 내용을 DB에 저장하고, 불러왔습니다.
+작성한 내용을 추출하거나(HTML 혹은 Markdown), 추출된 내용을 다시 에디터로 불러오는 부분은 외부 패키지를 이용하면 됩니다. 저는 [draftjs-to-html](https://www.npmjs.com/package/draftjs-to-html)과 [html-to-draftjs](https://www.npmjs.com/package/html-to-draftjs)를 이용해서 추출한 내용을 DB에 저장하고 불러왔습니다.
 
 ## 소스코드
 

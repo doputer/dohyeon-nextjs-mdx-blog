@@ -1,8 +1,8 @@
-import type { Step } from '#/sudoku-backtracking/engine/solver';
+import type { Board, Step } from '#/sudoku-backtracking/engine/solver';
 
 import { cn } from '@/utils/cn';
 
-export type Board = number[][];
+export type { Board };
 export type Mask = boolean[][];
 
 export const makeLockedMask = (board: Board): Mask => board.map((row) => row.map((v) => v > 0));
@@ -17,7 +17,7 @@ interface Props {
 
 const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Props) => {
   return (
-    <div className="grid aspect-square grid-cols-9 grid-rows-9">
+    <div className="grid aspect-square grid-cols-9 grid-rows-9 overflow-hidden rounded border-2 border-line bg-surface/45">
       {board.map((row, i) =>
         row.map((cell, j) => {
           const isTry =
@@ -30,18 +30,19 @@ const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Pr
             <div
               key={`${i}-${j}`}
               className={cn(
-                'relative flex items-center justify-center border-transparent text-sm',
-                i % 3 === 0 ? 'border-t-4' : 'border-t-2',
-                j % 3 === 0 ? 'border-l-4' : 'border-l-2',
+                'flex items-center justify-center border-line text-[15px] tabular-nums',
+                i % 3 === 0 ? 'border-t-2 border-t-line' : 'border-t',
+                j % 3 === 0 ? 'border-l-2 border-l-line' : 'border-l',
                 i === 0 && 'border-t-0',
                 j === 0 && 'border-l-0',
-                i === 8 && 'border-b-0',
-                j === 8 && 'border-r-0',
-                isLocked === false && 'text-blue dark:text-green'
+                isLocked === true && 'font-semibold',
+                isLocked === false && 'text-accent',
+                isTry && 'bg-accent/15',
+                isBack && 'bg-red/15'
               )}
             >
               {readOnly ? (
-                <span className="relative z-10">{cell || ''}</span>
+                <span>{cell || ''}</span>
               ) : (
                 <input
                   type="text"
@@ -56,17 +57,9 @@ const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Pr
                     if (Number.isNaN(n) || n < 0 || n > 9) return;
                     onChange(i, j, n);
                   }}
-                  className="relative z-10 size-full bg-transparent text-center outline-none"
+                  className="size-full bg-transparent text-center outline-none"
                 />
               )}
-
-              <div
-                className={cn(
-                  'pointer-events-none absolute inset-0 rounded bg-surface',
-                  isTry && 'bg-soft',
-                  isBack && 'bg-red/30'
-                )}
-              />
             </div>
           );
         })

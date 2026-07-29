@@ -12,7 +12,7 @@ date: 2024-02-20
 
 ## 그럼에도 사용하게된 이유
 
-뒤늦게서야 제 스스로가 [Utility-First](https://tailwindcss.com/docs/utility-first)에 대한 의문을 가지면서 동시에 프로젝트에 적용하고 있었다는걸 깨달았습니다.
+뒤늦게서야 제 스스로가 [Utility-First](https://tailwindcss.com/docs/utility-first)에 의문을 품으면서 동시에 프로젝트에 적용하고 있었다는걸 깨달았습니다.
 
 ```tsx
 import styled from 'styled-components';
@@ -51,12 +51,12 @@ export default theme;
 
 이렇게 테마도 지정해서 사용했었습니다. `Sass(SCSS)`와 같은 `CSS-in-CSS`를 사용할 때도 마찬가지였습니다.
 
-위와 같이 작성했던 유틸리티들이 편하다고 생각했던 이유는 무엇일까요?
+이렇게 작성했던 유틸리티들이 편하다고 생각한 이유는 무엇일까요?
 
 1. 작은 단위로 이루어져서 다른 컴포넌트에서 손쉽게 사용할 수 있다.
 2. 직관적인 네이밍으로 적용 후에 어떤 일이 일어나는 지 바로 알 수 있다.
 
-이처럼 유틸리티들의 장점을 저도 모르게 느끼고 있었습니다. 동시에 Tailwind CSS에서 추구하는 Utility-First 컨셉에 공감하게 되면서 사용을 결정했습니다.
+유틸리티들의 장점을 저도 모르게 느끼고 있었던 겁니다. 동시에 Tailwind CSS에서 추구하는 Utility-First 컨셉에도 공감이 가서 사용을 결정했습니다.
 
 ## 사용하면서 해소된 몇 가지 오해
 
@@ -68,7 +68,7 @@ export default theme;
 >
 > [Semantics - MDN](https://developer.mozilla.org/ko/docs/Glossary/Semantics)
 
-CSS의 이름에 의미를 부여한다는 것은 당연한 것이었습니다.
+CSS의 이름에 의미를 부여하는 건 당연한 일이었습니다.
 
 ```html
 // CSS
@@ -88,9 +88,9 @@ CSS의 이름에 의미를 부여한다는 것은 당연한 것이었습니다.
 <li class="text-orange">Orange</li>
 ```
 
-위와 같이 CSS와 Tailwind CSS를 비교했을 때 어떤 역할을 하는 엘리먼트인지 직관적으로 알아볼 수 있는 것은 당연하게도 CSS입니다.
+CSS와 Tailwind CSS를 비교해보면 어떤 역할을 하는 엘리먼트인지 직관적으로 알아보기 쉬운 쪽은 당연하게도 CSS입니다.
 
-그렇다면 Tailwind CSS를 사용하면서 의미론적인 요소를 포기하게 되는 것일까요? 그렇지 않습니다. 이제는 **컴포넌트**가 그 역할을 대신해주고 있기 때문입니다.
+그렇다면 Tailwind CSS를 사용하면 의미론적인 요소를 포기해야 하는 걸까요? 그렇지 않습니다. 이제는 **컴포넌트**가 그 역할을 대신해주기 때문입니다.
 
 ```jsx FruitItem.jsx
 function FruitItem() {
@@ -98,7 +98,7 @@ function FruitItem() {
 }
 ```
 
-위와 같이 클래스 명이 아니라 컴포넌트의 이름만으로도 충분히 의미를 부여할 수 있습니다.
+이렇게 하면 클래스 명이 아니라 컴포넌트의 이름만으로도 충분히 의미가 부여됩니다.
 
 ### 인라인 스타일과 무엇이 다를까?
 
@@ -108,15 +108,15 @@ function FruitItem() {
 >
 > [No, Utility Classes Aren't the Same As Inline Styles - Sarah Dayan](https://frontstuff.io/no-utility-classes-arent-the-same-as-inline-styles)
 
-인라인 스타일은 적용한 엘리먼트에만 영향을 줍니다. 바꿔 말하면 적용한 엘리먼트 외 요소들과 상호작용 할 수 없습니다. 예를 들어 `:hover`와 같은 의사 클래스나 미디어 쿼리 등은 사용할 수 없게 됩니다.
+인라인 스타일은 적용한 엘리먼트에만 영향을 줍니다. 바꿔 말하면 적용한 엘리먼트 외 요소들과 상호작용 할 수 없습니다. 예를 들어 `:hover`와 같은 의사 클래스나 미디어 쿼리 등은 쓸 수 없습니다.
 
-반면에 Tailwind CSS는 [PostCSS](https://postcss.org/)와 같은 전처리기를 거쳐서 스타일 시트를 생성하게 됩니다. 덕분에 인라인 스타일에서 할 수 없었던 것들을 할 수 있게 됩니다.
+반면에 Tailwind CSS는 [PostCSS](https://postcss.org/)와 같은 전처리기를 거쳐서 스타일 시트를 생성합니다. 덕분에 인라인 스타일에서 할 수 없었던 것들이 가능해집니다.
 
 ```html index.html
 <li class="hover:text-orange">Orange</li>
 ```
 
-위와 같이 호버 시에 글자 색이 바뀌는 행동을 유틸리티 클래스를 통해 할 수 있습니다.
+호버 시에 글자 색이 바뀌는 동작도 이렇게 유틸리티 클래스로 처리하면 됩니다.
 
 ## 소소한 팁
 
@@ -124,13 +124,13 @@ function FruitItem() {
 
 ### IntelliSense
 
-공식 [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)를 사용하면 Visual Studio Code에서 자동 완성, 문법 강조, 린팅 등의 기능을 이용할 수 있습니다. 제가 `tailwind.config.ts`에 정의해놨던 스타일들도 똑같이 지원해줘서 좋았습니다.
+공식 [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)를 사용하면 Visual Studio Code에서 자동 완성, 문법 강조, 린팅 등의 기능이 지원됩니다. 제가 `tailwind.config.ts`에 정의해놨던 스타일들도 똑같이 지원해줘서 좋았습니다.
 
 ![](0.png)
 
 ### Prettier Plugin
 
-공식 [Prettier Plugin](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)을 통해서 권장된 클래스 순서대로 자동 정렬을 지원합니다. 스타일링에 필요한 클래스를 쭉 나열해서 사용하면서 나중에 수정하게 됐을 때 동일한 순서로 정리해줘서 정말 편리했습니다. 덤으로 중복된 클래스를 적는 일도 사라졌습니다.
+공식 [Prettier Plugin](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)은 권장된 클래스 순서대로 자동 정렬을 지원합니다. 스타일링에 필요한 클래스를 쭉 나열해서 쓰다가 나중에 수정할 때도 동일한 순서로 정리해줘서 정말 편리했습니다. 덤으로 중복된 클래스를 적는 일도 사라졌습니다.
 
 ```shell
 yarn add -D prettier-plugin-tailwindcss
@@ -145,7 +145,7 @@ yarn add -D prettier-plugin-tailwindcss
 
 ### Custom Styles
 
-Tailwind CSS에서 충분히 많은 기본적인 스타일을 지원하지만 필요에 따라서 [커스텀 스타일](https://tailwindcss.com/docs/adding-custom-styles)을 추가해야되는 경우가 있습니다. 저는 이 블로그를 개발하면서 다양한 색을 사용했는데 [arbitrary values](https://tailwindcss.com/docs/adding-custom-styles#using-arbitrary-values) 없이 개발하고자 했기 때문에 모든 색을 등록해서 사용했습니다.
+Tailwind CSS에서 충분히 많은 기본적인 스타일을 지원하지만 필요에 따라서 [커스텀 스타일](https://tailwindcss.com/docs/adding-custom-styles)을 추가해야 하는 경우가 있습니다. 저는 이 블로그를 개발하면서 다양한 색을 사용했는데 [arbitrary values](https://tailwindcss.com/docs/adding-custom-styles#using-arbitrary-values) 없이 개발하고 싶어서 모든 색을 등록해뒀습니다.
 
 ```ts tailwind.config.ts
 import type { Config } from 'tailwindcss';
@@ -184,13 +184,13 @@ export default {
 } satisfies Config;
 ```
 
-위와 같이 `nested object`로 작성하면 `-`로 이어서 코드에서 사용할 수 있습니다.
+`nested object`로 작성하면 코드에서는 `-`로 이어서 씁니다.
 
 ```html
 <div class="text-light-mute"></div>
 ```
 
-`DEFAULT`로 작성된 부분은 입력하지 않고도 사용할 수 있습니다.
+`DEFAULT`로 작성된 부분은 입력하지 않아도 됩니다.
 
 ```html
 // light: { DEAFULT: '#dddddd' }
@@ -198,7 +198,7 @@ export default {
 <div class="text-light"></div>
 ```
 
-이 뿐만 아니라 애니메이션도 등록해서 사용할 수 있습니다. 블로그 메인 페이지에서 글 리스트에 마우스를 호버하면 이모지가 회전하는 걸 구현하기 위해서 사용했습니다.
+애니메이션 등록도 됩니다. 저는 블로그 메인 페이지에서 글 리스트에 마우스를 호버하면 이모지가 회전하도록 구현하는 데 썼습니다.
 
 ```ts tailwind.config.ts
 export default {
@@ -221,13 +221,13 @@ export default {
 
 ### Dark Mode
 
-다크 모드는 정말 손쉽게 추가할 수 있었습니다. 아무 설정을 건들지 않아도 클래스 앞에 `dark:`만 붙여주면 다크 모드에서 동작하는 스타일을 정의할 수 있었습니다.
+다크 모드는 정말 손쉽게 추가했습니다. 아무 설정을 건들지 않아도 클래스 앞에 `dark:`만 붙여주면 다크 모드에서 동작하는 스타일이 정의됩니다.
 
 ```tsx footer.tsx
 <footer className="dark:border-dark-line ...">ⓒ 2024. 김도현. All Rights Reserved.</footer>
 ```
 
-기본적으로는 [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)에 맞춰서 동작하게 됩니다. 만약 클래스를 통해서 직접 조작하려면 `darkMode: 'selector'` 설정 한 줄만 추가해주면 됩니다.
+기본적으로는 [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)에 맞춰서 동작합니다. 만약 클래스를 통해서 직접 조작하려면 `darkMode: 'selector'` 설정 한 줄만 추가해주면 됩니다.
 
 ```ts tailwind.config.ts
 import type { Config } from 'tailwindcss';
@@ -238,13 +238,13 @@ export default {
 } satisfies Config;
 ```
 
-개인적으로는 클래스를 통해서 조작하도록 설정하는 것이 좋았습니다. 코드 상에서 페이지 초기 진입 시에 `prefers-color-scheme`에 따라서 테마를 지정해주고, 헤더의 버튼을 통해서 사용자가 제어할 수 있게 했기 때문입니다.
+개인적으로는 클래스로 조작하는 설정이 좋았습니다. 코드 상에서 페이지 초기 진입 시에 `prefers-color-scheme`에 따라서 테마를 지정해주고 헤더의 버튼으로 사용자가 제어하게 만들었기 때문입니다.
 
 ### Custom Utility
 
 필요에 따라서 직접 [커스텀 유틸리티 클래스](https://tailwindcss.com/docs/functions-and-directives)를 정의할 수도 있습니다. 블로그에서 자주 사용되는 스타일은 따로 유틸리티 클래스로 만들어서 사용했습니다.
 
-`@apply`를 통해 `CSS` 안에서 정의된 Tailwind CSS의 유틸리티 클래스를 사용할 수 있습니다.
+`CSS` 안에서 정의된 Tailwind CSS의 유틸리티 클래스를 쓰고 싶다면 `@apply`를 이용하면 됩니다.
 
 ```css global.css
 @layer components {
@@ -268,21 +268,21 @@ Tailwind CSS 사용 후기 글들을 읽어보면 공통적으로 나오는 말�
 
 > 초반 러닝 커브가 있지만, 사용할수록 편리했다.
 
-직접 사용해본 결과 전적으로 공감가는 말이었습니다. 초반에는 스타일을 지정해줄 때 하나하나 공식 문서에 검색했는데 적응한 이후로는 훨씬 빠르게 개발이 가능했습니다. 문법에 어느정도 일관성이 있기 때문에 나중에는 기억나지 않더라도 유추해서 작성하는 것도 가능했습니다.
+직접 사용해본 결과 전적으로 공감가는 말이었습니다. 초반에는 스타일을 지정해줄 때 하나하나 공식 문서에 검색했는데 적응한 이후로는 개발이 훨씬 빨라졌습니다. 문법에 어느정도 일관성이 있기 때문에 나중에는 기억나지 않더라도 유추해서 작성했습니다.
 
-`styled-component`를 사용하면서 이름 짓는데 많은 시간을 사용하면서 고통 받았는데 해방되는 기분도 들었습니다. 네이밍 컨벤션을 결정하거나, 이런 작은 컴포넌트까지 이름을 지어줘야하는지 고민하는데 드는 시간을 많이 줄인 것 같습니다.
+`styled-component`를 쓸 때는 이름 짓는 데 많은 시간을 쓰면서 고통 받았는데 해방되는 기분도 들었습니다. 네이밍 컨벤션을 결정하거나 이런 작은 컴포넌트까지 이름을 지어줘야 하는지 고민하는 데 드는 시간을 많이 줄였습니다.
 
 ![](1.png)
 
-또한 정의된 스타일을 통해 개발하기 때문에 일관된 스타일을 유지할 수 있었습니다. 게다가 스타일링을 위해서 파일이나 커서를 옮겨야하는데 드는 컨텍스트 스위칭 시간도 없어서 편리했습니다.
+정의된 스타일로 개발하기 때문에 일관된 스타일도 유지됐습니다. 스타일링하려고 파일이나 커서를 옮기는 컨텍스트 스위칭 시간도 없어서 편리했습니다.
 
-앞서 Tailwind CSS의 좋은 점만 나열하게 된 것 같은데 꼭 그런 것은 아닙니다. 동적 스타일링을 하기 힘들기 때문에 외부 플러그인에 도움을 받아야하는 경우가 생깁니다. 아쉽게도 블로그를 개발하면서는 동적 스타일링을 할 경우가 많지 않았습니다. 하지만 나중에 규모가 큰 프로젝트에서 사용하게 될 때는 지나칠 수 없는 문제가 될 것 같습니다.
+앞서 Tailwind CSS의 좋은 점만 나열한 것 같은데 꼭 그런 것은 아닙니다. 동적 스타일링을 하기 힘들기 때문에 외부 플러그인에 도움을 받아야 하는 경우가 생깁니다. 아쉽게도 블로그를 개발하면서는 동적 스타일링을 할 경우가 많지 않았습니다. 하지만 나중에 규모가 큰 프로젝트에서 사용할 때는 지나칠 수 없는 문제가 될 것 같습니다.
 
-그리고 개인 프로젝트 외에 현업에서 사용해본 적은 없지만 디자인 시스템이 없거나 있어도 애매한 부분에는 `arbitrary values`가 점점 쌓이면서 금새 복잡해질 것 같다는 생각이 듭니다.
+그리고 개인 프로젝트 외에 현업에서 사용해본 적은 없지만 디자인 시스템이 없거나 있어도 애매한 부분에는 `arbitrary values`가 점점 쌓이면서 금새 복잡해질 것 같습니다.
 
-이와 관련해서는 [FE개발그룹에서는 Tailwind CSS를 왜 도입했고, 어떻게 사용했을까?](https://fe-developers.kakaoent.com/2022/221013-tailwind-and-design-system/) 라는 좋은 아티클이 있어서 같이 남겨놓습니다.
+마침 [FE개발그룹에서는 Tailwind CSS를 왜 도입했고, 어떻게 사용했을까?](https://fe-developers.kakaoent.com/2022/221013-tailwind-and-design-system/) 라는 좋은 아티클이 있어서 같이 남겨놓습니다.
 
-끝으로 많은 선입견을 갖고 있던 Tailwind CSS를 직접 사용해보면서, 기존에 개발하면서 가지고 있던 불편함들이 다양한 방법으로 해소되는 경험을 할 수 있었습니다. 세상에 완벽한 도구란 없는 것 같고, 필요한 도구를 적합한 장소에 사용할 줄 아는 개발자가 되어야겠습니다.
+끝으로 많은 선입견을 갖고 있던 Tailwind CSS를 직접 사용해봤습니다. 기존에 개발하면서 느끼던 불편함들이 다양한 방법으로 해소되는 경험이었습니다. 세상에 완벽한 도구란 없으니 필요한 도구를 적합한 장소에 사용할 줄 아는 개발자가 되어야겠습니다.
 
 ## 참조
 

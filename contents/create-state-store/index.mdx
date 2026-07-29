@@ -125,7 +125,7 @@ const Counter = () => {
 
 `setState` 함수를 조금 확장해 보겠습니다.
 
-```ts primitive-store.ts
+```ts basic-store.ts
 const setState: Store<T>['setState'] = (value) => {
   // !mark
   const nextState = typeof value === 'function' ? (value as (state: T) => T)(state) : value;
@@ -401,10 +401,12 @@ type StateCreator<T> = (set: Store<T>['setState'], get: Store<T>['getState']) =>
 const createStore = <T>(createState: StateCreator<T>) => {
   const listeners = new Set<() => void>();
 
+  // !collapse(1:3) collapsed
   const getState: Store<T>['getState'] = () => {
     return state;
   };
 
+  // !collapse(1:9) collapsed
   const setState: Store<T>['setState'] = (value) => {
     const nextState = typeof value === 'function' ? (value as (state: T) => T)(state) : value;
 
@@ -415,6 +417,7 @@ const createStore = <T>(createState: StateCreator<T>) => {
     listeners.forEach((listener) => listener());
   };
 
+  // !collapse(1:5) collapsed
   const subscribe: Store<T>['subscribe'] = (listener) => {
     listeners.add(listener);
 
