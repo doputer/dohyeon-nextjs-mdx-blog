@@ -8,7 +8,7 @@ import useObserver from '@/hooks/use-observer';
 import useScroll from '@/hooks/use-scroll';
 import { cn } from '@/utils/cn';
 
-export interface TOCProps {
+interface TOCProps {
   toc: Post['toc'];
 }
 
