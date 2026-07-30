@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import useLike from '@/hooks/use-like';
-import { launch } from '@/utils/particle';
+import { launch, warmup } from '@/utils/particle';
 
 interface Props {
   slug: string;
@@ -52,6 +52,8 @@ const Reaction = ({ slug }: Props) => {
   const handleEnter = useCallback(() => {
     if (prefersReduced()) return;
 
+    warmup();
+
     const el = btnRef.current;
     if (!el) return;
 
@@ -95,14 +97,15 @@ const Reaction = ({ slug }: Props) => {
     const x = (box.left + box.width / 2) / window.innerWidth;
     const y = (box.top + box.height / 2) / window.innerHeight;
 
-    launch({ x, y });
+    void launch({ x, y });
   }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    playParticles(e.currentTarget);
     addLike(slug);
 
     if (prefersReduced()) return;
+
+    playParticles(e.currentTarget);
 
     tilt.current.press = 0.85;
     setTransition('transform 90ms ease-out');
