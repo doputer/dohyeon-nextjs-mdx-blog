@@ -5,6 +5,7 @@ import Post from '@/components/post';
 import Header from '@/components/post/header';
 import Progress from '@/components/post/progress';
 import Reaction from '@/components/reaction';
+import Related from '@/components/related';
 import config from '@/configs/config.json';
 import { getPost, getPosts } from '@/lib/MDX';
 
@@ -16,14 +17,15 @@ const Page = async (props: PageProps) => {
   const params = await props.params;
 
   const { frontmatter, toc, MDX } = await getPost(params.slug);
-  const { title, date } = frontmatter;
+  const { title, date, tags } = frontmatter;
 
   return (
     <>
       <Progress />
-      <Header title={title} date={date} />
+      <Header title={title} date={date} tags={tags} />
       <Post toc={toc} MDX={MDX} />
       <Reaction slug={params.slug} />
+      <Related slug={params.slug} tags={tags} />
       <Comment />
     </>
   );
