@@ -56,9 +56,9 @@
 }
 
 :root {
-  --blob-1: hsla(190, 62%, 64%, 0.18);
-  --blob-2: hsla(212, 64%, 68%, 0.17);
-  --blob-3: hsla(172, 52%, 62%, 0.13);
+  --blob-1: hsla(190, 64%, 60%, 0.09);
+  --blob-2: hsla(212, 66%, 63%, 0.08);
+  --blob-3: hsla(172, 54%, 58%, 0.06);
 }
 
 [data-theme~='dark'] {
@@ -91,28 +91,11 @@
 
     position: relative;
     font-synthesis: none;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: -80px;
-    z-index: -2;
-    pointer-events: none;
-    background:
-      radial-gradient(38vw 38vw at 6% 2%, var(--blob-1), transparent 66%),
-      radial-gradient(34vw 34vw at 98% 34%, var(--blob-2), transparent 66%),
-      radial-gradient(32vw 32vw at 44% 104%, var(--blob-3), transparent 66%);
-    filter: blur(90px);
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.035'/></svg>");
+    background-image:
+      radial-gradient(46vw 46vw at 6% 2%, var(--blob-1), transparent 72%),
+      radial-gradient(42vw 42vw at 98% 34%, var(--blob-2), transparent 72%),
+      radial-gradient(40vw 40vw at 44% 104%, var(--blob-3), transparent 72%);
+    background-attachment: fixed;
   }
 
   button {
