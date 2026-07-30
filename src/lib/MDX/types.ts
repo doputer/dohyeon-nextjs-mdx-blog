@@ -11,7 +11,7 @@ export interface Frontmatter {
   date: string;
 }
 
-export interface TOC {
+interface TOC {
   id: string;
   text: string;
   depth: number;
