@@ -13,7 +13,7 @@
   }
 
   body {
-    @apply text-main bg-background antialiased bg-fixed;
+    @apply bg-background bg-fixed text-main antialiased;
 
     background-image:
       radial-gradient(46vw 46vw at 6% 2%, var(--blob-1), transparent 72%),
