@@ -1,4 +1,4 @@
-import '@/static/styles/globals.css';
+import '@/static/styles/index.css';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';

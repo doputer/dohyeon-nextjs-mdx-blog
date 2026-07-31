@@ -33,6 +33,6 @@
   "sortPackageJson": true,
   "sortTailwindcss": {
     "functions": ["clsx", "cn"],
-    "stylesheet": "./src/static/styles/globals.css"
+    "stylesheet": "./src/static/styles/index.css"
   }
 }

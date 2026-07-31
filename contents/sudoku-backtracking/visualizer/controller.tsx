@@ -13,12 +13,12 @@ interface Props {
 }
 
 const buttonStyle =
-  'flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-[13px] font-semibold text-mute select-none hover:bg-surface hover:text-main';
+  'flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-[13px] font-semibold text-muted select-none hover:bg-surface hover:text-main';
 
 const Controller = ({ state, control }: Props) => {
   return (
     <div className="flex items-center justify-between rounded border border-line bg-surface/55 py-1 pr-1.5 pl-3.5">
-      <div className="flex items-center gap-3 text-xs text-mute select-none">
+      <div className="flex items-center gap-3 text-xs text-muted select-none">
         <span className="flex items-center gap-1.5">
           <i className="size-2 rounded-xs bg-accent/55" />
           시도
