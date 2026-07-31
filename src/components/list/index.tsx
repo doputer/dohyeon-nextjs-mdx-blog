@@ -62,7 +62,7 @@ const List = ({ posts }: ListProps) => {
                   <time
                     dateTime={frontmatter.date}
                     className={cn(
-                      'shrink-0 text-mute tabular-nums transition-colors duration-300 ease-out sm:text-lg',
+                      'shrink-0 text-muted tabular-nums transition-colors duration-300 ease-out sm:text-lg',
                       'group-hover/li:text-accent'
                     )}
                   >

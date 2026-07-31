@@ -27,7 +27,7 @@ const components: MDXComponents = {
   ),
   h4: (props) => <h4 className={format.h4} {...props} />,
   hr: () => (
-    <div role="separator" className="flex justify-center gap-3 text-accent select-none">
+    <div role="separator" className="flex justify-center gap-3 text-soft select-none">
       <span>·</span>
       <span>·</span>
       <span>·</span>

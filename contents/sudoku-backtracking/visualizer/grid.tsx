@@ -35,7 +35,7 @@ const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Pr
                 j % 3 === 0 ? 'border-l-2 border-l-line' : 'border-l',
                 i === 0 && 'border-t-0',
                 j === 0 && 'border-l-0',
-                isLocked === true && 'font-semibold',
+                isLocked === true && 'font-medium',
                 isLocked === false && 'text-accent',
                 isTry && 'bg-accent/15',
                 isBack && 'bg-red/15'

@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+
+@import './animation.css';
+@import './codehike.css';
+@import './color.css';
+@import './utility.css';
+
+@layer base {
+  @apply selection:bg-accent/24;
+
+  html {
+    @apply scrollbar-gutter-stable;
+  }
+
+  body {
+    @apply bg-background bg-fixed text-main antialiased;
+
+    background-image:
+      radial-gradient(46vw 46vw at 6% 2%, var(--blob-1), transparent 72%),
+      radial-gradient(42vw 42vw at 98% 34%, var(--blob-2), transparent 72%),
+      radial-gradient(40vw 40vw at 44% 104%, var(--blob-3), transparent 72%);
+    font-synthesis: none;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}

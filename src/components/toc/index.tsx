@@ -14,6 +14,7 @@ interface TOCProps {
 
 const TOC = ({ toc }: TOCProps) => {
   const [open, setOpen] = useState(false);
+  const [interacted, setInteracted] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   const activeId = useObserver();
@@ -37,10 +38,10 @@ const TOC = ({ toc }: TOCProps) => {
     <div ref={wrapRef} className="fixed right-3 bottom-3 z-10 lg:right-6 lg:bottom-6">
       <nav
         className={cn(
-          'absolute right-0 bottom-[calc(100%+4px)] w-64 origin-bottom-right rounded-xl border border-line bg-background p-4 shadow-lg lg:w-72 lg:p-5',
-          open
-            ? 'animate-panel-in motion-reduce:animate-none'
-            : 'pointer-events-none opacity-0 transition-opacity duration-150 ease-out motion-reduce:transition-none'
+          'absolute right-0 bottom-[calc(100%+8px)] w-64 origin-bottom-right rounded-xl border border-line bg-background p-4 shadow-lg motion-reduce:animate-none lg:w-72 lg:p-5',
+          open && 'animate-panel-in',
+          !open && 'pointer-events-none opacity-0',
+          !open && interacted && 'animate-panel-out'
         )}
       >
         <ul className="scrollbar-none flex max-h-72 flex-col gap-2 overflow-y-auto text-sm lg:max-h-96 lg:gap-2.5 lg:text-[15px]">
@@ -48,10 +49,10 @@ const TOC = ({ toc }: TOCProps) => {
             <li key={id} className={cn('relative', depth === 3 && 'pl-3.5')}>
               <button
                 className={cn(
-                  'text-left text-soft transition-colors duration-300 ease-out hover:text-main',
-                  id === activeId && 'font-medium text-accent hover:text-accent',
-                  id === activeId &&
-                    'before:absolute before:top-1 before:bottom-1 before:-left-2.5 before:w-0.5 before:rounded before:bg-accent'
+                  'text-left transition-colors duration-300 ease-out',
+                  id === activeId
+                    ? 'font-medium text-accent before:absolute before:top-1 before:bottom-1 before:-left-2.5 before:w-0.5 before:rounded before:bg-accent'
+                    : 'text-soft hover:text-main'
                 )}
                 onClick={() => {
                   scrollToTarget(id);
@@ -68,7 +69,10 @@ const TOC = ({ toc }: TOCProps) => {
         aria-expanded={open}
         aria-label="목차 열기"
         className="group flex flex-col items-end gap-2 lg:p-3"
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => {
+          setInteracted(true);
+          setOpen((prev) => !prev);
+        }}
       >
         {toc.map(({ id, depth }, index) => (
           <span

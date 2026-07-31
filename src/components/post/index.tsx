@@ -10,10 +10,10 @@ interface PostProps {
 const Post = ({ toc, MDX }: PostProps) => {
   return (
     <section>
-      {toc.length > 0 && <TOC toc={toc} />}
-      <article className="space-y-6 *:first:mt-0 *:last:mb-0">
+      <article className="space-y-6 wrap-break-word break-keep *:first:mt-0 *:last:mb-0">
         <MDX />
       </article>
+      {toc.length > 0 && <TOC toc={toc} />}
     </section>
   );
 };

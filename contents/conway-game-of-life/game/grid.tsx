@@ -21,7 +21,7 @@ const Grid = ({ grid }: Props) => {
             key={`${x}-${y}`}
             className={cn(
               'size-4 rounded-xs transition-colors duration-150',
-              col ? 'bg-mute' : 'bg-surface'
+              col ? 'bg-muted' : 'bg-surface'
             )}
           />
         ))

@@ -14,7 +14,7 @@ const Header = ({ title, date, tags }: HeaderProps) => {
     <section className="space-y-2">
       <h1 className="text-3xl font-bold tracking-tight break-keep">{title}</h1>
       <div className="flex items-baseline gap-2 text-sm">
-        <time dateTime={date} className="font-medium text-mute tabular-nums">
+        <time dateTime={date} className="font-medium text-muted tabular-nums">
           {format(date, 'yyyy.MM.dd')}
         </time>
         <span className="text-soft" aria-hidden>
