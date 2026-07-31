@@ -21,7 +21,7 @@ const Tags = ({ tags, className }: TagsProps) => {
             href={`/tags/${encode(tag)}`}
             className="text-base text-muted transition-colors duration-200 ease-out hover:text-accent"
           >
-            <span className="text-[0.85em] text-accent/50 select-none" aria-hidden>
+            <span className="text-[0.85em] text-soft select-none" aria-hidden>
               #
             </span>
             {tag}

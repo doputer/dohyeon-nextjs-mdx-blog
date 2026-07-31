@@ -19,9 +19,9 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
-  --blob-1: hsla(190, 64%, 60%, 0.09);
-  --blob-2: hsla(212, 66%, 63%, 0.08);
-  --blob-3: hsla(172, 54%, 58%, 0.06);
+  --blob-1: hsla(190, 45%, 62%, 0.05);
+  --blob-2: hsla(212, 46%, 64%, 0.045);
+  --blob-3: hsla(172, 40%, 60%, 0.035);
 }
 
 [data-theme~='dark'] {
@@ -33,7 +33,7 @@
   --color-background: #121620;
   --color-accent: #e8814a;
 
-  --blob-1: hsla(190, 60%, 50%, 0.17);
-  --blob-2: hsla(212, 62%, 54%, 0.16);
-  --blob-3: hsla(172, 50%, 46%, 0.12);
+  --blob-1: hsla(190, 42%, 52%, 0.1);
+  --blob-2: hsla(212, 44%, 55%, 0.09);
+  --blob-3: hsla(172, 36%, 48%, 0.07);
 }
