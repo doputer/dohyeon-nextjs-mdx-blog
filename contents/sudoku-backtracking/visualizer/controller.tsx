@@ -13,7 +13,7 @@ interface Props {
 }
 
 const buttonStyle =
-  'flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-[13px] font-semibold text-muted select-none hover:bg-surface hover:text-main';
+  'flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-[13px] font-medium text-muted select-none hover:bg-surface hover:text-main';
 
 const Controller = ({ state, control }: Props) => {
   return (

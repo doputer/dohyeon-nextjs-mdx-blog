@@ -139,7 +139,7 @@ const Reaction = ({ slug }: Props) => {
           className="flex items-center gap-2 rounded-full border-[1.5px] border-accent bg-accent/5 px-5 py-2.5 text-accent shadow-sm transition-[transform,background-color,box-shadow] duration-200 ease-out will-change-transform select-none group-hover:bg-accent/10 group-hover:shadow-lg group-hover:shadow-accent/25 motion-reduce:transition-none"
         >
           <span className="text-base leading-none">♥</span>
-          <span className="text-sm font-semibold tabular-nums">{like ?? 0}</span>
+          <span className="text-sm font-medium tabular-nums">{like ?? 0}</span>
         </button>
       </div>
     </section>
