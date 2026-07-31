@@ -7,14 +7,13 @@ import { encode } from '@/utils/uri';
 
 interface TagsProps {
   tags: Frontmatter['tags'];
-  className?: string;
 }
 
-const Tags = ({ tags, className }: TagsProps) => {
+const Tags = ({ tags }: TagsProps) => {
   if (tags.length === 0) return null;
 
   return (
-    <ul className={cn('flex flex-wrap gap-x-2', className)}>
+    <ul className="flex flex-wrap gap-x-2">
       {tags.map((tag) => (
         <li key={tag}>
           <Link
