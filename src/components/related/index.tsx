@@ -34,29 +34,17 @@ const Related = async ({ slug, tags }: RelatedProps) => {
     <section className="space-y-4">
       <h2 className="text-sm font-medium tracking-wide text-soft uppercase select-none">관련 글</h2>
       <ul>
-        {related.map(({ post, shared }) => (
+        {related.map(({ post }) => (
           <li key={post.slug} className="group/li border-t border-line/60 first:border-t-0">
-            <Link href={`/${post.slug}`} className="flex items-baseline justify-between gap-4 py-3">
-              <div className="space-y-1">
-                <h3
-                  className={cn(
-                    'font-medium break-keep transition-colors duration-300 ease-out',
-                    'group-hover/li:text-accent'
-                  )}
-                >
-                  {post.frontmatter.title}
-                </h3>
-                <p className="space-x-2 text-xs text-soft">
-                  {shared.map((tag) => (
-                    <span key={tag}>
-                      <span className="text-[0.85em] text-accent/50 select-none" aria-hidden>
-                        #
-                      </span>
-                      {tag}
-                    </span>
-                  ))}
-                </p>
-              </div>
+            <Link href={`/${post.slug}`} className="flex items-center justify-between gap-4 py-3">
+              <h3
+                className={cn(
+                  'font-medium break-keep transition-colors duration-300 ease-out',
+                  'group-hover/li:text-accent'
+                )}
+              >
+                {post.frontmatter.title}
+              </h3>
               <time
                 dateTime={post.frontmatter.date}
                 className="shrink-0 text-sm text-soft tabular-nums"
