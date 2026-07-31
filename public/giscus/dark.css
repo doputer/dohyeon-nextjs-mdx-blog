@@ -56,7 +56,7 @@ main {
   --color-action-list-item-default-hover-bg: #2b292552;
   --color-segmented-control-bg: #211f1b;
   --color-segmented-control-button-bg: #171512;
-  --color-segmented-control-button-selected-border: #7d7a71;
+  --color-segmented-control-button-selected-border: #454139;
 
   --color-fg-default: #ece9e3;
   --color-fg-muted: #7d7a71;
@@ -104,10 +104,16 @@ main .btn-primary {
   border-radius: 6px;
 }
 
-main .gsc-comments-count {
+main .gsc-comments-count,
+main .gsc-comments-count-separator,
+main .gsc-replies-count {
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0.025em;
   text-transform: uppercase;
   color: #767c8a;
+}
+
+main .gsc-comments-count a {
+  color: inherit;
 }
