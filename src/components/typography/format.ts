@@ -11,7 +11,7 @@ const LIST = cn(
 export const h2 = cn(HEADING, MARKER, "text-2xl before:content-['#']");
 export const h3 = cn(HEADING, MARKER, "text-xl before:content-['##']");
 export const h4 = cn(HEADING);
-export const blockquote = cn('border-l-2 border-accent py-0.5 pl-4 text-main italic');
+export const blockquote = cn('border-l-2 border-accent py-0.5 pl-4 text-muted italic');
 export const callout = cn(
   'flex flex-col gap-4 rounded border border-line bg-surface/60 p-4 lg:flex-row'
 );
