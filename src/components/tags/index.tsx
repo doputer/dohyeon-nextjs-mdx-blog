@@ -17,9 +17,12 @@ const Tags = ({ tags }: TagsProps) => {
         <li key={tag}>
           <Link
             href={`/tags/${encode(tag)}`}
-            className="text-base text-muted transition-colors duration-200 ease-out hover:text-accent"
+            className="group text-base text-muted transition-colors duration-200 ease-out hover:text-main"
           >
-            <span className="text-[0.85em] text-soft select-none" aria-hidden>
+            <span
+              className="text-[0.85em] text-soft transition-colors duration-200 ease-out select-none group-hover:text-inherit"
+              aria-hidden
+            >
               #
             </span>
             {tag}
