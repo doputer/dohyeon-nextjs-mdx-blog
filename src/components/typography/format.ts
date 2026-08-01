@@ -15,7 +15,7 @@ export const blockquote = cn('border-l-2 border-accent py-0.5 pl-4 text-muted it
 export const callout = cn(
   'flex flex-col gap-4 rounded border border-line bg-surface/60 p-4 lg:flex-row'
 );
-export const code = cn('text-sm font-bold before:content-["`"] after:content-["`"]');
+export const code = cn('text-[0.875em] font-bold before:content-["`"] after:content-["`"]');
 export const ol = cn(LIST, 'list-decimal');
 export const ul = cn(LIST, 'list-disc');
 export const p = cn('leading-8');
