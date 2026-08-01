@@ -20,7 +20,7 @@ const Tags = ({ tags }: TagsProps) => {
             className="group text-base text-muted transition-colors duration-200 ease-out hover:text-main"
           >
             <span
-              className="text-[0.85em] text-soft transition-colors duration-200 ease-out select-none group-hover:text-inherit"
+              className="text-[0.85em] text-soft transition-colors duration-200 ease-out select-none group-hover:text-muted"
               aria-hidden
             >
               #
