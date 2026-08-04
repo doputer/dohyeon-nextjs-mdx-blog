@@ -8,9 +8,11 @@ tags:
 date: 2022-12-19
 ---
 
-## 기존 Knoticle의 검색 결과
+## 기존 검색 결과
 
-기존 [Knoticle](https://github.com/boostcampwm-2022/web01-knoticle) 서비스에서 "페이지" 라는 키워드로 검색한 결과입니다.
+팀 프로젝트로 만든 서비스의 검색 결과 화면을 개선한 이야기입니다. 검색 기능 자체는 [Full Text Search를 활용한 검색 기능 개발기](/building-search-with-full-text-search)에서 만들었습니다.
+
+아래는 "페이지" 라는 키워드로 검색한 결과입니다.
 
 ![](0.png)
 
@@ -138,3 +140,9 @@ export const getTextAfterLastNewLine = (text: string, keywords: string[]) => {
   return newLineIndex === -1 ? text.slice(0, 400) : text.slice(newLineIndex, newLineIndex + 400);
 };
 ```
+
+## 정리
+
+검색어를 찾아주는 것과 찾았다는 사실을 보여주는 것은 다른 문제였습니다. 데이터베이스가 정확한 결과를 돌려줘도 화면에서 검색어가 잘려 보이지 않으면 사용자에게는 관련 없는 결과와 구별되지 않습니다.
+
+강조 자체는 재귀로 단순하게 풀렸지만, 정작 시간을 쓴 곳은 "어디서부터 보여줄 것인가"였습니다. 줄바꿈 문자를 문장의 경계로 삼는다는 아이디어로 맥락을 살리면서 앞부분을 잘라낼 수 있었습니다.

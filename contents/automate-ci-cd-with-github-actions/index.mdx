@@ -10,33 +10,26 @@ date: 2022-12-06
 
 ## 서비스가 사용자에게 닿기까지
 
-[Knoticle](https://github.com/boostcampwm-2022/web01-knoticle) 서비스를 개발하면서 GitHub Actions로 CI/CD를 구성한 경험을 공유합니다.
+팀 프로젝트로 웹 서비스를 개발하면서 GitHub Actions로 CI/CD를 구성한 경험을 정리합니다.
 
 개발부터 배포까지 아래와 같은 과정을 거쳤습니다.
 
 1. 코드 통일하기
-
-- Eslint로 코드 스타일 검사
-- 팀원들의 코드가 통일된 스타일을 유지하는지 확인
-
+   - Eslint로 코드 스타일 검사
+   - 팀원들의 코드가 통일된 스타일을 유지하는지 확인
 2. 동작 확인하기
-
-- 빌드를 통해 코드가 정상적으로 작동하는지 확인
-- 새로운 코드가 기존 서비스와 잘 통합되는지 확인
-
+   - 빌드를 통해 코드가 정상적으로 작동하는지 확인
+   - 새로운 코드가 기존 서비스와 잘 통합되는지 확인
 3. 지표 확인하기
-
-- Lighthouse로 성능 지표 점검
-- 일정 수준의 서비스 품질을 유지하기 위한 지표 확보
-
+   - Lighthouse로 성능 지표 점검
+   - 일정 수준의 서비스 품질을 유지하기 위한 지표 확보
 4. 서비스 제공하기
-
-- 테스트를 통과한 코드를 클라우드에 배포
-- 무중단 배포로 사용자에게 지속적인 서비스 제공
+   - 테스트를 통과한 코드를 클라우드에 배포
+   - 무중단 배포로 사용자에게 지속적인 서비스 제공
 
 ## CI/CD 자동화
 
-이 프로젝트에서는 매주 데모 시연을 하고 사용자 피드백을 빠르게 반영하기 위해 빈번한 배포가 필요했습니다.
+이 프로젝트는 매주 데모 시연으로 진행 상황을 공유하는 일정이었습니다. 시연에서 받은 피드백을 다음 주에 반영하려면 배포가 잦을 수밖에 없었습니다.
 
 수동 배포는 비효율적이었기 때문에 GitHub Actions를 사용해 배포 프로세스를 자동화하고 개발에 집중할 수 있도록 했습니다.
 
@@ -208,8 +201,8 @@ module.exports = {
   {
     "url": "http://localhost:3000/",
     "isRepresentativeRun": false,
-    "htmlPath": "/Users/dohyeon/Development/knoticle/frontend/lighthouse_reports/_-2022_11_26_12_40_53-report.html",
-    "jsonPath": "/Users/dohyeon/Development/knoticle/frontend/lighthouse_reports/_-2022_11_26_12_40_53-report.json",
+    "htmlPath": "/Users/dohyeon/Development/project/frontend/lighthouse_reports/_-2022_11_26_12_40_53-report.html",
+    "jsonPath": "/Users/dohyeon/Development/project/frontend/lighthouse_reports/_-2022_11_26_12_40_53-report.json",
     "summary": {
       "performance": 0.98,
       "accessibility": 0.94,
@@ -253,7 +246,7 @@ jobs:
 
 CI 과정을 마치고 나면 CD 과정을 수행합니다.
 
-nCloud 서비스에 접속해서 빌드하고 PM2 reload를 통해서 무중단 실행하는 과정입니다.
+배포 서버로는 네이버 클라우드 플랫폼(nCloud)을 사용했습니다. 서버에 접속해서 빌드하고 PM2 reload로 무중단 실행하는 과정입니다.
 
 프론트엔드와 백엔드가 동일한 CD 과정을 수행하기 때문에 프론트엔드 기준으로만 설명하겠습니다.
 
@@ -286,7 +279,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           source: '.env.production'
-          target: 'knoticle/frontend'
+          target: 'project/frontend'
 
       - name: Deploy
         uses: appleboy/ssh-action@v0.1.4
