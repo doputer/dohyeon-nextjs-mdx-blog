@@ -5,12 +5,15 @@ description: '마크다운 에디터 제작기를 마크다운으로 써보겠�
 tags:
   - react
   - editor
+  - markdown
 date: 2022-12-21
 ---
 
 ## 글의 가치를 올려주는 에디터
 
-[Knoticle](https://github.com/boostcampwm-2022/web01-knoticle) 서비스에서 글 작성 환경은 중요한 요소입니다. 사용자들이 글을 편집하고 공유하기 위해서는 텍스트뿐 아니라 이미지 첨부나 다양한 스타일을 지원하는 에디터가 필요합니다.
+사용자가 글을 쓰고 그 글들을 책으로 엮어 공유하는 서비스를 팀 프로젝트로 개발했습니다.
+
+글을 쓰는 것이 서비스의 중심이다 보니 작성 환경이 곧 서비스의 질이었습니다. 텍스트뿐 아니라 이미지 첨부나 다양한 스타일을 지원하는 에디터가 필요했습니다.
 
 이번 글에서는 이런 요구를 충족하기 위해 마크다운 에디터를 개발한 과정을 소개합니다.
 
@@ -84,7 +87,7 @@ export default function useCodeMirror() {
 - 드래그 앤 드롭으로 첨부하기
 - 첨부 버튼을 통해 선택하기
 
-위 과정은 **이벤트 감지(붙여넣기, 드롭, 버튼 클릭) → Knoticle API 서버에 이미지 저장 요청 → 반환된 이미지 URL을 에디터에 삽입**으로 이루어집니다.
+위 과정은 **이벤트 감지(붙여넣기, 드롭, 버튼 클릭) → API 서버에 이미지 저장 요청 → 반환된 이미지 URL을 에디터에 삽입**으로 이루어집니다.
 
 ### 이미지 붙여넣기
 
@@ -113,7 +116,7 @@ const handleImage = (imageFile: File) => {
 
   formData.append('image', imageFile);
 
-  createImage(formData); // Knoticle API 서버에 요청
+  createImage(formData); // API 서버에 요청
 };
 
 const eventHandler = () => {
@@ -316,3 +319,9 @@ const insertBetweenToggle = (symbol: string, defaultText = '텍스트') => {
 ```
 
 ![](5.gif)
+
+## 마치며
+
+에디터를 처음부터 만들지 않고 CodeMirror 위에 얹은 것이 좋은 선택이었습니다. 구문 강조나 커서 관리처럼 직접 만들면 오래 걸릴 부분을 라이브러리가 맡아주고, 서비스에 필요한 이미지 첨부와 스타일 버튼에만 집중할 수 있었습니다.
+
+기능을 훅으로 분리해둔 것도 도움이 됐습니다. 글쓰기 페이지에서 쓰려고 만든 `useCodeMirror`를 나중에 댓글 입력에 그대로 재사용할 수 있었습니다.
