@@ -10,17 +10,15 @@ date: 2026-01-31
 
 import Playground from '#/css-text-wrapping/playground';
 
-웹에서 텍스트를 다루다 보면 줄바꿈 관련 CSS를 자주 마주칩니다. 긴 URL이 컨테이너를 뚫고 나가거나, 한글 단어가 중간에서 어색하게 끊기거나, 말줄임표(`…`)가 원하는 대로 나오지 않습니다. 대부분 이 속성들을 제대로 이해하지 못해 생기는 문제입니다.
+웹에서 텍스트를 다루다 보면 줄바꿈 관련 CSS를 자주 마주칩니다. 긴 URL이 컨테이너를 뚫고 나가거나, 한글 단어가 중간에서 어색하게 끊기거나, 말줄임표(`…`)가 원하는 대로 나오지 않습니다.
 
-`white-space`, `word-break`, `overflow-wrap`, `line-break`, `hyphens`, `text-overflow`, `text-wrap` 들은 이름도 비슷하고 역할도 겹쳐 보여 헷갈리기 쉽습니다. 각각이 무엇을 담당하는지 정리합니다.
+`white-space`, `word-break`, `overflow-wrap`, `line-break`, `hyphens`, `text-overflow`, `text-wrap`은 이름이 비슷하고 역할도 겹쳐 보여 헷갈립니다. 세 가지로 나누면 각각 무엇을 담당하는지 분명해집니다.
 
-## 세 갈래로 나누기
-
-텍스트 줄바꿈은 세 갈래로 나누면 정리하기 쉽습니다.
-
-1. **공백과 개행을 어떻게 처리할 것인가?** `white-space`
-2. **줄바꿈이 필요할 때 어디서 끊을 것인가?** `word-break`, `overflow-wrap`, `line-break`, `hyphens`
-3. **넘치는 텍스트를 어떻게 보여줄(혹은 숨길) 것인가?** `overflow` + `text-overflow`, `line-clamp`
+| 역할                          | 속성                                                                |
+| ----------------------------- | ------------------------------------------------------------------- |
+| 공백과 개행을 어떻게 처리할까 | `white-space`                                                       |
+| 줄을 어디서 끊을까            | `word-break`, `overflow-wrap`, `line-break`, `hyphens`, `text-wrap` |
+| 넘치면 어떻게 보여줄까        | `overflow` + `text-overflow`, `line-clamp`                          |
 
 ## 공백과 개행 처리
 
