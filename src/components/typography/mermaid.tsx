@@ -32,7 +32,7 @@ const Mermaid = (props: Props) => {
 
   return (
     <div
-      className="overflow-x-auto [&>svg]:h-auto [&>svg]:max-w-full"
+      className="overflow-x-auto [&>svg]:mx-auto [&>svg]:h-auto [&>svg]:max-w-full"
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   );
