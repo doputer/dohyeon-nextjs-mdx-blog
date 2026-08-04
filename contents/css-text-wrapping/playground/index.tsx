@@ -65,7 +65,7 @@ const Playground = ({ property }: Props) => {
   const [value, setValue] = useState(config.values[0]);
 
   return (
-    <section className="my-8 rounded-xl border border-line">
+    <section className="my-8 rounded border border-line">
       <div className="flex flex-col sm:flex-row">
         <div className="flex min-w-0 flex-1 items-center p-5">
           <p

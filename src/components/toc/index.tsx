@@ -38,13 +38,13 @@ const TOC = ({ toc }: TOCProps) => {
     <div ref={wrapRef} className="fixed right-3 bottom-3 z-10 lg:right-6 lg:bottom-6">
       <nav
         className={cn(
-          'absolute right-0 bottom-[calc(100%+8px)] w-64 origin-bottom-right rounded-xl border border-line bg-background p-4 shadow-lg motion-reduce:animate-none lg:w-72 lg:p-5',
+          'absolute right-0 bottom-[calc(100%+8px)] w-64 origin-bottom-right rounded border border-line bg-background p-4 shadow-lg motion-reduce:animate-none lg:w-72 lg:p-5',
           open && 'animate-panel-in',
           !open && 'pointer-events-none opacity-0',
           !open && interacted && 'animate-panel-out'
         )}
       >
-        <ul className="scrollbar-none flex max-h-72 flex-col gap-2 overflow-y-auto text-sm lg:max-h-96 lg:gap-2.5 lg:text-[15px]">
+        <ul className="scrollbar-none flex max-h-72 flex-col gap-2 overflow-y-auto text-sm lg:max-h-96 lg:gap-2.5">
           {toc.map(({ id, text, depth }) => (
             <li key={id} className={cn('relative', depth === 3 && 'pl-3.5')}>
               <button
