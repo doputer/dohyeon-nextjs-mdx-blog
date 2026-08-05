@@ -16,14 +16,14 @@ interface PageProps {
 const Page = async (props: PageProps) => {
   const params = await props.params;
 
-  const { frontmatter, toc, MDX } = await getPost(params.slug);
+  const { frontmatter, MDX } = await getPost(params.slug);
   const { title, date, tags } = frontmatter;
 
   return (
     <>
       <Progress />
       <Header title={title} date={date} tags={tags} />
-      <Post toc={toc} MDX={MDX} />
+      <Post MDX={MDX} />
       <Reaction slug={params.slug} />
       <Related slug={params.slug} tags={tags} />
       <Comment />

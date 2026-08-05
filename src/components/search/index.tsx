@@ -3,9 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import type { Heading } from '@/components/search/toc';
 import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/search/types';
 
 import Highlight from '@/components/search/highlight';
+import TOC, { readHeadings } from '@/components/search/toc';
+import useScroll from '@/hooks/use-scroll';
 import { prepare, search, snippet, tokenize } from '@/lib/search/match';
 import { cn } from '@/utils/cn';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -20,13 +23,16 @@ const Search = () => {
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const requested = useRef(false);
 
   const [index, setIndex] = useState<PreparedDocument[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
+  const [headings, setHeadings] = useState<Heading[]>([]);
+
+  const scrollToTarget = useScroll();
 
   const load = useCallback(async () => {
     if (requested.current) return;
@@ -46,8 +52,10 @@ const Search = () => {
     }
   }, []);
 
+  // 목차는 열 때마다 DOM에서 다시 읽는다. 글을 옮겨 다녀도 현재 글과 읽던 위치가 반영된다.
   const open = useCallback(() => {
     setFailed(false);
+    setHeadings(readHeadings());
     dialogRef.current?.showModal();
     inputRef.current?.focus();
     load();
@@ -61,6 +69,14 @@ const Search = () => {
       router.push(`/${slug}`);
     },
     [close, router]
+  );
+
+  const jump = useCallback(
+    (id: string) => {
+      close();
+      scrollToTarget(id);
+    },
+    [close, scrollToTarget]
   );
 
   useEffect(() => {
@@ -104,29 +120,48 @@ const Search = () => {
     return search(index, tokens, LIMIT);
   }, [index, tokens]);
 
+  // 글 페이지에서 질의가 비어 있으면 최근 글 대신 지금 읽는 글의 목차를 보여준다.
+  const showTOC = tokens.length === 0 && headings.length > 0;
+
+  // 두 목록은 동시에 뜨지 않으므로 active 인덱스와 방향키 처리를 그대로 공유한다.
+  const count = showTOC ? headings.length : results.length;
+
+  const select = useCallback(
+    (order: number) => {
+      if (showTOC) {
+        const heading = headings[order];
+        if (heading) jump(heading.id);
+        return;
+      }
+
+      const result = results[order];
+      if (result) go(result.document.slug);
+    },
+    [showTOC, headings, results, jump, go]
+  );
+
   useEffect(() => setActive(0), [query]);
 
   useEffect(() => {
-    listRef.current?.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'nearest' });
-  }, [active, results]);
+    panelRef.current?.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'nearest' });
+  }, [active, results, headings]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (results.length === 0) return;
+    if (count === 0) return;
 
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      setActive((prev) => (prev + 1) % results.length);
+      setActive((prev) => (prev + 1) % count);
     }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-      setActive((prev) => (prev - 1 + results.length) % results.length);
+      setActive((prev) => (prev - 1 + count) % count);
     }
 
     if (event.key === 'Enter') {
       event.preventDefault();
-      const result = results[active];
-      if (result) go(result.document.slug);
+      select(active);
     }
   };
 
@@ -169,27 +204,36 @@ const Search = () => {
           </kbd>
         </div>
 
-        <div className="scrollbar-none max-h-[60vh] overflow-y-auto">
-          {failed && (
+        <div ref={panelRef} className="scrollbar-none max-h-[60vh] overflow-y-auto">
+          {showTOC && (
+            <>
+              <p className="px-4 pt-3 text-sm font-medium tracking-wide text-soft uppercase select-none">
+                목차
+              </p>
+              <TOC headings={headings} active={active} onActivate={setActive} onSelect={select} />
+            </>
+          )}
+
+          {!showTOC && failed && (
             <p className="px-4 py-10 text-center text-sm text-soft">
               검색 인덱스를 불러오지 못했습니다.
             </p>
           )}
 
-          {!failed && !index && (
+          {!showTOC && !failed && !index && (
             <p className="px-4 py-10 text-center text-sm text-soft">불러오는 중…</p>
           )}
 
-          {index && results.length === 0 && (
+          {!showTOC && index && results.length === 0 && (
             <p className="px-4 py-10 text-center text-sm text-soft">결과가 없습니다.</p>
           )}
 
-          {results.length > 0 && (
+          {!showTOC && results.length > 0 && (
             <>
               <p className="px-4 pt-3 text-sm font-medium tracking-wide text-soft uppercase select-none">
                 {tokens.length === 0 ? '최근 글' : `${results.length}개 결과`}
               </p>
-              <ul ref={listRef} className="p-2">
+              <ul className="p-2">
                 {results.map(({ document }, order) => {
                   const excerpt =
                     tokens.length > 0
