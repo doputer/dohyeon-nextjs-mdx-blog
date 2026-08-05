@@ -15,8 +15,8 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 
 // 질의가 비었을 때 보여줄 최근 글 수
-const RECENT = 5;
-const LIMIT = 8;
+const RECENT_COUNT = 5;
+const RESULT_LIMIT = 8;
 
 const Search = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const Search = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const requested = useRef(false);
+  const loadRequested = useRef(false);
 
   const [index, setIndex] = useState<PreparedDocument[] | null>(null);
   const [failed, setFailed] = useState(false);
@@ -35,8 +35,8 @@ const Search = () => {
   const scrollToTarget = useScroll();
 
   const load = useCallback(async () => {
-    if (requested.current) return;
-    requested.current = true;
+    if (loadRequested.current) return;
+    loadRequested.current = true;
 
     try {
       const response = await fetch('/api/search');
@@ -47,7 +47,7 @@ const Search = () => {
 
       setIndex(prepare(documents));
     } catch {
-      requested.current = false;
+      loadRequested.current = false;
       setFailed(true);
     }
   }, []);
@@ -63,7 +63,7 @@ const Search = () => {
 
   const close = useCallback(() => dialogRef.current?.close(), []);
 
-  const go = useCallback(
+  const goToPost = useCallback(
     (slug: string) => {
       close();
       router.push(`/${slug}`);
@@ -71,7 +71,7 @@ const Search = () => {
     [close, router]
   );
 
-  const jump = useCallback(
+  const jumpToHeading = useCallback(
     (id: string) => {
       close();
       scrollToTarget(id);
@@ -117,9 +117,11 @@ const Search = () => {
   const results = useMemo<SearchResult[]>(() => {
     if (!index || scoped) return [];
     if (tokens.length === 0)
-      return index.slice(0, RECENT).map((document) => ({ document: document.document, score: 0 }));
+      return index
+        .slice(0, RECENT_COUNT)
+        .map((prepared) => ({ document: prepared.document, score: 0 }));
 
-    return search(index, tokens, LIMIT);
+    return search(index, tokens, RESULT_LIMIT);
   }, [index, scoped, tokens]);
 
   const filtered = useMemo(
@@ -137,14 +139,14 @@ const Search = () => {
     (order: number) => {
       if (showTOC) {
         const heading = filtered[order];
-        if (heading) jump(heading.id);
+        if (heading) jumpToHeading(heading.id);
         return;
       }
 
       const result = results[order];
-      if (result) go(result.document.slug);
+      if (result) goToPost(result.document.slug);
     },
-    [showTOC, filtered, results, jump, go]
+    [showTOC, filtered, results, jumpToHeading, goToPost]
   );
 
   useEffect(() => setActive(0), [query]);
@@ -272,7 +274,7 @@ const Search = () => {
                           'w-full rounded px-2 py-2 text-left transition-colors duration-150 ease-out',
                           order === active ? 'bg-surface' : 'hover:bg-surface/60'
                         )}
-                        onClick={() => go(document.slug)}
+                        onClick={() => goToPost(document.slug)}
                         onMouseMove={() => setActive(order)}
                       >
                         <span className="flex items-baseline gap-2">

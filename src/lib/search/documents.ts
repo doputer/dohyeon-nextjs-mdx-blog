@@ -4,7 +4,7 @@ import { getPosts } from '@/lib/MDX';
 import { readFile } from 'fs/promises';
 import path from 'path';
 
-const DIR = path.join(process.cwd(), 'contents');
+const CONTENTS_DIR = path.join(process.cwd(), 'contents');
 
 /** 초성 치환과 부분 일치가 성립하려면 인덱스 전체가 NFC 조합형이어야 한다. */
 const nfc = (value: string) => value.normalize('NFC');
@@ -35,11 +35,10 @@ export const getSearchDocuments = async (): Promise<SearchDocument[]> => {
 
   return Promise.all(
     posts.map(async ({ frontmatter, toc, slug }) => {
-      const raw = await readFile(path.join(DIR, slug, 'index.mdx'), 'utf-8');
+      const raw = await readFile(path.join(CONTENTS_DIR, slug, 'index.mdx'), 'utf-8');
 
       return {
         slug,
-        emoji: frontmatter.emoji,
         title: nfc(frontmatter.title),
         description: nfc(frontmatter.description),
         tags: frontmatter.tags.map(nfc),

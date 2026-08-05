@@ -1,6 +1,5 @@
 export interface SearchDocument {
   slug: string;
-  emoji: string;
   title: string;
   description: string;
   tags: string[];

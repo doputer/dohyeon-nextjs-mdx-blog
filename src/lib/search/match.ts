@@ -1,18 +1,25 @@
 import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/search/types';
 
-import { hasJamo, toChosung, toLower } from '@/lib/search/hangul';
+import { hasJamo, toChosung } from '@/lib/search/hangul';
+
+/*
+ * 인덱스는 빌드 시점에 NFC로 정규화되므로 런타임에서는 소문자화만 한다.
+ * 소문자화와 초성 치환은 한글·ASCII에서 길이를 보존하므로, 소문자·초성 문자열에서 얻은
+ * 매치 인덱스를 원문에 그대로 쓸 수 있다 — 경계 판정과 하이라이트가 이 성질에 기댄다.
+ */
 
 type Range = [start: number, end: number];
 
 // 필드별 가중치. 제목에서 맞으면 본문에서 맞은 것보다 10배 무겁다.
 const WEIGHT = { title: 10, tags: 5, headings: 3, description: 2, body: 1 };
 
-// 배열 필드는 줄바꿈으로 이어 붙인다. \n 은 단어 경계로도 취급되므로 항목이 섞이지 않는다.
-const JOIN = '\n';
-
 const BOUNDARY = /[\s\-_/.,()[\]{}:;!?'"`~]/;
 
 const isBoundary = (text: string, index: number) => index === 0 || BOUNDARY.test(text[index - 1]);
+
+/** 직접·초성 일치의 공통 규칙 — 원문에 있거나, 자음 토큰이면 초성 문자열에 있으면 된다. */
+const containsToken = (lower: string, chosung: string, token: string) =>
+  lower.includes(token) || (hasJamo(token) && chosung.includes(token));
 
 export const tokenize = (query: string) =>
   query.normalize('NFC').toLowerCase().split(/\s+/).filter(Boolean);
@@ -22,12 +29,13 @@ export const prepare = (documents: SearchDocument[]): PreparedDocument[] =>
     document,
     fields: [
       { weight: WEIGHT.title, text: document.title },
-      { weight: WEIGHT.tags, text: document.tags.join(JOIN) },
-      { weight: WEIGHT.headings, text: document.headings.join(JOIN) },
+      // 배열 필드는 줄바꿈으로 이어 붙인다. \n 은 단어 경계로도 취급되므로 항목이 섞이지 않는다.
+      { weight: WEIGHT.tags, text: document.tags.join('\n') },
+      { weight: WEIGHT.headings, text: document.headings.join('\n') },
       { weight: WEIGHT.description, text: document.description },
       { weight: WEIGHT.body, text: document.body },
     ].map(({ weight, text }) => {
-      const lower = toLower(text);
+      const lower = text.toLowerCase();
 
       return { weight, lower, chosung: toChosung(lower) };
     }),
@@ -49,14 +57,12 @@ const scoreField = (field: PreparedDocument['fields'][number], token: string) =>
   return 0;
 };
 
-/** 토큰 전부가 텍스트에 있는지. 순위가 필요 없는 곳에서 `scoreField`의 직접·초성 규칙만 쓴다. */
+/** 토큰 전부가 텍스트에 있는지. 순위가 필요 없는 곳(목차 필터)에서 쓴다. */
 export const matches = (text: string, tokens: string[]) => {
-  const lower = toLower(text);
+  const lower = text.toLowerCase();
   const chosung = toChosung(lower);
 
-  return tokens.every(
-    (token) => lower.includes(token) || (hasJamo(token) && chosung.includes(token))
-  );
+  return tokens.every((token) => containsToken(lower, chosung, token));
 };
 
 /** 모든 토큰이 어딘가에서 맞아야 한다(AND). 토큰별 최고 점수를 더해 순위를 낸다. */
@@ -108,21 +114,17 @@ const mergeRanges = (ranges: Range[]) => {
 
 /** 하이라이트할 구간. 초성 문자열은 원문과 인덱스가 같으므로 그대로 쓸 수 있다. */
 export const findRanges = (text: string, tokens: string[]) => {
-  const lower = toLower(text);
+  const lower = text.toLowerCase();
   const chosung = toChosung(lower);
   const ranges: Range[] = [];
 
   for (const token of tokens) {
     for (const target of hasJamo(token) ? [lower, chosung] : [lower]) {
-      let from = 0;
+      let index = target.indexOf(token);
 
-      while (from <= target.length - token.length) {
-        const index = target.indexOf(token, from);
-
-        if (index === -1) break;
-
+      while (index !== -1) {
         ranges.push([index, index + token.length]);
-        from = index + token.length;
+        index = target.indexOf(token, index + token.length);
       }
     }
   }
@@ -136,30 +138,28 @@ export const findRanges = (text: string, tokens: string[]) => {
  * 정작 궁금한 토큰의 문맥이 스니펫에 잡힌다.
  */
 export const snippet = (body: string, tokens: string[], covered = '', radius = 60) => {
-  const lower = toLower(body);
+  const lower = body.toLowerCase();
   const chosung = toChosung(lower);
 
-  const coveredLower = toLower(covered);
+  const coveredLower = covered.toLowerCase();
   const coveredChosung = toChosung(coveredLower);
-  const isCovered = (token: string) =>
-    coveredLower.includes(token) || (hasJamo(token) && coveredChosung.includes(token));
 
-  const uncovered = tokens.filter((token) => !isCovered(token));
+  const uncovered = tokens.filter((token) => !containsToken(coveredLower, coveredChosung, token));
   const targets = uncovered.length > 0 ? uncovered : tokens;
 
-  let at = -1;
+  let matchIndex = -1;
 
   for (const token of targets) {
     const direct = lower.indexOf(token);
     const found = direct !== -1 ? direct : hasJamo(token) ? chosung.indexOf(token) : -1;
 
-    if (found !== -1 && (at === -1 || found < at)) at = found;
+    if (found !== -1 && (matchIndex === -1 || found < matchIndex)) matchIndex = found;
   }
 
-  if (at === -1) return '';
+  if (matchIndex === -1) return '';
 
-  const start = Math.max(0, at - radius);
-  const end = Math.min(body.length, at + radius);
+  const start = Math.max(0, matchIndex - radius);
+  const end = Math.min(body.length, matchIndex + radius);
 
   return [start > 0 ? '…' : '', body.slice(start, end).trim(), end < body.length ? '…' : ''].join(
     ''
