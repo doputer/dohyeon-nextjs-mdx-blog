@@ -11,7 +11,8 @@ export interface SearchDocument {
 interface SearchField {
   weight: number;
   lower: string;
-  chosung: string;
+  /** 자모만으로 이루어진 질의의 초성 매칭을 받아줄 필드인지. */
+  allowsChosung: boolean;
 }
 
 export interface PreparedDocument {
