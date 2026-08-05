@@ -17,6 +17,7 @@ const toPlainText = (mdx: string) =>
   mdx
     .replace(/^---\r?\n[\s\S]*?\r?\n---/, ' ') // 프론트매터
     .replace(/```[\s\S]*?```/g, ' ') // 코드 블록
+    .replace(/^import\s.*$/gm, ' ') // 컴포넌트 import 문
     .replace(/^\s*:::.*$/gm, ' ') // remark-directive 울타리 (내용은 남긴다)
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // 이미지
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // 링크 → 텍스트만
