@@ -1,5 +1,6 @@
 'use client';
 
+import Highlight from '@/components/search/highlight';
 import { cn } from '@/utils/cn';
 
 export interface Heading {
@@ -47,29 +48,28 @@ export const readHeadings = (): Heading[] => {
 
 interface TOCProps {
   headings: Heading[];
+  tokens: string[];
   active: number;
   onActivate: (order: number) => void;
   onSelect: (order: number) => void;
 }
 
-const TOC = ({ headings, active, onActivate, onSelect }: TOCProps) => (
+const TOC = ({ headings, tokens, active, onActivate, onSelect }: TOCProps) => (
   <ul className="p-2">
     {headings.map(({ id, text, depth, current }, order) => (
       <li key={id}>
         <button
           data-active={order === active}
           className={cn(
-            'relative w-full rounded py-1.5 pr-2 text-left text-sm break-keep transition-colors duration-150 ease-out',
+            'relative w-full rounded py-1.5 pr-2 text-left break-keep transition-colors duration-150 ease-out',
             depth === 3 ? 'pl-5.5' : 'pl-2',
             order === active ? 'bg-surface' : 'hover:bg-surface/60',
-            current
-              ? 'font-medium text-accent before:absolute before:top-1.5 before:bottom-1.5 before:left-0 before:w-0.5 before:rounded before:bg-accent'
-              : 'text-soft'
+            current ? 'font-medium text-accent' : 'text-soft'
           )}
           onClick={() => onSelect(order)}
           onMouseMove={() => onActivate(order)}
         >
-          {text}
+          <Highlight text={text} tokens={tokens} />
         </button>
       </li>
     ))}

@@ -49,6 +49,16 @@ const scoreField = (field: PreparedDocument['fields'][number], token: string) =>
   return 0;
 };
 
+/** 토큰 전부가 텍스트에 있는지. 순위가 필요 없는 곳에서 `scoreField`의 직접·초성 규칙만 쓴다. */
+export const matches = (text: string, tokens: string[]) => {
+  const lower = toLower(text);
+  const chosung = toChosung(lower);
+
+  return tokens.every(
+    (token) => lower.includes(token) || (hasJamo(token) && chosung.includes(token))
+  );
+};
+
 /** 모든 토큰이 어딘가에서 맞아야 한다(AND). 토큰별 최고 점수를 더해 순위를 낸다. */
 export const search = (index: PreparedDocument[], tokens: string[], limit: number) => {
   if (tokens.length === 0) return [];

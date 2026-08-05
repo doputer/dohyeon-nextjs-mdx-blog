@@ -9,7 +9,7 @@ import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/searc
 import Highlight from '@/components/search/highlight';
 import TOC, { readHeadings } from '@/components/search/toc';
 import useScroll from '@/hooks/use-scroll';
-import { prepare, search, snippet, tokenize } from '@/lib/search/match';
+import { matches, prepare, search, snippet, tokenize } from '@/lib/search/match';
 import { cn } from '@/utils/cn';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
@@ -110,26 +110,33 @@ const Search = () => {
     return () => dialog.removeEventListener('close', handleClose);
   }, []);
 
-  const tokens = useMemo(() => tokenize(query), [query]);
+  // '#'으로 시작하면 글 전체를 뒤지지 않고 지금 읽는 글의 목차만 좁혀 나간다.
+  const scoped = query.startsWith('#');
+  const tokens = useMemo(() => tokenize(scoped ? query.slice(1) : query), [query, scoped]);
 
   const results = useMemo<SearchResult[]>(() => {
-    if (!index) return [];
+    if (!index || scoped) return [];
     if (tokens.length === 0)
       return index.slice(0, RECENT).map((document) => ({ document: document.document, score: 0 }));
 
     return search(index, tokens, LIMIT);
-  }, [index, tokens]);
+  }, [index, scoped, tokens]);
 
-  // 글 페이지에서 질의가 비어 있으면 최근 글 대신 지금 읽는 글의 목차를 보여준다.
-  const showTOC = tokens.length === 0 && headings.length > 0;
+  const filtered = useMemo(
+    () => (scoped ? headings.filter(({ text }) => matches(text, tokens)) : headings),
+    [scoped, headings, tokens]
+  );
+
+  // 글 페이지에서 질의가 비어 있으면 최근 글 대신 목차를 띄우고, '#'이면 계속 목차에 머문다.
+  const showTOC = (scoped || tokens.length === 0) && headings.length > 0;
 
   // 두 목록은 동시에 뜨지 않으므로 active 인덱스와 방향키 처리를 그대로 공유한다.
-  const count = showTOC ? headings.length : results.length;
+  const count = showTOC ? filtered.length : results.length;
 
   const select = useCallback(
     (order: number) => {
       if (showTOC) {
-        const heading = headings[order];
+        const heading = filtered[order];
         if (heading) jump(heading.id);
         return;
       }
@@ -137,14 +144,14 @@ const Search = () => {
       const result = results[order];
       if (result) go(result.document.slug);
     },
-    [showTOC, headings, results, jump, go]
+    [showTOC, filtered, results, jump, go]
   );
 
   useEffect(() => setActive(0), [query]);
 
   useEffect(() => {
     panelRef.current?.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'nearest' });
-  }, [active, results, headings]);
+  }, [active, results, filtered]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (count === 0) return;
@@ -207,10 +214,24 @@ const Search = () => {
         <div ref={panelRef} className="scrollbar-none max-h-[60vh] overflow-y-auto">
           {showTOC && (
             <>
-              <p className="px-4 pt-3 text-sm font-medium tracking-wide text-soft uppercase select-none">
+              <p className="flex items-center justify-between px-4 pt-3 text-sm font-medium tracking-wide text-soft uppercase select-none">
                 목차
+                {!scoped && <span className="font-normal">#으로 목차 검색</span>}
               </p>
-              <TOC headings={headings} active={active} onActivate={setActive} onSelect={select} />
+
+              {filtered.length === 0 ? (
+                <p className="px-4 py-10 text-center text-sm text-soft">
+                  일치하는 섹션이 없습니다.
+                </p>
+              ) : (
+                <TOC
+                  headings={filtered}
+                  tokens={tokens}
+                  active={active}
+                  onActivate={setActive}
+                  onSelect={select}
+                />
+              )}
             </>
           )}
 
@@ -225,7 +246,10 @@ const Search = () => {
           )}
 
           {!showTOC && index && results.length === 0 && (
-            <p className="px-4 py-10 text-center text-sm text-soft">결과가 없습니다.</p>
+            <p className="px-4 py-10 text-center text-sm text-soft">
+              {/* 목록 페이지거나 헤딩 없는 글이면 좁힐 목차가 아예 없다. */}
+              {scoped ? '검색할 목차가 없습니다.' : '결과가 없습니다.'}
+            </p>
           )}
 
           {!showTOC && results.length > 0 && (
@@ -245,18 +269,15 @@ const Search = () => {
                       <button
                         data-active={order === active}
                         className={cn(
-                          'w-full rounded px-2 py-2.5 text-left transition-colors duration-150 ease-out',
+                          'w-full rounded px-2 py-2 text-left transition-colors duration-150 ease-out',
                           order === active ? 'bg-surface' : 'hover:bg-surface/60'
                         )}
                         onClick={() => go(document.slug)}
                         onMouseMove={() => setActive(order)}
                       >
                         <span className="flex items-baseline gap-2">
-                          <span className="font-medium break-keep">
+                          <span className="flex-1 font-medium break-keep">
                             <Highlight text={document.title} tokens={tokens} />
-                          </span>
-                          <span aria-hidden className="flex-1 shrink-0 text-sm">
-                            {document.emoji}
                           </span>
                           <time
                             dateTime={document.date}
