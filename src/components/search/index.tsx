@@ -164,7 +164,7 @@ const Search = () => {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 text-[11px] text-soft select-none sm:block">
+          <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 text-xs text-soft select-none sm:block">
             ESC
           </kbd>
         </div>
@@ -186,7 +186,7 @@ const Search = () => {
 
           {results.length > 0 && (
             <>
-              <p className="px-4 pt-3 text-xs font-medium tracking-wide text-soft uppercase select-none">
+              <p className="px-4 pt-3 text-sm font-medium tracking-wide text-soft uppercase select-none">
                 {tokens.length === 0 ? '최근 글' : `${results.length}개 결과`}
               </p>
               <ul ref={listRef} className="p-2">
@@ -208,34 +208,23 @@ const Search = () => {
                         onMouseMove={() => setActive(order)}
                       >
                         <span className="flex items-baseline gap-2">
-                          <span aria-hidden className="shrink-0 text-sm">
-                            {document.emoji}
-                          </span>
-                          <span className="flex-1 font-medium break-keep">
+                          <span className="font-medium break-keep">
                             <Highlight text={document.title} tokens={tokens} />
+                          </span>
+                          <span aria-hidden className="flex-1 shrink-0 text-sm">
+                            {document.emoji}
                           </span>
                           <time
                             dateTime={document.date}
-                            className="shrink-0 text-xs text-soft tabular-nums"
+                            className="shrink-0 text-sm text-soft tabular-nums"
                           >
                             {format(document.date, 'yyyy.MM')}
                           </time>
                         </span>
 
                         {excerpt && (
-                          <span className="mt-1 line-clamp-2 pl-6 text-[13px] leading-6 break-keep text-soft">
+                          <span className="mt-1 line-clamp-2 text-sm leading-6 break-keep text-soft">
                             <Highlight text={excerpt} tokens={tokens} />
-                          </span>
-                        )}
-
-                        {document.tags.length > 0 && (
-                          <span className="mt-1 flex flex-wrap gap-x-2 pl-6 text-[11px] text-soft">
-                            {document.tags.map((tag) => (
-                              <span key={tag}>
-                                <span aria-hidden>#</span>
-                                <Highlight text={tag} tokens={tokens} />
-                              </span>
-                            ))}
                           </span>
                         )}
                       </button>
