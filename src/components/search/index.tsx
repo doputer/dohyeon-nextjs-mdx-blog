@@ -9,7 +9,8 @@ import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/searc
 import Highlight from '@/components/search/highlight';
 import TOC, { readHeadings } from '@/components/search/toc';
 import useScroll from '@/hooks/use-scroll';
-import { matches, prepare, search, snippet, tokenize } from '@/lib/search/match';
+import { matches, snippet, tokenize } from '@/lib/search/match';
+import { prepare, search } from '@/lib/search/score';
 import { cn } from '@/utils/cn';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
@@ -204,7 +205,7 @@ const Search = () => {
             ref={inputRef}
             aria-label="검색어"
             className="h-12 w-full bg-transparent outline-none placeholder:text-soft"
-            placeholder="제목·태그·본문 검색, 초성도 가능"
+            placeholder="제목·목차·본문 검색"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />

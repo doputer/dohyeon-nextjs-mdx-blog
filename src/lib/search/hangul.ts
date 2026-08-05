@@ -29,9 +29,6 @@ const BLOCK = JUNGSUNG.length * JONGSUNG.length;
 
 export const isSyllable = (code: number) => code >= SYLLABLE_START && code <= SYLLABLE_END;
 
-/** 호환 자모 자음(ㄱ–ㅎ)의 초성 순번. 초성으로 쓰이지 않는 자모와 그 밖의 글자는 -1. */
-export const toChosungIndex = (character: string) => CHOSUNG.indexOf(character);
-
 /** 완성형 음절을 초성·중성·종성 자모 나열로 펼친다. */
 const toJamo = (code: number) => {
   const offset = code - SYLLABLE_START;
@@ -41,13 +38,6 @@ const toJamo = (code: number) => {
     JUNGSUNG[Math.floor(offset / JONGSUNG.length) % JUNGSUNG.length] +
     JONGSUNG[offset % JONGSUNG.length]
   );
-};
-
-/** 초성이 주어진 자음인 음절을 가린다. 같은 초성의 음절 588개는 코드포인트가 붙어 있어 범위로 판정된다. */
-export const toChosungTest = (chosungIndex: number) => {
-  const first = SYLLABLE_START + chosungIndex * BLOCK;
-
-  return (code: number) => code >= first && code < first + BLOCK;
 };
 
 /**
@@ -62,8 +52,9 @@ export const toPrefixTest = (code: number) => {
   const first = SYLLABLE_START + Math.floor((code - SYLLABLE_START) / BLOCK) * BLOCK;
   const allowed = new Uint8Array(BLOCK);
 
-  for (let candidate = 0; candidate < BLOCK; candidate++)
+  for (let candidate = 0; candidate < BLOCK; candidate++) {
     if (toJamo(first + candidate).startsWith(jamo)) allowed[candidate] = 1;
+  }
 
   return (target: number) => allowed[target - first] === 1;
 };

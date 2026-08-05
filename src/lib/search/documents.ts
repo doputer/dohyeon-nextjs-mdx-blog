@@ -6,7 +6,7 @@ import path from 'path';
 
 const CONTENTS_DIR = path.join(process.cwd(), 'contents');
 
-/** 초성 치환과 부분 일치가 성립하려면 인덱스 전체가 NFC 조합형이어야 한다. */
+/** 접두사 판정과 부분 일치가 성립하려면 인덱스 전체가 NFC 조합형이어야 한다. */
 const nfc = (value: string) => value.normalize('NFC');
 
 /**
@@ -41,7 +41,6 @@ export const getSearchDocuments = async (): Promise<SearchDocument[]> => {
         slug,
         title: nfc(frontmatter.title),
         description: nfc(frontmatter.description),
-        tags: frontmatter.tags.map(nfc),
         date: new Date(frontmatter.date).toISOString(),
         headings: toc.map(({ text }) => nfc(text)),
         body: toPlainText(nfc(raw)),
