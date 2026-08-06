@@ -58,23 +58,22 @@ const toClassBody = (codes: number[]) => {
     .map(([start, end]) => {
       const from = String.fromCharCode(start);
 
-      if (start === end) return from;
-      if (end === start + 1) return from + String.fromCharCode(end);
-
-      return `${from}-${String.fromCharCode(end)}`;
+      return start === end ? from : `${from}-${String.fromCharCode(end)}`;
     })
     .join('');
 };
 
 /**
- * 종성의 마지막 자음을 떼어 다음 글자 초성으로 넘긴다 — '국' → 구 + ㄱ, '늚' → 늘 + ㅁ, '값' → 갑 + ㅅ.
- * 종성 자리에 임시로 붙어 있던 자음이 다음 모음을 만나 제 글자로 떨어져 나가는 순간을 흉내낸다.
+ * 종성의 마지막 자음을 떼어 다음 글자 초성으로 넘긴다 — '국' → 구 + ㄱ, '늚' → 늘 + ㅁ.
+ * 음절이 아니거나 종성이 없으면 null.
  *
- * 종성이 없으면 넘길 게 없으므로 null. 겹종성은 펼쳐 두었으므로 마지막 자음만 떼면
- * 남은 쪽이 그대로 또 다른 종성이 된다 — 'ㄹㅁ'에서 ㅁ을 떼면 'ㄹ'이 남는 식이고, 하나뿐이면 종성이 없어진다.
- * 떼어낸 자음은 27가지 종성의 끝 자음이 모두 초성으로도 쓰이는 자음이라 언제나 초성 순번을 얻는다.
+ * 겹종성은 펼쳐 두었으므로 마지막 자음만 떼면 남은 쪽이 그대로 또 다른 종성이 된다 —
+ * 'ㄹㅁ'에서 ㅁ을 떼면 'ㄹ'이 남고, 하나뿐이면 종성이 없어진다.
+ * 27가지 종성의 끝 자음은 모두 초성으로도 쓰이는 자음이라 언제나 초성 순번을 얻는다.
  */
 export const splitJongsung = (code: number) => {
+  if (!isSyllable(code)) return null;
+
   const jongsungIndex = (code - SYLLABLE_START) % JONGSUNG.length;
 
   if (jongsungIndex === 0) return null;
@@ -101,8 +100,8 @@ export const toChosungPattern = (chosungIndex: number) => {
 };
 
 /**
- * 조합 중인 글자를 접두사로 갖는 완성 글자의 문자 클래스 — '구'면 '[구-귛]', '갑'이면 '[갑값]'.
- * 후보는 같은 초성 블록 안에만 있으므로 588개만 훑으면 되고, 쿼리 한 글자당 한 번만 만든다.
+ * 조합 중인 글자를 접두사로 갖는 완성 글자의 문자 클래스 — '구'면 '[구-귛]', '갑'이면 '[갑-값]'.
+ * 후보는 같은 초성 블록 안에만 있으므로 588개만 훑으면 된다.
  *
  * 범위가 언제나 하나는 아니다 — '각'의 후보는 각(ㄱ)·갃(ㄱㅅ)인데 사이의 갂(ㄲ)이 빠진다.
  * ㄲ은 ㄱ 두 개가 아니라 별개 자모라 접두사가 아니기 때문이다. 그래서 목록을 모아 구간으로 줄인다.

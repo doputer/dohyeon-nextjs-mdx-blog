@@ -11,17 +11,13 @@ import {
  * alternation으로 편다 — '늚' → `(?:늚|늘[ㅁ마-밓])`. 후보 좁히기·건너뛰기는 정규식 엔진이 맡는다.
  * 인덱스는 빌드 시점에 NFC로 정규화되므로 런타임에서는 소문자화만 한다.
  *
- * 매치 위치가 원문 위치와 그대로 일치하므로 경계 판정과 하이라이트가 위치를 그대로 쓴다.
- * 다만 길이는 쿼리 길이와 다를 수 있다 — 종성이 넘어간 해석은 글자 하나를 더 먹는다.
- * 그래서 구간이 필요한 곳은 `Match.length`를 봐야 한다.
- *
  * 문자열만 다룬다. 문서·필드·가중치는 score.ts 가 맡는다.
  *
  * 느슨하게 보는 건 세 가지다.
  *   - 초성 — `ㄱㅅ`이 검색을. 위치를 가리지 않는다.
  *   - 조합 중인 마지막 글자 — `한구`가 한국을, `매`가 맨을. 종성 자리가 아직 열려 있다.
  *   - 넘어간 종성 — `늚`이 늘면을. 종성이 다음 글자 초성으로 떨어져 나간 상태다.
- * 앞의 둘은 글자 수가 그대로지만, 마지막 하나만 글자를 더 먹는다.
+ * 앞의 둘은 글자 수가 그대로지만, 마지막 하나는 글자를 더 먹으므로 구간은 `Match.length`가 답이다.
  *
  * 초성은 아직 필드를 가리지 않는다. 본문은 자모 몇 글자짜리 쿼리가 흔해서 허용하면 AND 조건이
  * 헐거워지므로, 필드마다 허용 여부를 정하는 정책이 score.ts 쪽에 필요하다.
@@ -79,11 +75,7 @@ const toCharPattern = (token: string, offset: number): string => {
  * 종성으로 이미 확정된 입력이다. 접두사로 느슨하게 보면 '늙면' 같은 자리까지 걸린다.
  */
 const toCarriedPattern = (token: string, head: string): string | null => {
-  const code = token.charCodeAt(token.length - 1);
-
-  if (!isSyllable(code)) return null;
-
-  const split = splitJongsung(code);
+  const split = splitJongsung(token.charCodeAt(token.length - 1));
 
   if (!split) return null;
 
@@ -91,15 +83,15 @@ const toCarriedPattern = (token: string, head: string): string | null => {
 };
 
 /**
- * 토큰을 정규식 하나로 미리 컴파일해 둔다. 글자별 문자 클래스를 잇고, 종성이 넘어간 해석이
- * 있으면 alternation으로 함께 담는다. 두 해석은 한 자리에서 동시에 맞을 수 없으므로
- * (한 글자가 종성을 가진 모양이면서 동시에 떼어낸 모양일 수는 없다) 순서는 결과를 바꾸지 않는다.
+ * 토큰을 정규식 하나로 미리 컴파일해 둔다. 원래 해석과 종성이 넘어간 해석은 한 자리에서
+ * 동시에 맞을 수 없으므로 (한 글자가 종성을 가진 모양이면서 동시에 떼어낸 모양일 수는 없다)
+ * alternation 순서는 결과를 바꾸지 않는다.
  */
 export const compile = (token: string): TokenPattern => {
   const parts = [...token].map((_, offset) => toCharPattern(token, offset));
   const head = parts.slice(0, -1).join('');
-  const whole = head + (parts.at(-1) ?? '');
   const carried = toCarriedPattern(token, head);
+  const whole = parts.join('');
 
   return {
     token,
@@ -128,7 +120,6 @@ export function* findMatches(text: string, pattern: TokenPattern): Generator<Mat
     yield {
       index: found.index,
       length: found[0].length,
-      // 넘어간 종성이나 느슨한 글자로 맞으면 잡힌 글자가 토큰과 달라진다.
       kind: found[0] === token ? 'exact' : 'partial',
     };
   }

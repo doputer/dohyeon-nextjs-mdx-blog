@@ -57,7 +57,7 @@ export const search = (
 ): SearchResult[] => {
   if (tokens.length === 0) return [];
 
-  // 토큰당 한 번만 컴파일한다. 문서마다 다시 만들면 접두사 비트맵을 문서 수만큼 짓는다.
+  // 토큰당 한 번만 컴파일한다. 문서마다 다시 만들면 정규식을 문서 수만큼 짓는다.
   const patterns = tokens.map(compile);
   const matched: SearchResult[] = [];
 
