@@ -88,7 +88,9 @@ const toCarriedJongsungPattern = (token: string, head: string): string | null =>
  * alternation 순서는 결과를 바꾸지 않는다.
  */
 export const compile = (token: string): TokenPattern => {
-  const parts = [...token].map((_, offset) => toCharPattern(token, offset));
+  // UTF-16 단위로 센다 — `toCharPattern`이 charCodeAt 로 읽으므로 기준이 어긋나면 글자를 흘린다.
+  // BMP 밖 글자는 서로게이트 둘로 쪼개져 각각 리터럴이 되고, 이어 붙이면 원래 글자로 돌아온다.
+  const parts = Array.from({ length: token.length }, (_, offset) => toCharPattern(token, offset));
   const head = parts.slice(0, -1).join('');
   const carried = toCarriedJongsungPattern(token, head);
   const whole = parts.join('');

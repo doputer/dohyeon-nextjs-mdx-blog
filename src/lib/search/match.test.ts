@@ -70,6 +70,14 @@ describe('compile — 토큰이 어떤 정규식이 되는가', () => {
     assert.equal(matches('a.b 표기', ['a.b']), true);
     assert.equal(matches('axb 표기', ['a.b']), false, "'.'이 아무 글자나 받으면 안 된다");
   });
+
+  test('BMP 밖 글자가 섞여도 뒷글자를 흘리지 않는다 — 서로게이트 쌍', () => {
+    // 이모지는 UTF-16 두 칸을 쓴다. 코드포인트 단위로 세면 뒤의 '가'를 못 읽고 패턴에서 사라진다.
+    assert.equal(source('🎯가'), '🎯[가-갛]');
+    assert.equal(matches('🎯가나', ['🎯가']), true);
+    assert.equal(matches('🎯 표적', ['🎯가']), false, "'가'가 없으면 안 맞는다");
+    assert.equal(source('가🎯'), '가🎯', '이모지가 마지막이면 느슨해질 게 없다');
+  });
 });
 
 describe('findMatches', () => {
