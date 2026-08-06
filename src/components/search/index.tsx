@@ -9,8 +9,8 @@ import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/searc
 import Highlight from '@/components/search/highlight';
 import TOC, { readHeadings } from '@/components/search/toc';
 import useScroll from '@/hooks/use-scroll';
-import { matches, snippet, tokenize } from '@/lib/search/match';
-import { prepare, search } from '@/lib/search/score';
+import { matchesAll, snippet, tokenize } from '@/lib/search/match';
+import { prepareIndex, search } from '@/lib/search/score';
 import { cn } from '@/utils/cn';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
@@ -46,7 +46,7 @@ const Search = () => {
 
       const documents: SearchDocument[] = await response.json();
 
-      setIndex(prepare(documents));
+      setIndex(prepareIndex(documents));
     } catch {
       loadRequested.current = false;
       setFailed(true);
@@ -126,7 +126,7 @@ const Search = () => {
   }, [index, scoped, tokens]);
 
   const filtered = useMemo(
-    () => (scoped ? headings.filter(({ text }) => matches(text, tokens)) : headings),
+    () => (scoped ? headings.filter(({ text }) => matchesAll(text, tokens)) : headings),
     [scoped, headings, tokens]
   );
 
