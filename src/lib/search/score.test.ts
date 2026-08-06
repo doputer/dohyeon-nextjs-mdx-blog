@@ -105,8 +105,14 @@ describe('search', () => {
     assert.deepEqual(search(index(), [], 8), []);
   });
 
-  test('자모 쿼리는 어느 필드에서도 초성으로 맞지 않는다', () => {
-    assert.deepEqual(slugs(search(index(), ['ㄱㅅ'], 8)), []);
-    assert.deepEqual(slugs(search(index(), ['ㅈㅁ'], 8)), [], "헤딩의 '자모'도 안 맞는다");
+  test('자모 쿼리는 초성으로 맞고, 느슨한 만큼 배수가 낮다', () => {
+    const results = search(index(), ['ㄱㅅ'], 8);
+
+    assert.deepEqual(slugs(results), ['hangul', 'typescript']);
+    assert.equal(results[0].score, 15, "제목 '검색' — 10 × 1.5");
+  });
+
+  test('필드를 가리지 않는다 — 헤딩에서도 초성으로 맞는다', () => {
+    assert.equal(search(index(), ['ㅈㅁ'], 8)[0].score, 4.5, "헤딩 '자모' — 3 × 1.5");
   });
 });

@@ -29,6 +29,19 @@ const BLOCK = JUNGSUNG.length * JONGSUNG.length;
 
 export const isSyllable = (code: number) => code >= SYLLABLE_START && code <= SYLLABLE_END;
 
+/** 호환 자모 자음(ㄱ–ㅎ)의 초성 순번. 초성으로 쓰이지 않는 자모와 그 밖의 글자는 -1. */
+export const toChosungIndex = (character: string) => CHOSUNG.indexOf(character);
+
+/**
+ * 초성이 주어진 자음인 음절을 받는다. 같은 초성의 음절 588개는 코드포인트가 붙어 있어
+ * 범위 비교 두 번으로 끝난다 — `toPrefixTest`처럼 후보를 모아 둘 필요가 없다.
+ */
+export const toChosungTest = (chosungIndex: number) => {
+  const first = SYLLABLE_START + chosungIndex * BLOCK;
+
+  return (code: number) => code >= first && code < first + BLOCK;
+};
+
 /** 완성형 음절을 초성·중성·종성 자모 나열로 펼친다. */
 const toJamo = (code: number) => {
   const offset = code - SYLLABLE_START;

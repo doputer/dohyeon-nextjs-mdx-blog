@@ -65,12 +65,29 @@ describe('toCharTest', () => {
     assert.equal(toCharTest('가', 0).test(code('값')), true, '종성이 아직 없는 상태');
   });
 
-  test('자모는 글자 그대로만 받는다', () => {
+  test('자모는 초성이 같은 음절을 받는다', () => {
     const { exact, test: accepts } = toCharTest('ㄱㅅ', 0);
 
-    assert.equal(exact, true);
+    assert.equal(exact, false);
     assert.equal(accepts(code('ㄱ')), true, '자모 그 자체');
-    assert.equal(accepts(code('가')), false, "'ㄱ'이 '가'를 받지 않는다");
+    assert.equal(accepts(code('가')), true, '초성 블록의 처음');
+    assert.equal(accepts(code('깋')), true, '초성 블록의 끝');
+    assert.equal(accepts(code('나')), false, '초성이 다르다');
+  });
+
+  test('초성은 위치를 가리지 않는다 — 마지막이 아닌 자리도 느슨하다', () => {
+    const { exact, test: accepts } = toCharTest('ㄱ색', 0);
+
+    assert.equal(exact, false);
+    assert.equal(accepts(code('검')), true);
+  });
+
+  test('초성으로 쓰이지 않는 자모는 정확 일치', () => {
+    const { exact, test: accepts } = toCharTest('ㅏㅑ', 0);
+
+    assert.equal(exact, true, '모음은 초성 순번이 없다');
+    assert.equal(accepts(code('ㅏ')), true);
+    assert.equal(accepts(code('아')), false);
   });
 
   test('그 밖의 글자는 정확 일치', () => {
@@ -87,7 +104,16 @@ describe('compile', () => {
     assert.equal(compile('한국').anchor, '한', '마지막 글자는 느슨하므로 빠진다');
     assert.equal(compile('검색어').anchor, '검색');
     assert.equal(compile('abc').anchor, 'abc', '영문은 전부 정확 일치');
-    assert.equal(compile('ㄱㅅ').anchor, 'ㄱㅅ', '자모도 정확 일치라 전부 anchor');
+    assert.equal(compile('ㄱㅅ').anchor, '', '자모는 느슨하므로 anchor 가 없다');
+  });
+
+  test('느슨한 글자를 만나면 끊는다 — 그 뒤의 정확 일치는 담지 않는다', () => {
+    assert.equal(
+      compile('ㄱ색어').anchor,
+      '',
+      "'색'을 담으면 anchor 가 매치 시작보다 뒤를 가리킨다"
+    );
+    assert.equal(compile('한ㄱ어').anchor, '한', '끊기기 전까지는 담는다');
   });
 
   test('한 글자 한글 토큰은 anchor 가 없다 — 그 한 글자가 곧 마지막이라', () => {
@@ -116,9 +142,14 @@ describe('findMatches', () => {
     assert.deepEqual(find('한국', '한국'), [{ index: 0, kind: 'exact' }]);
   });
 
-  test('자모는 글자 그대로만 맞는다', () => {
-    assert.deepEqual(find('검색 엔진', 'ㄱㅅ'), [], '초성으로 맞지 않는다');
-    assert.deepEqual(find('ㄱㅅ 표기', 'ㄱㅅ'), [{ index: 0, kind: 'exact' }]);
+  test('자모는 초성으로 맞고, 글자 그대로도 맞는다', () => {
+    assert.deepEqual(find('검색 엔진', 'ㄱㅅ'), [{ index: 0, kind: 'partial' }], '초성 일치');
+    assert.deepEqual(find('ㄱㅅ 표기', 'ㄱㅅ'), [{ index: 0, kind: 'exact' }], '자모 그 자체');
+  });
+
+  test('자모 뒤에 완성 음절이 와도 자리를 놓치지 않는다 — anchor 가 끊긴 경로', () => {
+    assert.deepEqual(find('검색어', 'ㄱ색어'), [{ index: 0, kind: 'partial' }]);
+    assert.deepEqual(find('가나다 검색어', 'ㄱ색어'), [{ index: 4, kind: 'partial' }]);
   });
 
   test('빈 토큰은 아무것도 내지 않는다', () => {
@@ -173,7 +204,8 @@ describe('matches · findRanges', () => {
     assert.equal(matches('접두사 매칭', ['접두', '매칭']), true);
     assert.equal(matches('접두사 매칭', ['접두사']), true);
     assert.equal(matches('접두사 매칭', ['접두', '없음']), false, 'AND');
-    assert.equal(matches('접두사 매칭', ['ㅈㄷ']), false, '초성으로는 안 맞는다');
+    assert.equal(matches('접두사 매칭', ['ㅈㄷ']), true, '초성으로도 맞는다');
+    assert.equal(matches('접두사 매칭', ['ㄷㅈ']), false, '초성 순서가 다르면 안 맞는다');
   });
 
   test('matches 도 조합 중 글자는 받는다', () => {
@@ -190,6 +222,7 @@ describe('matches · findRanges', () => {
       '느슨하게 맞은 구간도 같은 길이'
     );
     assert.deepEqual(findRanges('한국어 검색', ['없음']), []);
+    assert.deepEqual(findRanges('한국어 검색', ['ㄱㅅ']), [[4, 6]], '초성 일치도 같은 길이');
   });
 
   test('겹치거나 붙은 구간은 하나로 합친다', () => {
@@ -218,9 +251,13 @@ describe('snippet', () => {
     assert.match(snippet(BODY, ['검색'], TITLE), /검색/);
   });
 
+  test('초성으로도 자리를 잡는다', () => {
+    assert.match(snippet(BODY, ['ㄱㅈㅊ']), /가중치/);
+  });
+
   test('잡을 자리가 없으면 빈 문자열 — 호출부가 설명글로 되돌린다', () => {
     assert.equal(snippet(BODY, ['없는토큰']), '');
-    assert.equal(snippet(BODY, ['ㄱㅈㅊ']), '', '자모로는 자리를 잡지 않는다');
+    assert.equal(snippet(BODY, ['ㅋㅋㅋ']), '', '초성이 이어지는 자리가 없다');
   });
 
   test('radius 로 잘라낼 폭을 정하고, 잘린 쪽에 말줄임을 붙인다', () => {

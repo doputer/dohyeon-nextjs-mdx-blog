@@ -1,4 +1,4 @@
-import { isSyllable, toPrefixTest } from '@/lib/search/hangul';
+import { isSyllable, toChosungIndex, toChosungTest, toPrefixTest } from '@/lib/search/hangul';
 
 /*
  * 쿼리와 대상을 글자 대 글자로 맞춰 본다. 쿼리 한 글자가 대상 한 글자를 받으므로 매치 구간의 길이가
@@ -7,9 +7,11 @@ import { isSyllable, toPrefixTest } from '@/lib/search/hangul';
  *
  * 문자열만 다룬다. 문서·필드·가중치는 score.ts 가 맡는다.
  *
- * 느슨하게 보는 건 조합 중인 마지막 글자 하나뿐이다. 초성 검색(`ㄱㅅ` → 검색)은 빼 두었다 —
- * 본문은 자모 3글자 쿼리가 너무 흔해서 허용하면 AND 조건이 무력해졌다. 되돌린다면 `toCharTest`에
- * 위치와 무관한 분기를 더하고, 필드마다 허용 여부를 정하는 정책이 다시 필요해진다.
+ * 느슨하게 보는 건 두 가지다 — 조합 중인 마지막 글자(`한구` → 한국)와 초성(`ㄱㅅ` → 검색).
+ * 둘 다 자모 한 글자가 음절 한 글자를 받으므로 위의 길이 성질은 그대로다.
+ *
+ * 초성은 아직 필드를 가리지 않는다. 본문은 자모 몇 글자짜리 쿼리가 흔해서 허용하면 AND 조건이
+ * 헐거워지므로, 필드마다 허용 여부를 정하는 정책이 score.ts 쪽에 필요하다.
  */
 
 type Range = [start: number, end: number];
@@ -39,8 +41,11 @@ export const tokenize = (query: string): string[] => {
 /**
  * 쿼리 한 글자를 받아 줄 대상 글자의 판정 함수. `exact`는 느슨함이 없다는 뜻으로 anchor를 정하는 데 쓴다.
  *
- * 마지막 글자만 접두사로 느슨하게 본다. 앞 글자는 사용자가 이미 확정한 입력이고,
+ * 접두사로 느슨하게 보는 건 마지막 글자뿐이다. 앞 글자는 사용자가 이미 확정한 입력이고,
  * IME는 조합 중인 글자를 언제나 맨 뒤에 둔다 — '한국'은 한 → 한ㄱ → 한구 → 한국으로 자란다.
+ *
+ * 반면 초성은 위치를 가리지 않는다 — `ㄱㅅ`도 `한ㄱ`도 자모가 놓인 자리에서 초성으로 맞는다.
+ * 자모가 글자 그대로 쓰인 텍스트도 있으니 자기 자신도 함께 받는다.
  *
  * `toPrefixTest`는 588칸 비트맵을 짓는다. 돌려주는 함수 안에서 부르면 대상 글자마다 새로 짓는다.
  */
@@ -54,6 +59,17 @@ export const toCharTest = (token: string, offset: number): { exact: boolean; tes
     };
   }
 
+  const chosungIndex = toChosungIndex(token[offset]);
+
+  if (chosungIndex !== -1) {
+    const hasChosung = toChosungTest(chosungIndex);
+
+    return {
+      exact: false,
+      test: (target) => target === code || hasChosung(target),
+    };
+  }
+
   return {
     exact: true,
     test: (target) => target === code,
@@ -63,9 +79,10 @@ export const toCharTest = (token: string, offset: number): { exact: boolean; tes
 /**
  * 토큰을 글자별 판정 함수로 미리 풀어 둔다. 접두사 비트맵을 짓는 비용을 쿼리당 한 번으로 묶는다.
  *
- * `anchor`는 앞에서부터 `exact`가 이어진 구간 — '검색어' → '검색', 'abc' → 'abc', '한' → ''.
- * 끊김을 따로 추적하지 않아도 되는 건 `toCharTest`가 마지막 글자에서만 느슨해지기 때문이다.
- * 위치와 무관하게 느슨해지는 분기를 더하면 이 가정이 깨져 anchor가 매치 시작보다 뒤를 가리킨다.
+ * `anchor`는 토큰 시작에서 `exact`가 이어진 구간 — '검색어' → '검색', 'abc' → 'abc', '한' → ''.
+ * 느슨한 글자를 만나면 거기서 끊어야 한다. 초성은 위치를 가리지 않으므로 끊지 않으면 그 뒤의
+ * 정확 일치까지 주워 담고(`ㄱ색어` → '색'), anchor가 매치 시작보다 뒤를 가리켜
+ * `findMatches`가 엉뚱한 자리를 후보로 삼는다 — '검색어'의 매치를 통째로 놓친다.
  */
 export const compile = (token: string): TokenPattern => {
   const tests: CharTest[] = [];
@@ -76,7 +93,7 @@ export const compile = (token: string): TokenPattern => {
 
     tests.push(test);
 
-    if (exact) anchor += token[offset];
+    if (exact && anchor.length === offset) anchor += token[offset];
   }
 
   return {
