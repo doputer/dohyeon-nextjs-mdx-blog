@@ -54,6 +54,28 @@ const toJamo = (code: number) => {
 };
 
 /**
+ * 종성의 마지막 자음을 떼어 다음 글자 초성으로 넘긴다 — '국' → 구 + ㄱ, '늚' → 늘 + ㅁ, '값' → 갑 + ㅅ.
+ * 종성 자리에 임시로 붙어 있던 자음이 다음 모음을 만나 제 글자로 떨어져 나가는 순간을 흉내낸다.
+ *
+ * 종성이 없으면 넘길 게 없으므로 null. 겹종성은 펼쳐 두었으므로 마지막 자음만 떼면
+ * 남은 쪽이 그대로 또 다른 종성이 된다 — 'ㄹㅁ'에서 ㅁ을 떼면 'ㄹ'이 남는 식이고, 하나뿐이면 종성이 없어진다.
+ * 떼어낸 자음은 27가지 종성의 끝 자음이 모두 초성으로도 쓰이는 자음이라 언제나 초성 순번을 얻는다.
+ */
+export const splitJongsung = (code: number) => {
+  const jongsungIndex = (code - SYLLABLE_START) % JONGSUNG.length;
+
+  if (jongsungIndex === 0) return null;
+
+  const jamo = JONGSUNG[jongsungIndex];
+  const moved = jamo[jamo.length - 1];
+
+  return {
+    base: code - jongsungIndex + JONGSUNG.indexOf(jamo.slice(0, -1)),
+    chosungIndex: CHOSUNG.indexOf(moved),
+  };
+};
+
+/**
  * 조합 중인 글자를 완성 글자의 접두사로 보고 가린다 — '구'가 '국'을, '갑'이 '값'을, '고'가 '과'를 받는다.
  * 후보는 같은 초성 블록 안에만 있으므로 588개만 훑으면 되고, 질의 한 글자당 한 번만 만든다.
  *

@@ -129,27 +129,56 @@ describe('compile', () => {
 describe('findMatches', () => {
   test('겹치지 않게 전부 찾는다', () => {
     assert.deepEqual(find('한국어 한국', '한국'), [
-      { index: 0, kind: 'exact' },
-      { index: 4, kind: 'exact' },
+      { index: 0, length: 2, kind: 'exact' },
+      { index: 4, length: 2, kind: 'exact' },
     ]);
   });
 
   test('느슨하게 맞은 자리는 partial 로 표시한다', () => {
-    assert.deepEqual(find('한국', '한구'), [{ index: 0, kind: 'partial' }]);
+    assert.deepEqual(find('한국', '한구'), [{ index: 0, length: 2, kind: 'partial' }]);
   });
 
   test('글자가 결과적으로 똑같으면 느슨한 경로로 왔어도 exact', () => {
-    assert.deepEqual(find('한국', '한국'), [{ index: 0, kind: 'exact' }]);
+    assert.deepEqual(find('한국', '한국'), [{ index: 0, length: 2, kind: 'exact' }]);
   });
 
   test('자모는 초성으로 맞고, 글자 그대로도 맞는다', () => {
-    assert.deepEqual(find('검색 엔진', 'ㄱㅅ'), [{ index: 0, kind: 'partial' }], '초성 일치');
-    assert.deepEqual(find('ㄱㅅ 표기', 'ㄱㅅ'), [{ index: 0, kind: 'exact' }], '자모 그 자체');
+    assert.deepEqual(
+      find('검색 엔진', 'ㄱㅅ'),
+      [{ index: 0, length: 2, kind: 'partial' }],
+      '초성 일치'
+    );
+    assert.deepEqual(
+      find('ㄱㅅ 표기', 'ㄱㅅ'),
+      [{ index: 0, length: 2, kind: 'exact' }],
+      '자모 그 자체'
+    );
   });
 
   test('자모 뒤에 완성 음절이 와도 자리를 놓치지 않는다 — anchor 가 끊긴 경로', () => {
-    assert.deepEqual(find('검색어', 'ㄱ색어'), [{ index: 0, kind: 'partial' }]);
-    assert.deepEqual(find('가나다 검색어', 'ㄱ색어'), [{ index: 4, kind: 'partial' }]);
+    assert.deepEqual(find('검색어', 'ㄱ색어'), [{ index: 0, length: 3, kind: 'partial' }]);
+    assert.deepEqual(find('가나다 검색어', 'ㄱ색어'), [{ index: 4, length: 3, kind: 'partial' }]);
+  });
+
+  test('종성은 다음 글자 초성으로도 맞는다 — 글자 하나를 더 먹는다', () => {
+    assert.deepEqual(find('구경', '국'), [{ index: 0, length: 2, kind: 'partial' }], '단일 종성');
+    assert.deepEqual(find('늘면', '늚'), [{ index: 0, length: 2, kind: 'partial' }], '겹종성 ㄹㅁ');
+    assert.deepEqual(
+      find('갑상선', '값'),
+      [{ index: 0, length: 2, kind: 'partial' }],
+      '겹종성 ㅂㅅ'
+    );
+    assert.deepEqual(find('까꾸', '깎'), [{ index: 0, length: 2, kind: 'partial' }], '쌍자음 종성');
+  });
+
+  test('넘기지 않은 해석도 그대로 살아 있다', () => {
+    assert.deepEqual(find('국밥', '국'), [{ index: 0, length: 1, kind: 'exact' }]);
+    assert.deepEqual(find('늚', '늚'), [{ index: 0, length: 1, kind: 'exact' }]);
+  });
+
+  test('넘긴 자음의 초성이 다르면 안 맞는다', () => {
+    assert.deepEqual(find('늘다', '늚'), [], "'다'의 초성은 ㄷ");
+    assert.deepEqual(find('구름', '국'), [], "'름'의 초성은 ㄹ");
   });
 
   test('빈 토큰은 아무것도 내지 않는다', () => {
@@ -164,8 +193,8 @@ describe('findMatches', () => {
 
   test('영문도 같은 결과를 낸다', () => {
     assert.deepEqual(find('abcabc', 'abc'), [
-      { index: 0, kind: 'exact' },
-      { index: 3, kind: 'exact' },
+      { index: 0, length: 3, kind: 'exact' },
+      { index: 3, length: 3, kind: 'exact' },
     ]);
   });
 });
@@ -175,15 +204,15 @@ describe('findMatches — anchor 경로가 결과를 바꾸지 않는다', () =>
 
   test('anchor 로 후보를 좁혀도 위치·kind 가 그대로다', () => {
     assert.deepEqual(find(text, '검색어'), [
-      { index: 0, kind: 'exact' },
-      { index: 8, kind: 'exact' },
+      { index: 0, length: 3, kind: 'exact' },
+      { index: 8, length: 3, kind: 'exact' },
     ]);
   });
 
   test('anchor 가 없는 한 글자 토큰도 같은 자리를 가리킨다 — 전수 스캔 경로', () => {
     assert.deepEqual(find(text, '검'), [
-      { index: 0, kind: 'exact' },
-      { index: 8, kind: 'exact' },
+      { index: 0, length: 1, kind: 'exact' },
+      { index: 8, length: 1, kind: 'exact' },
     ]);
   });
 
@@ -193,8 +222,8 @@ describe('findMatches — anchor 경로가 결과를 바꾸지 않는다', () =>
 
   test('anchor 가 토큰 전체면 indexOf 만으로 끝난다 — 결과는 동일', () => {
     assert.deepEqual(find('abcabc', 'abc'), [
-      { index: 0, kind: 'exact' },
-      { index: 3, kind: 'exact' },
+      { index: 0, length: 3, kind: 'exact' },
+      { index: 3, length: 3, kind: 'exact' },
     ]);
   });
 });
@@ -214,7 +243,7 @@ describe('matches · findRanges', () => {
     assert.equal(matches('접두사 매칭', ['매타']), false, '중성·초성이 다르면 안 받는다');
   });
 
-  test('findRanges 는 매치 길이가 토큰 길이와 같다는 성질을 쓴다', () => {
+  test('findRanges 는 매치가 먹은 길이만큼 구간을 낸다', () => {
     assert.deepEqual(findRanges('한국어 검색', ['검색']), [[4, 6]]);
     assert.deepEqual(
       findRanges('한국어 검색', ['한구']),
@@ -223,6 +252,16 @@ describe('matches · findRanges', () => {
     );
     assert.deepEqual(findRanges('한국어 검색', ['없음']), []);
     assert.deepEqual(findRanges('한국어 검색', ['ㄱㅅ']), [[4, 6]], '초성 일치도 같은 길이');
+    assert.deepEqual(
+      findRanges('늘면 줄면', ['늚']),
+      [[0, 2]],
+      '종성이 넘어간 해석은 토큰보다 한 글자 넓다'
+    );
+  });
+
+  test('matches 도 넘어간 종성을 받는다', () => {
+    assert.equal(matches('갑상선 가격', ['값']), true);
+    assert.equal(matches('갑상선 가격', ['갔']), false, '넘긴 초성이 ㅅ 이 아니다');
   });
 
   test('겹치거나 붙은 구간은 하나로 합친다', () => {
