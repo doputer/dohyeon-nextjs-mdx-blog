@@ -1,46 +1,39 @@
-const CHOSUNG = [
-  'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ',
-  'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ',
-]; // prettier-ignore
-
-/**
- * 겹모음·겹받침은 구성 자모로 펼쳐 둔다. 두벌식에서 두 번 눌러 만드는 글자들이라, 펼쳐 두면
- * 조합 중인 글자가 완성 글자의 접두사가 된다 — '고'가 '과'의, '갑'이 '값'의 접두사가 되는 식.
- * 반면 ㄲ·ㅆ은 shift 한 번으로 입력되어 조합 중간 상태가 없으므로 펼치지 않는다.
- */
-const JUNGSUNG = [
-  'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ',
-  'ㅗ', 'ㅗㅏ', 'ㅗㅐ', 'ㅗㅣ', 'ㅛ',
-  'ㅜ', 'ㅜㅓ', 'ㅜㅔ', 'ㅜㅣ', 'ㅠ',
-  'ㅡ', 'ㅡㅣ', 'ㅣ',
-]; // prettier-ignore
-
-const JONGSUNG = [
-  '', 'ㄱ', 'ㄲ', 'ㄱㅅ', 'ㄴ', 'ㄴㅈ', 'ㄴㅎ', 'ㄷ',
-  'ㄹ', 'ㄹㄱ', 'ㄹㅁ', 'ㄹㅂ', 'ㄹㅅ', 'ㄹㅌ', 'ㄹㅍ', 'ㄹㅎ',
-  'ㅁ', 'ㅂ', 'ㅂㅅ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ',
-]; // prettier-ignore
-
-const SYLLABLE_START = 0xac00;
-const SYLLABLE_END = 0xd7a3;
-
-// 초성 하나가 담당하는 음절 수 — 중성 21 × 종성 28
-const BLOCK = JUNGSUNG.length * JONGSUNG.length;
+import {
+  CHOSUNG,
+  CHOSUNG_BLOCK,
+  JONGSUNG,
+  JUNGSUNG,
+  SYLLABLE_END,
+  SYLLABLE_START,
+} from '@/lib/search/constants';
 
 export const isSyllable = (code: number) => code >= SYLLABLE_START && code <= SYLLABLE_END;
 
 /** 호환 자모 자음(ㄱ–ㅎ)의 초성 순번. 초성으로 쓰이지 않는 자모와 그 밖의 글자는 -1. */
 export const toChosungIndex = (character: string) => CHOSUNG.indexOf(character);
 
-/** 완성형 음절을 초성·중성·종성 자모 나열로 펼친다. */
-const toJamo = (code: number) => {
+/**
+ * 음절 코드를 초성·중성·종성 순번으로 쪼갠다. 종성을 가장 낮은 자리로 두는 자리 분해다 —
+ * 시각을 시·분·초로 쪼개는 것과 같고, 밑수만 60·60 대신 21·28 이다.
+ */
+const toIndexes = (code: number) => {
   const offset = code - SYLLABLE_START;
 
-  return (
-    CHOSUNG[Math.floor(offset / BLOCK)] +
-    JUNGSUNG[Math.floor(offset / JONGSUNG.length) % JUNGSUNG.length] +
-    JONGSUNG[offset % JONGSUNG.length]
-  );
+  return {
+    chosung: Math.floor(offset / CHOSUNG_BLOCK),
+    jungsung: Math.floor(offset / JONGSUNG.length) % JUNGSUNG.length,
+    jongsung: offset % JONGSUNG.length,
+  };
+};
+
+/** 그 초성으로 시작하는 음절 588개 중 첫 글자 — ㄱ이면 '가'. 조합 중인 글자의 후보는 이 창 안에만 있다. */
+const toFirstSyllable = (chosungIndex: number) => SYLLABLE_START + chosungIndex * CHOSUNG_BLOCK;
+
+/** 완성형 음절을 초성·중성·종성 자모 나열로 펼친다. */
+const toJamo = (code: number) => {
+  const { chosung, jungsung, jongsung } = toIndexes(code);
+
+  return CHOSUNG[chosung] + JUNGSUNG[jungsung] + JONGSUNG[jongsung];
 };
 
 /** 이어지는 코드포인트들을 정규식 문자 클래스 몸통으로 줄인다 — [44032, …, 44059] → '가-갛'. */
@@ -74,16 +67,16 @@ const toClassBody = (codes: number[]) => {
 export const splitJongsung = (code: number) => {
   if (!isSyllable(code)) return null;
 
-  const jongsungIndex = (code - SYLLABLE_START) % JONGSUNG.length;
+  const { jongsung } = toIndexes(code);
 
-  if (jongsungIndex === 0) return null;
+  if (jongsung === 0) return null;
 
-  const jamo = JONGSUNG[jongsungIndex];
+  const jamo = JONGSUNG[jongsung];
   const moved = jamo[jamo.length - 1];
 
   return {
-    base: String.fromCharCode(code - jongsungIndex + JONGSUNG.indexOf(jamo.slice(0, -1))),
-    chosungIndex: CHOSUNG.indexOf(moved),
+    base: String.fromCharCode(code - jongsung + JONGSUNG.indexOf(jamo.slice(0, -1))),
+    chosungIndex: toChosungIndex(moved),
   };
 };
 
@@ -93,25 +86,25 @@ export const splitJongsung = (code: number) => {
  * 자모가 글자 그대로 쓰인 텍스트도 있으니 자모 자신을 함께 담는다.
  */
 export const toChosungPattern = (chosungIndex: number) => {
-  const first = SYLLABLE_START + chosungIndex * BLOCK;
-  const last = first + BLOCK - 1;
+  const first = toFirstSyllable(chosungIndex);
+  const last = first + CHOSUNG_BLOCK - 1;
 
   return `[${CHOSUNG[chosungIndex]}${String.fromCharCode(first)}-${String.fromCharCode(last)}]`;
 };
 
 /**
- * 조합 중인 글자를 접두사로 갖는 완성 글자의 문자 클래스 — '구'면 '[구-귛]', '갑'이면 '[갑-값]'.
- * 후보는 같은 초성 블록 안에만 있으므로 588개만 훑으면 된다.
+ * 조합 중인 글자가 자라나 될 수 있는 글자의 문자 클래스 — '구'면 '[구-귛]', '갑'이면 '[갑-값]'.
+ * 자모로 펼쳐 접두사인지 보면 되고, 후보는 같은 초성 블록 안에만 있으므로 588개만 훑는다.
  *
  * 범위가 언제나 하나는 아니다 — '각'의 후보는 각(ㄱ)·갃(ㄱㅅ)인데 사이의 갂(ㄲ)이 빠진다.
  * ㄲ은 ㄱ 두 개가 아니라 별개 자모라 접두사가 아니기 때문이다. 그래서 목록을 모아 구간으로 줄인다.
  */
-export const toPrefixPattern = (code: number) => {
+export const toComposingPattern = (code: number) => {
   const jamo = toJamo(code);
-  const first = SYLLABLE_START + Math.floor((code - SYLLABLE_START) / BLOCK) * BLOCK;
+  const first = toFirstSyllable(toIndexes(code).chosung);
   const candidates: number[] = [];
 
-  for (let candidate = first; candidate < first + BLOCK; candidate++) {
+  for (let candidate = first; candidate < first + CHOSUNG_BLOCK; candidate++) {
     if (toJamo(candidate).startsWith(jamo)) candidates.push(candidate);
   }
 

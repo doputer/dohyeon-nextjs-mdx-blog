@@ -3,7 +3,7 @@ import {
   splitJongsung,
   toChosungIndex,
   toChosungPattern,
-  toPrefixPattern,
+  toComposingPattern,
 } from '@/lib/search/hangul';
 
 /*
@@ -58,7 +58,7 @@ const escape = (character: string) => character.replace(/[.*+?^${}()|[\]\\]/, '\
 const toCharPattern = (token: string, offset: number): string => {
   const code = token.charCodeAt(offset);
 
-  if (offset === token.length - 1 && isSyllable(code)) return toPrefixPattern(code);
+  if (offset === token.length - 1 && isSyllable(code)) return toComposingPattern(code);
 
   const chosungIndex = toChosungIndex(token[offset]);
 
@@ -74,7 +74,7 @@ const toCharPattern = (token: string, offset: number): string => {
  * 넘긴 뒤 남은 모양은 그대로여야 하므로 마지막 글자는 정확 일치로 본다 — '늚'의 ㄹ은 '늘'의
  * 종성으로 이미 확정된 입력이다. 접두사로 느슨하게 보면 '늙면' 같은 자리까지 걸린다.
  */
-const toCarriedPattern = (token: string, head: string): string | null => {
+const toCarriedJongsungPattern = (token: string, head: string): string | null => {
   const split = splitJongsung(token.charCodeAt(token.length - 1));
 
   if (!split) return null;
@@ -90,7 +90,7 @@ const toCarriedPattern = (token: string, head: string): string | null => {
 export const compile = (token: string): TokenPattern => {
   const parts = [...token].map((_, offset) => toCharPattern(token, offset));
   const head = parts.slice(0, -1).join('');
-  const carried = toCarriedPattern(token, head);
+  const carried = toCarriedJongsungPattern(token, head);
   const whole = parts.join('');
 
   return {
