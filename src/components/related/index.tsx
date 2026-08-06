@@ -36,7 +36,7 @@ const Related = async ({ slug, tags }: RelatedProps) => {
       <ul>
         {related.map(({ post }) => (
           <li key={post.slug} className="group/li border-t border-line/60 first:border-t-0">
-            <Link href={`/${post.slug}`} className="flex items-center justify-between gap-4 py-3">
+            <Link href={`/${post.slug}`} className="flex items-start justify-between gap-4 py-3">
               <h3
                 className={cn(
                   'font-medium break-keep transition-colors duration-300 ease-out',
@@ -47,7 +47,7 @@ const Related = async ({ slug, tags }: RelatedProps) => {
               </h3>
               <time
                 dateTime={post.frontmatter.date}
-                className="shrink-0 text-sm text-soft tabular-nums"
+                className="shrink-0 text-sm/6 text-soft tabular-nums"
               >
                 {format(post.frontmatter.date, 'yyyy.MM')}
               </time>

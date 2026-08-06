@@ -32,11 +32,11 @@ const Results = ({ results, tokens, activeIndex, onActivate, onSelect }: Results
             onClick={() => onSelect(order)}
             onMouseMove={() => onActivate(order)}
           >
-            <span className="flex items-center gap-2">
+            <span className="flex items-start gap-2">
               <span className="flex-1 font-medium break-keep">
                 <Highlight text={document.title} tokens={tokens} />
               </span>
-              <time dateTime={document.date} className="shrink-0 text-sm text-soft tabular-nums">
+              <time dateTime={document.date} className="shrink-0 text-sm/6 text-soft tabular-nums">
                 {format(document.date, 'yyyy.MM')}
               </time>
             </span>
