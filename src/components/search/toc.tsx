@@ -55,7 +55,7 @@ const TOC = ({ headings, tokens, activeIndex, onActivate, onSelect }: TOCProps) 
         <button
           data-active={order === activeIndex}
           className={cn(
-            'relative w-full rounded py-1.5 pr-2 text-left break-keep transition-colors duration-150 ease-out',
+            'relative block w-full rounded py-1.5 pr-2 text-left break-keep transition-colors duration-150 ease-out',
             depth === 3 ? 'pl-5.5' : 'pl-2',
             order === activeIndex ? 'bg-surface' : 'hover:bg-surface/60',
             current ? 'font-medium text-accent' : 'text-soft'

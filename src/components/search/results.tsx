@@ -26,7 +26,7 @@ const Results = ({ results, tokens, activeIndex, onActivate, onSelect }: Results
           <button
             data-active={order === activeIndex}
             className={cn(
-              'w-full rounded px-2 py-2 text-left transition-colors duration-150 ease-out',
+              'block w-full rounded px-2 py-2 text-left transition-colors duration-150 ease-out',
               order === activeIndex ? 'bg-surface' : 'hover:bg-surface/60'
             )}
             onClick={() => onSelect(order)}
