@@ -32,16 +32,6 @@ export const isSyllable = (code: number) => code >= SYLLABLE_START && code <= SY
 /** 호환 자모 자음(ㄱ–ㅎ)의 초성 순번. 초성으로 쓰이지 않는 자모와 그 밖의 글자는 -1. */
 export const toChosungIndex = (character: string) => CHOSUNG.indexOf(character);
 
-/**
- * 초성이 주어진 자음인 음절을 받는다. 같은 초성의 음절 588개는 코드포인트가 붙어 있어
- * 범위 비교 두 번으로 끝난다 — `toPrefixTest`처럼 후보를 모아 둘 필요가 없다.
- */
-export const toChosungTest = (chosungIndex: number) => {
-  const first = SYLLABLE_START + chosungIndex * BLOCK;
-
-  return (code: number) => code >= first && code < first + BLOCK;
-};
-
 /** 완성형 음절을 초성·중성·종성 자모 나열로 펼친다. */
 const toJamo = (code: number) => {
   const offset = code - SYLLABLE_START;
@@ -51,6 +41,29 @@ const toJamo = (code: number) => {
     JUNGSUNG[Math.floor(offset / JONGSUNG.length) % JUNGSUNG.length] +
     JONGSUNG[offset % JONGSUNG.length]
   );
+};
+
+/** 이어지는 코드포인트들을 정규식 문자 클래스 몸통으로 줄인다 — [44032, …, 44059] → '가-갛'. */
+const toClassBody = (codes: number[]) => {
+  const ranges: [number, number][] = [];
+
+  for (const code of codes) {
+    const last = ranges.at(-1);
+
+    if (last && code === last[1] + 1) last[1] = code;
+    else ranges.push([code, code]);
+  }
+
+  return ranges
+    .map(([start, end]) => {
+      const from = String.fromCharCode(start);
+
+      if (start === end) return from;
+      if (end === start + 1) return from + String.fromCharCode(end);
+
+      return `${from}-${String.fromCharCode(end)}`;
+    })
+    .join('');
 };
 
 /**
@@ -70,26 +83,41 @@ export const splitJongsung = (code: number) => {
   const moved = jamo[jamo.length - 1];
 
   return {
-    base: code - jongsungIndex + JONGSUNG.indexOf(jamo.slice(0, -1)),
+    base: String.fromCharCode(code - jongsungIndex + JONGSUNG.indexOf(jamo.slice(0, -1))),
     chosungIndex: CHOSUNG.indexOf(moved),
   };
 };
 
 /**
- * 조합 중인 글자를 완성 글자의 접두사로 보고 가린다 — '구'가 '국'을, '갑'이 '값'을, '고'가 '과'를 받는다.
- * 후보는 같은 초성 블록 안에만 있으므로 588개만 훑으면 되고, 질의 한 글자당 한 번만 만든다.
- *
- * 후보를 블록 안 순번으로 눕힌 비트맵에 담는다. 블록 밖 글자는 첨자가 범위를 벗어나 undefined가 되므로
- * 범위 검사를 따로 두지 않아도 걸러진다 — 본문 전체를 훑는 경로에서 이 판정이 글자마다 돌아간다.
+ * 초성이 주어진 자음인 글자의 문자 클래스 — ㄱ이면 '[ㄱ가-깋]'.
+ * 같은 초성의 음절 588개는 코드포인트가 붙어 있어 범위 하나로 끝나고,
+ * 자모가 글자 그대로 쓰인 텍스트도 있으니 자모 자신을 함께 담는다.
  */
-export const toPrefixTest = (code: number) => {
+export const toChosungPattern = (chosungIndex: number) => {
+  const first = SYLLABLE_START + chosungIndex * BLOCK;
+  const last = first + BLOCK - 1;
+
+  return `[${CHOSUNG[chosungIndex]}${String.fromCharCode(first)}-${String.fromCharCode(last)}]`;
+};
+
+/**
+ * 조합 중인 글자를 접두사로 갖는 완성 글자의 문자 클래스 — '구'면 '[구-귛]', '갑'이면 '[갑값]'.
+ * 후보는 같은 초성 블록 안에만 있으므로 588개만 훑으면 되고, 쿼리 한 글자당 한 번만 만든다.
+ *
+ * 범위가 언제나 하나는 아니다 — '각'의 후보는 각(ㄱ)·갃(ㄱㅅ)인데 사이의 갂(ㄲ)이 빠진다.
+ * ㄲ은 ㄱ 두 개가 아니라 별개 자모라 접두사가 아니기 때문이다. 그래서 목록을 모아 구간으로 줄인다.
+ */
+export const toPrefixPattern = (code: number) => {
   const jamo = toJamo(code);
   const first = SYLLABLE_START + Math.floor((code - SYLLABLE_START) / BLOCK) * BLOCK;
-  const allowed = new Uint8Array(BLOCK);
+  const candidates: number[] = [];
 
-  for (let candidate = 0; candidate < BLOCK; candidate++) {
-    if (toJamo(first + candidate).startsWith(jamo)) allowed[candidate] = 1;
+  for (let candidate = first; candidate < first + BLOCK; candidate++) {
+    if (toJamo(candidate).startsWith(jamo)) candidates.push(candidate);
   }
 
-  return (target: number) => allowed[target - first] === 1;
+  // 후보가 자기 자신뿐이면 클래스를 두를 필요가 없다 — 종성까지 꽉 찬 글자가 여기 온다.
+  if (candidates.length === 1) return String.fromCharCode(candidates[0]);
+
+  return `[${toClassBody(candidates)}]`;
 };

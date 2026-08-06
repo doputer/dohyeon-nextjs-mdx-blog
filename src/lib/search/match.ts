@@ -2,15 +2,18 @@ import {
   isSyllable,
   splitJongsung,
   toChosungIndex,
-  toChosungTest,
-  toPrefixTest,
+  toChosungPattern,
+  toPrefixPattern,
 } from '@/lib/search/hangul';
 
 /*
- * 쿼리와 대상을 글자 대 글자로 맞춰 본다. 매치 위치가 원문 위치와 그대로 일치하므로 경계 판정과
- * 하이라이트가 위치를 그대로 쓴다. 다만 길이는 쿼리 길이와 다를 수 있다 — 종성이 다음 글자로
- * 넘어간 해석은 글자 하나를 더 먹는다. 그래서 구간이 필요한 곳은 `Match.length`를 봐야 한다.
+ * 토큰을 정규식으로 컴파일해 맞춰 본다. 느슨한 글자는 문자 클래스로, 종성이 넘어간 해석은
+ * alternation으로 편다 — '늚' → `(?:늚|늘[ㅁ마-밓])`. 후보 좁히기·건너뛰기는 정규식 엔진이 맡는다.
  * 인덱스는 빌드 시점에 NFC로 정규화되므로 런타임에서는 소문자화만 한다.
+ *
+ * 매치 위치가 원문 위치와 그대로 일치하므로 경계 판정과 하이라이트가 위치를 그대로 쓴다.
+ * 다만 길이는 쿼리 길이와 다를 수 있다 — 종성이 넘어간 해석은 글자 하나를 더 먹는다.
+ * 그래서 구간이 필요한 곳은 `Match.length`를 봐야 한다.
  *
  * 문자열만 다룬다. 문서·필드·가중치는 score.ts 가 맡는다.
  *
@@ -36,15 +39,9 @@ interface Match {
   kind: MatchKind;
 }
 
-type CharTest = (code: number) => boolean;
-
 export interface TokenPattern {
   token: string;
-  tests: CharTest[];
-  /** 마지막 글자의 종성을 다음 글자 초성으로 넘겨 본 해석. `tests`보다 하나 길다. 넘길 게 없으면 null. */
-  carried: CharTest[] | null;
-  /** 앞에서부터 정확 일치만으로 이루어진 구간. indexOf로 후보 자리를 좁히는 데 쓴다. */
-  anchor: string;
+  regex: RegExp;
 }
 
 /** 인덱스가 NFC 조합형·소문자이므로 쿼리도 같은 형태로 맞춘다. */
@@ -52,42 +49,26 @@ export const tokenize = (query: string): string[] => {
   return query.toLowerCase().normalize('NFC').split(/\s+/).filter(Boolean);
 };
 
+/** 쿼리에 섞인 정규식 문법 글자를 글자 그대로로 되돌린다. */
+const escape = (character: string) => character.replace(/[.*+?^${}()|[\]\\]/, '\\$&');
+
 /**
- * 쿼리 한 글자를 받아 줄 대상 글자의 판정 함수. `exact`는 느슨함이 없다는 뜻으로 anchor를 정하는 데 쓴다.
+ * 쿼리 한 글자를 받아 줄 대상의 부분 패턴.
  *
  * 접두사로 느슨하게 보는 건 마지막 글자뿐이다. 앞 글자는 사용자가 이미 확정한 입력이고,
  * IME는 조합 중인 글자를 언제나 맨 뒤에 둔다 — '한국'은 한 → 한ㄱ → 한구 → 한국으로 자란다.
- *
  * 반면 초성은 위치를 가리지 않는다 — `ㄱㅅ`도 `한ㄱ`도 자모가 놓인 자리에서 초성으로 맞는다.
- * 자모가 글자 그대로 쓰인 텍스트도 있으니 자기 자신도 함께 받는다.
- *
- * `toPrefixTest`는 588칸 비트맵을 짓는다. 돌려주는 함수 안에서 부르면 대상 글자마다 새로 짓는다.
  */
-export const toCharTest = (token: string, offset: number): { exact: boolean; test: CharTest } => {
+const toCharPattern = (token: string, offset: number): string => {
   const code = token.charCodeAt(offset);
 
-  if (offset === token.length - 1 && isSyllable(code)) {
-    return {
-      exact: false,
-      test: toPrefixTest(code),
-    };
-  }
+  if (offset === token.length - 1 && isSyllable(code)) return toPrefixPattern(code);
 
   const chosungIndex = toChosungIndex(token[offset]);
 
-  if (chosungIndex !== -1) {
-    const hasChosung = toChosungTest(chosungIndex);
+  if (chosungIndex !== -1) return toChosungPattern(chosungIndex);
 
-    return {
-      exact: false,
-      test: (target) => target === code || hasChosung(target),
-    };
-  }
-
-  return {
-    exact: true,
-    test: (target) => target === code,
-  };
+  return escape(token[offset]);
 };
 
 /**
@@ -96,11 +77,8 @@ export const toCharTest = (token: string, offset: number): { exact: boolean; tes
  *
  * 넘긴 뒤 남은 모양은 그대로여야 하므로 마지막 글자는 정확 일치로 본다 — '늚'의 ㄹ은 '늘'의
  * 종성으로 이미 확정된 입력이다. 접두사로 느슨하게 보면 '늙면' 같은 자리까지 걸린다.
- *
- * 이 해석은 `tests`와 동시에 맞을 수 없다. 한 글자가 종성을 가진 모양('늚')이면서 동시에
- * 떼어낸 모양('늘')일 수는 없기 때문이다 — 그래서 한 자리에서 둘 중 하나만 맞는다.
  */
-const toCarriedTests = (token: string, tests: CharTest[]): CharTest[] | null => {
+const toCarriedPattern = (token: string, head: string): string | null => {
   const code = token.charCodeAt(token.length - 1);
 
   if (!isSyllable(code)) return null;
@@ -109,118 +87,50 @@ const toCarriedTests = (token: string, tests: CharTest[]): CharTest[] | null => 
 
   if (!split) return null;
 
-  const hasChosung = toChosungTest(split.chosungIndex);
-
-  return [...tests.slice(0, -1), (target) => target === split.base, hasChosung];
+  return head + split.base + toChosungPattern(split.chosungIndex);
 };
 
 /**
- * 토큰을 글자별 판정 함수로 미리 풀어 둔다. 접두사 비트맵을 짓는 비용을 쿼리당 한 번으로 묶는다.
- *
- * `anchor`는 토큰 시작에서 `exact`가 이어진 구간 — '검색어' → '검색', 'abc' → 'abc', '한' → ''.
- * 느슨한 글자를 만나면 거기서 끊어야 한다. 초성은 위치를 가리지 않으므로 끊지 않으면 그 뒤의
- * 정확 일치까지 주워 담고(`ㄱ색어` → '색'), anchor가 매치 시작보다 뒤를 가리켜
- * `findMatches`가 엉뚱한 자리를 후보로 삼는다 — '검색어'의 매치를 통째로 놓친다.
+ * 토큰을 정규식 하나로 미리 컴파일해 둔다. 글자별 문자 클래스를 잇고, 종성이 넘어간 해석이
+ * 있으면 alternation으로 함께 담는다. 두 해석은 한 자리에서 동시에 맞을 수 없으므로
+ * (한 글자가 종성을 가진 모양이면서 동시에 떼어낸 모양일 수는 없다) 순서는 결과를 바꾸지 않는다.
  */
 export const compile = (token: string): TokenPattern => {
-  const tests: CharTest[] = [];
-  let anchor = '';
-
-  for (let offset = 0; offset < token.length; offset++) {
-    const { exact, test } = toCharTest(token, offset);
-
-    tests.push(test);
-
-    if (exact && anchor.length === offset) anchor += token[offset];
-  }
+  const parts = [...token].map((_, offset) => toCharPattern(token, offset));
+  const head = parts.slice(0, -1).join('');
+  const whole = head + (parts.at(-1) ?? '');
+  const carried = toCarriedPattern(token, head);
 
   return {
     token,
-    tests,
-    carried: toCarriedTests(token, tests),
-    anchor,
+    regex: new RegExp(carried ? `(?:${whole}|${carried})` : whole, 'g'),
   };
-};
-
-/** 텍스트 끝을 넘어가는 건 막지 않는다 — `charCodeAt`이 NaN을 주고 판정 함수들이 false를 낸다. */
-const testsPass = (text: string, tests: CharTest[], index: number): boolean => {
-  for (let k = 0; k < tests.length; k++) {
-    if (!tests[k](text.charCodeAt(index + k))) return false;
-  }
-
-  return true;
 };
 
 /**
  * 토큰이 맞는 자리를 전부 훑는 유일한 매칭 지점. 점수·하이라이트·목차 필터·스니펫이 모두 여기서 갈라진다.
- * 먼저 나온 자리를 우선으로 삼는 소비자가 많으므로 위치 순서대로 낸다.
+ * 먼저 나온 자리를 우선으로 삼는 소비자가 많으므로 위치 순서대로 낸다. `g` 플래그의 exec가
+ * 매치 끝에서 이어 찾으므로 구간은 겹치지 않는다 — 겹치면 하이라이트가 어긋난다.
  *
- * 매치를 하나 내면 먹은 길이만큼 건너뛴다 — 구간이 겹치면 하이라이트가 어긋난다.
- * anchor로 후보를 좁히는 세 경로로 갈리고, 어느 경로든 결과는 같다.
+ * 정규식 상태(lastIndex)를 패턴이 들고 있으므로, 같은 패턴의 순회 두 개를 겹쳐 돌리면 안 된다.
+ * 지금 소비자는 모두 한 순회를 끝내거나 버린 뒤 다음을 시작한다.
  */
 export function* findMatches(text: string, pattern: TokenPattern): Generator<Match> {
-  const { token, tests, carried, anchor } = pattern;
+  const { token, regex } = pattern;
 
   if (token === '') return;
 
-  // 느슨하게 볼 글자가 없다. 영문 쿼리가 여기로 온다. 이 경로에는 넘길 종성도 없다.
-  if (anchor.length === token.length) {
-    let index = text.indexOf(token);
+  regex.lastIndex = 0;
 
-    while (index !== -1) {
-      yield { index, length: token.length, kind: 'exact' };
-      index = text.indexOf(token, index + token.length);
-    }
+  let found: RegExpExecArray | null;
 
-    return;
-  }
-
-  /** 두 해석을 한 자리에서 시험한다. 동시에 맞을 수 없으므로 먼저 맞은 쪽이 곧 그 자리의 답이다. */
-  const matchAt = (index: number): Match | null => {
-    if (testsPass(text, tests, index))
-      return {
-        index,
-        length: tests.length,
-        kind: text.startsWith(token, index) ? 'exact' : 'partial',
-      };
-
-    // 종성을 넘긴 해석은 글자 하나를 더 먹으므로 토큰과 글자가 같을 수 없다 — 언제나 partial.
-    if (carried && testsPass(text, carried, index))
-      return { index, length: carried.length, kind: 'partial' };
-
-    return null;
-  };
-
-  // 짧은 해석을 기준으로 잡는다. 긴 해석이 끝을 넘어가는 건 `testsPass`가 NaN으로 걸러낸다.
-  const lastStart = text.length - tests.length;
-
-  // 첫 글자부터 느슨해 좁힐 실마리가 없다. 한 글자 한글 쿼리가 여기로 온다.
-  if (anchor === '') {
-    let index = 0;
-
-    while (index <= lastStart) {
-      const match = matchAt(index);
-
-      if (match) {
-        yield match;
-        index += match.length;
-      } else {
-        index += 1;
-      }
-    }
-
-    return;
-  }
-
-  // anchor가 있는 자리만 후보로 삼는다. 한글 쿼리 대부분이 여기로 온다.
-  let index = text.indexOf(anchor);
-
-  while (index !== -1 && index <= lastStart) {
-    const match = matchAt(index);
-
-    if (match) yield match;
-
-    index = text.indexOf(anchor, index + (match ? match.length : 1));
+  while ((found = regex.exec(text)) !== null) {
+    yield {
+      index: found.index,
+      length: found[0].length,
+      // 넘어간 종성이나 느슨한 글자로 맞으면 잡힌 글자가 토큰과 달라진다.
+      kind: found[0] === token ? 'exact' : 'partial',
+    };
   }
 }
 
