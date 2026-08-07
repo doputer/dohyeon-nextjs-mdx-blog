@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/search/types';
 
-import Results from '@/components/search/results';
+import Results, { LISTBOX_ID, optionId } from '@/components/search/results';
 import { tokenize } from '@/lib/search/match';
 import { prepareIndex, search } from '@/lib/search/score';
 import { cn } from '@/utils/cn';
@@ -48,12 +48,23 @@ const Search = () => {
     }
   }, []);
 
+  const syncViewport = useCallback(() => {
+    const dialog = dialogRef.current;
+    const viewport = window.visualViewport;
+
+    if (!dialog?.open || !viewport) return;
+
+    dialog.style.setProperty('--viewport-top', `${viewport.offsetTop}px`);
+    dialog.style.setProperty('--viewport-height', `${viewport.height}px`);
+  }, []);
+
   const open = useCallback(() => {
     setLoadFailed(false);
     dialogRef.current?.showModal();
+    syncViewport();
     inputRef.current?.focus();
     load();
-  }, [load]);
+  }, [load, syncViewport]);
 
   const close = useCallback(() => dialogRef.current?.close(), []);
 
@@ -81,6 +92,20 @@ const Search = () => {
   }, [open, close]);
 
   useEffect(() => {
+    const viewport = window.visualViewport;
+
+    if (!viewport) return;
+
+    viewport.addEventListener('resize', syncViewport);
+    viewport.addEventListener('scroll', syncViewport);
+
+    return () => {
+      viewport.removeEventListener('resize', syncViewport);
+      viewport.removeEventListener('scroll', syncViewport);
+    };
+  }, [syncViewport]);
+
+  useEffect(() => {
     const dialog = dialogRef.current;
 
     if (!dialog) return;
@@ -106,6 +131,14 @@ const Search = () => {
 
     return search(searchIndex, tokens, RESULT_LIMIT);
   }, [searchIndex, tokens]);
+
+  const statusMessage = useMemo(() => {
+    if (loadFailed) return '검색 인덱스를 불러오지 못했습니다.';
+    if (!searchIndex) return '검색 인덱스를 불러오는 중입니다.';
+    if (tokens.length === 0) return `최근 글 ${results.length}개`;
+
+    return results.length === 0 ? '결과가 없습니다.' : `${results.length}개 결과`;
+  }, [loadFailed, searchIndex, tokens, results]);
 
   const select = useCallback(
     (order: number) => {
@@ -143,6 +176,7 @@ const Search = () => {
   return (
     <>
       <button
+        type="button"
         aria-label="검색"
         aria-keyshortcuts="Meta+K Control+K"
         className="flex size-7 items-center justify-center transition-colors duration-300 ease-out hover:text-accent"
@@ -155,51 +189,71 @@ const Search = () => {
         ref={dialogRef}
         aria-label="글 검색"
         className={cn(
-          'mx-auto mt-[12vh] mb-auto w-[calc(100vw-2rem)] max-w-140 p-0',
-          'rounded border border-line bg-background text-main shadow-lg',
-          'backdrop:bg-(--overlay) open:animate-panel-in motion-reduce:animate-none'
+          '[--viewport-height:100dvh] [--viewport-top:0px]',
+          'fixed top-(--viewport-top) left-0 m-0 h-(--viewport-height) max-h-none w-full max-w-none p-0',
+          'bg-transparent text-main backdrop:bg-transparent'
         )}
-        onClick={(event) => {
-          if (event.target === dialogRef.current) close();
-        }}
         onKeyDown={handleKeyDown}
       >
-        <div className="flex items-center gap-3 border-b border-line px-4">
-          <MagnifyingGlassIcon className="size-4 shrink-0 text-soft" aria-hidden />
-          <input
-            ref={inputRef}
-            aria-label="검색어"
-            className="h-12 w-full bg-transparent outline-none placeholder:text-soft"
-            placeholder="제목·본문 검색"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 text-xs text-soft select-none sm:block">
-            ESC
-          </kbd>
-        </div>
+        <div className="absolute inset-0 bg-(--overlay)" aria-hidden onClick={close} />
 
-        <div ref={panelRef} className="scrollbar-none max-h-[60vh] overflow-y-auto">
-          {loadFailed ? (
-            <p className={MESSAGE_CLASS}>검색 인덱스를 불러오지 못했습니다.</p>
-          ) : !searchIndex ? (
-            <p className={MESSAGE_CLASS}>불러오는 중…</p>
-          ) : results.length === 0 ? (
-            <p className={MESSAGE_CLASS}>결과가 없습니다.</p>
-          ) : (
-            <>
-              <p className={SECTION_LABEL_CLASS}>
-                {tokens.length === 0 ? '최근 글' : `${results.length}개 결과`}
-              </p>
-              <Results
-                results={results}
-                tokens={tokens}
-                activeIndex={activeIndex}
-                onActivate={setActiveIndex}
-                onSelect={select}
-              />
-            </>
+        <div
+          className={cn(
+            'relative mx-auto flex w-[calc(100%-2rem)] max-w-140 flex-col overflow-hidden',
+            'mt-[calc(var(--viewport-height)*0.12)] max-h-[calc(var(--viewport-height)*0.76)]',
+            'rounded border border-line bg-background shadow-lg',
+            'animate-panel-in motion-reduce:animate-none'
           )}
+        >
+          <div className="flex shrink-0 items-center gap-3 border-b border-line px-4">
+            <MagnifyingGlassIcon className="size-4 shrink-0 text-soft" aria-hidden />
+            <input
+              ref={inputRef}
+              type="text"
+              role="combobox"
+              aria-label="검색어"
+              aria-autocomplete="list"
+              aria-controls={LISTBOX_ID}
+              aria-expanded={results.length > 0}
+              aria-activedescendant={results.length > 0 ? optionId(activeIndex) : undefined}
+              autoComplete="off"
+              spellCheck={false}
+              className="h-12 w-full bg-transparent outline-none placeholder:text-soft"
+              placeholder="제목·본문 검색"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 text-xs text-soft select-none sm:block">
+              ESC
+            </kbd>
+          </div>
+
+          <p role="status" className="sr-only">
+            {statusMessage}
+          </p>
+
+          <div ref={panelRef} className="scrollbar-none overflow-y-auto overscroll-contain">
+            {loadFailed ? (
+              <p className={MESSAGE_CLASS}>검색 인덱스를 불러오지 못했습니다.</p>
+            ) : !searchIndex ? (
+              <p className={MESSAGE_CLASS}>불러오는 중…</p>
+            ) : results.length === 0 ? (
+              <p className={MESSAGE_CLASS}>결과가 없습니다.</p>
+            ) : (
+              <>
+                <p className={SECTION_LABEL_CLASS} aria-hidden>
+                  {tokens.length === 0 ? '최근 글' : `${results.length}개 결과`}
+                </p>
+                <Results
+                  results={results}
+                  tokens={tokens}
+                  activeIndex={activeIndex}
+                  onActivate={setActiveIndex}
+                  onSelect={select}
+                />
+              </>
+            )}
+          </div>
         </div>
       </dialog>
     </>
