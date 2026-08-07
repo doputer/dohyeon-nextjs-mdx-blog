@@ -186,7 +186,7 @@ const Search = () => {
             aria-label="검색어"
             autoComplete="off"
             spellCheck={false}
-            className="h-12 w-full bg-transparent placeholder:text-soft focus-visible:-outline-offset-2"
+            className="h-12 w-full bg-transparent outline-none placeholder:text-soft"
             placeholder="제목·본문 검색"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
