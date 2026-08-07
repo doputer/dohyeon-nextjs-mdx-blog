@@ -16,8 +16,7 @@ export const ol = cn(LIST, 'list-decimal');
 export const ul = cn(LIST, 'list-disc');
 export const p = cn('leading-8');
 export const table = cn(
-  'w-full text-left whitespace-nowrap',
-  '[&_tbody_tr]:transition-colors [&_tbody_tr]:duration-150 [&_tbody_tr:hover]:bg-surface'
+  'w-full text-left whitespace-nowrap [&_tbody_tr]:transition-colors [&_tbody_tr]:duration-150 [&_tbody_tr:hover]:bg-surface'
 );
 export const th = cn('border-b-[1.5px] border-main/55 p-2 font-medium');
 export const td = cn('border-b border-line p-2');

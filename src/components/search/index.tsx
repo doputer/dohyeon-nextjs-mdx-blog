@@ -8,7 +8,6 @@ import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/searc
 import Results, { LISTBOX_ID, optionId } from '@/components/search/results';
 import { tokenize } from '@/lib/search/match';
 import { prepareIndex, search } from '@/lib/search/score';
-import { cn } from '@/utils/cn';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const RECENT_POST_COUNT = 5;
@@ -188,23 +187,12 @@ const Search = () => {
       <dialog
         ref={dialogRef}
         aria-label="글 검색"
-        className={cn(
-          '[--viewport-height:100dvh] [--viewport-top:0px]',
-          'fixed top-(--viewport-top) left-0 m-0 h-(--viewport-height) max-h-none w-full max-w-none p-0',
-          'bg-transparent text-main backdrop:bg-transparent'
-        )}
+        className="fixed top-(--viewport-top) left-0 m-0 h-(--viewport-height) max-h-none w-full max-w-none bg-transparent p-0 text-main [--viewport-height:100dvh] [--viewport-top:0px] backdrop:bg-transparent"
         onKeyDown={handleKeyDown}
       >
         <div className="absolute inset-0 bg-(--overlay)" aria-hidden onClick={close} />
 
-        <div
-          className={cn(
-            'relative mx-auto flex w-[calc(100%-2rem)] max-w-140 flex-col overflow-hidden',
-            'mt-[calc(var(--viewport-height)*0.12)] max-h-[calc(var(--viewport-height)*0.76)]',
-            'rounded border border-line bg-background shadow-lg',
-            'animate-panel-in motion-reduce:animate-none'
-          )}
-        >
+        <div className="relative mx-auto mt-[calc(var(--viewport-height)*0.12)] flex max-h-[calc(var(--viewport-height)*0.76)] w-[calc(100%-2rem)] max-w-140 animate-panel-in flex-col overflow-hidden rounded border border-line bg-background shadow-lg motion-reduce:animate-none">
           <div className="flex shrink-0 items-center gap-3 border-b border-line px-4">
             <MagnifyingGlassIcon className="size-4 shrink-0 text-soft" aria-hidden />
             <input
