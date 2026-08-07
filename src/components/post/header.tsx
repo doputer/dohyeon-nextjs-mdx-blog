@@ -1,7 +1,6 @@
-import { format } from 'date-fns';
-
 import Tags from '@/components/tags';
 import type { Frontmatter } from '@/lib/MDX/types';
+import { toYearMonthDay } from '@/utils/date';
 
 interface HeaderProps {
   title: Frontmatter['title'];
@@ -15,7 +14,7 @@ const Header = ({ title, date, tags }: HeaderProps) => {
       <h1 className="text-3xl font-bold tracking-tight break-keep">{title}</h1>
       <div className="flex items-baseline gap-2 text-sm">
         <time dateTime={date} className="font-medium text-muted tabular-nums">
-          {format(date, 'yyyy.MM.dd')}
+          {toYearMonthDay(date)}
         </time>
         <span className="text-soft" aria-hidden>
           ·

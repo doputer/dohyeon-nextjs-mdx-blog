@@ -1,9 +1,8 @@
 import Link from 'next/link';
 
-import { format } from 'date-fns';
-
 import { getPosts } from '@/lib/MDX';
 import type { Frontmatter } from '@/lib/MDX/types';
+import { toYearMonth } from '@/utils/date';
 
 interface RelatedProps {
   slug: string;
@@ -43,7 +42,7 @@ const Related = async ({ slug, tags }: RelatedProps) => {
                 dateTime={post.frontmatter.date}
                 className="shrink-0 text-sm/6 text-soft tabular-nums"
               >
-                {format(post.frontmatter.date, 'yyyy.MM')}
+                {toYearMonth(post.frontmatter.date)}
               </time>
             </Link>
           </li>

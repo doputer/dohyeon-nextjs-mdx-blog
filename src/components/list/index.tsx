@@ -1,8 +1,7 @@
 import Link from 'next/link';
 
-import { format } from 'date-fns';
-
 import type { Post } from '@/lib/MDX/types';
+import { toMonthDay, toYear } from '@/utils/date';
 
 interface ListProps {
   posts: Post[];
@@ -10,7 +9,7 @@ interface ListProps {
 
 const List = ({ posts }: ListProps) => {
   const group = posts.reduce<Record<string, Post[]>>((acc, post) => {
-    const year = format(post.frontmatter.date, 'yyyy');
+    const year = toYear(post.frontmatter.date);
 
     if (!acc[year]) acc[year] = [];
     acc[year].push(post);
@@ -52,7 +51,7 @@ const List = ({ posts }: ListProps) => {
                     dateTime={frontmatter.date}
                     className="shrink-0 text-muted tabular-nums transition-colors duration-300 ease-out group-hover/li:text-accent sm:text-lg"
                   >
-                    {format(frontmatter.date, 'MM.dd')}
+                    {toMonthDay(frontmatter.date)}
                   </time>
                 </Link>
               </li>

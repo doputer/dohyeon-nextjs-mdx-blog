@@ -1,9 +1,8 @@
-import { format } from 'date-fns';
-
 import Highlight from '@/components/search/highlight';
 import { snippet } from '@/lib/search/match';
 import type { SearchResult } from '@/lib/search/types';
 import { cn } from '@/utils/cn';
+import { toYearMonth } from '@/utils/date';
 
 interface ResultsProps {
   results: SearchResult[];
@@ -38,7 +37,7 @@ const Results = ({ results, tokens, activeIndex, onActivate, onSelect }: Results
                 <Highlight text={document.title} tokens={tokens} />
               </span>
               <time dateTime={document.date} className="shrink-0 text-sm/6 text-soft tabular-nums">
-                {format(document.date, 'yyyy.MM')}
+                {toYearMonth(document.date)}
               </time>
             </span>
 
