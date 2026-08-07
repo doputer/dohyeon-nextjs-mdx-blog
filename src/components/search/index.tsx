@@ -145,10 +145,10 @@ const Search = () => {
       <button
         aria-label="검색"
         aria-keyshortcuts="Meta+K Control+K"
-        className="flex size-8 items-center justify-center transition-colors duration-300 ease-out hover:text-accent"
+        className="flex size-7 items-center justify-center transition-colors duration-300 ease-out hover:text-accent"
         onClick={open}
       >
-        <MagnifyingGlassIcon className="size-7" />
+        <MagnifyingGlassIcon />
       </button>
 
       <dialog
