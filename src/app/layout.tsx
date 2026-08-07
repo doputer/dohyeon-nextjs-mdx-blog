@@ -1,15 +1,17 @@
-import '@/static/styles/index.css';
-import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
+
+import { GoogleAnalytics } from '@next/third-parties/google';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import Footer from '@/components/footer';
 import Header from '@/components/header';
 import ThemeScript from '@/components/theme-switch/theme-script';
 import config from '@/configs/config.json';
 import { sans } from '@/static/fonts';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+
+import '@/static/styles/index.css';
 
 const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
   return (

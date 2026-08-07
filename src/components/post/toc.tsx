@@ -1,7 +1,7 @@
-import type { Post } from '@/lib/MDX/types';
-
-import { cn } from '@/utils/cn';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+
+import type { Post } from '@/lib/MDX/types';
+import { cn } from '@/utils/cn';
 
 interface TOCProps {
   toc: Post['toc'];

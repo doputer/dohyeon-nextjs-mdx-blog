@@ -1,5 +1,4 @@
 import type { Board, Step } from '#/sudoku-backtracking/engine/solver';
-
 import { cn } from '@/utils/cn';
 
 export type { Board };

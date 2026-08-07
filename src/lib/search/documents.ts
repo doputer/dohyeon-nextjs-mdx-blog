@@ -1,8 +1,8 @@
-import type { SearchDocument } from '@/lib/search/types';
-
-import { getPosts } from '@/lib/MDX';
 import { readFile } from 'fs/promises';
 import path from 'path';
+
+import { getPosts } from '@/lib/MDX';
+import type { SearchDocument } from '@/lib/search/types';
 
 const CONTENTS_DIR = path.join(process.cwd(), 'contents');
 

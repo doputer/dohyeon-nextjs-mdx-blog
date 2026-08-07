@@ -1,5 +1,6 @@
-import * as format from '@/components/typography/format';
 import { renderMermaidSVG } from 'beautiful-mermaid';
+
+import * as format from '@/components/typography/format';
 
 interface Props {
   code: string;

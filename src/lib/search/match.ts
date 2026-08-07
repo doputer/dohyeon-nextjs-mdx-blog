@@ -56,7 +56,7 @@ export const compile = (token: string): TokenPattern => {
   return { token, regex: new RegExp(`(?:${whole}|${carried})`, 'g') };
 };
 
-export function* findMatches(text: string, pattern: TokenPattern): Generator<Match> {
+function* findMatches(text: string, pattern: TokenPattern): Generator<Match> {
   const { token, regex } = pattern;
 
   if (token === '') return;
