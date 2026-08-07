@@ -3,9 +3,15 @@ import config from '@/configs/config.json';
 const Me = () => {
   return (
     <section className="space-y-4 sm:text-lg">
+      <h1 className="sr-only">{config.title}</h1>
       <p>
         안녕하세요, 프론트엔드 개발자{' '}
-        <a href={config.social.github} target="_blank" className="underline underline-offset-5">
+        <a
+          href={config.social.github}
+          target="_blank"
+          rel="noreferrer"
+          className="underline underline-offset-5"
+        >
           김도현
         </a>{' '}
         입니다.

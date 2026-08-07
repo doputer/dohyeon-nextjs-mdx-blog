@@ -8,7 +8,7 @@ const Comment = () => {
   const { theme } = useTheme();
 
   return (
-    <div>
+    <section aria-label="댓글">
       <Giscus
         repo={config.comment.repo as `${string}/${string}`}
         repoId={config.comment.repoId}
@@ -23,7 +23,7 @@ const Comment = () => {
         lang="ko"
         loading="lazy"
       />
-    </div>
+    </section>
   );
 };
 

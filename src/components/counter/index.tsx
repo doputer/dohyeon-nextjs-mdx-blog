@@ -5,11 +5,19 @@ interface CounterProps {
 
 const Counter = ({ label, count }: CounterProps) => {
   return (
-    <section className="select-none">
+    <div className="select-none">
       <h1 className="text-3xl font-bold tracking-tight capitalize">
-        {label} {count ? <sup className="text-xl">{count}</sup> : null}
+        {label}{' '}
+        {count ? (
+          <>
+            <sup className="text-xl" aria-hidden>
+              {count}
+            </sup>
+            <span className="sr-only">{count}개</span>
+          </>
+        ) : null}
       </h1>
-    </section>
+    </div>
   );
 };
 

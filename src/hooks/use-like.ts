@@ -46,7 +46,7 @@ const useLike = (slug: string) => {
     [hasAction, setAction]
   );
 
-  return { like, addLike };
+  return { like, liked: hasAction(slug, type), addLike };
 };
 
 export default useLike;

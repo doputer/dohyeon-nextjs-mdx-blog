@@ -22,23 +22,27 @@ const List = ({ posts }: ListProps) => {
   const list = Object.entries(group).toSorted(([a], [b]) => Number(b) - Number(a));
 
   return (
-    <section className="group">
+    <div className="group">
       {list.map(([year, posts]) => (
         <section
           key={year}
+          aria-labelledby={`year-${year}`}
           className={cn(
             'grid grid-cols-[auto_1fr] gap-6 sm:gap-8',
             'transition-opacity duration-300 ease-out group-hover:opacity-40 hover:opacity-100!'
           )}
         >
-          <span className="h-fit py-3 font-medium text-accent tabular-nums select-none sm:text-lg">
+          <h2
+            id={`year-${year}`}
+            className="h-fit py-3 font-medium text-accent tabular-nums select-none sm:text-lg"
+          >
             {year}
-          </span>
+          </h2>
           <ul>
             {posts.map(({ frontmatter, slug }) => (
               <li key={slug} className="group/li">
                 <Link href={`/${slug}`} className="flex justify-between gap-4 py-3">
-                  <h2 className="break-keep sm:text-lg">
+                  <h3 className="break-keep sm:text-lg">
                     <span
                       className={cn(
                         'bg-no-repeat transition-[background-size] duration-300 ease-out',
@@ -50,6 +54,7 @@ const List = ({ posts }: ListProps) => {
                       {frontmatter.title}
                     </span>
                     <span
+                      aria-hidden
                       data-emoji={frontmatter.emoji}
                       className={cn(
                         'relative after:absolute after:top-1/2 after:ml-2 after:content-[attr(data-emoji)]',
@@ -58,7 +63,7 @@ const List = ({ posts }: ListProps) => {
                         'group-hover/li:after:-translate-y-1/2 group-hover/li:after:scale-100 group-hover/li:after:opacity-100'
                       )}
                     />
-                  </h2>
+                  </h3>
                   <time
                     dateTime={frontmatter.date}
                     className={cn(
@@ -74,7 +79,7 @@ const List = ({ posts }: ListProps) => {
           </ul>
         </section>
       ))}
-    </section>
+    </div>
   );
 };
 

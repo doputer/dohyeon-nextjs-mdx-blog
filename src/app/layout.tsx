@@ -18,9 +18,17 @@ const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
         <ThemeScript />
       </head>
       <body>
+        <a
+          href="#content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:border focus:border-line focus:bg-background focus:px-3 focus:py-2 focus:text-sm"
+        >
+          본문으로 건너뛰기
+        </a>
         <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-12 px-6 py-12">
           <Header />
-          <main className="flex flex-1 flex-col gap-12">{children}</main>
+          <main id="content" className="flex flex-1 flex-col gap-12">
+            {children}
+          </main>
           <Footer />
         </div>
         <Analytics />
@@ -35,7 +43,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(config.siteUrl),
   title: config.title,
   description: config.description,
+  alternates: {
+    canonical: '/',
+    types: { 'application/rss+xml': '/api/rss' },
+  },
   openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
     images: '/api/og',
     siteName: config.title,
     title: config.title,

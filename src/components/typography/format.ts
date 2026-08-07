@@ -21,7 +21,8 @@ export const table = cn(
 );
 export const th = cn('border-b-[1.5px] border-main/55 p-2 font-medium');
 export const td = cn('border-b border-line p-2');
-export const a = cn('text-accent underline decoration-1 underline-offset-3 after:content-["↗"]');
+export const a = cn('text-accent underline decoration-1 underline-offset-3');
+export const external = cn('after:content-["↗"]');
 export const strong = cn('font-bold');
 export const img = cn('mx-auto rounded');
 export const blockquote = cn('border-l-2 border-accent py-0.5 pl-4 text-muted italic');

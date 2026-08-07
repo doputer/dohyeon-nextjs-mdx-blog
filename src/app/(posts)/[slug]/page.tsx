@@ -22,8 +22,10 @@ const Page = async (props: PageProps) => {
   return (
     <>
       <Progress />
-      <Header title={title} date={date} tags={tags} />
-      <Post toc={toc} MDX={MDX} />
+      <article className="flex flex-col gap-12">
+        <Header title={title} date={date} tags={tags} />
+        <Post toc={toc} MDX={MDX} />
+      </article>
       <Reaction slug={params.slug} />
       <Related slug={params.slug} tags={tags} />
       <Comment />

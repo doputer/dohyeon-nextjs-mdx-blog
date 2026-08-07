@@ -12,9 +12,11 @@ const Collapse: AnnotationHandler['Block'] = ({ annotation, children }) => {
   return (
     <div className="relative">
       <button
+        type="button"
         className="absolute left-0 m-0 border-none bg-transparent p-0"
         onClick={() => setExpanded((prev) => !prev)}
-        aria-label="Expand Button"
+        aria-expanded={expanded}
+        aria-label={expanded ? '코드 블록 접기' : '코드 블록 펼치기'}
       >
         {expanded ? (
           <ChevronDownIcon className="inline-block size-4 align-middle" />
