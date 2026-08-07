@@ -142,14 +142,9 @@ const Reaction = ({ slug }: Props) => {
           <span className="text-base leading-none" aria-hidden>
             ♥
           </span>
-          <span className="text-sm font-medium tabular-nums" aria-hidden>
-            {like ?? 0}
-          </span>
+          <span className="text-sm font-medium tabular-nums">{like ?? 0}</span>
         </button>
       </div>
-      <p role="status" className="sr-only">
-        {like === null ? '' : `좋아요 ${like}개`}
-      </p>
     </section>
   );
 };

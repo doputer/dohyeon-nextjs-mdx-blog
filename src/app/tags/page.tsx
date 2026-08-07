@@ -28,10 +28,7 @@ const Page = async () => {
           <li key={tag}>
             <Link href={`/tags/${encode(tag)}`} className="space-x-1 text-sm">
               <span className="uppercase">{tag}</span>
-              <span className="font-medium" aria-hidden>
-                {totalCount}
-              </span>
-              <span className="sr-only">글 {totalCount}개</span>
+              <span className="font-medium">{totalCount}</span>
             </Link>
           </li>
         ))}

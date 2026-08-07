@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/search/types';
 
-import Results, { LISTBOX_ID, optionId } from '@/components/search/results';
+import Results from '@/components/search/results';
 import { tokenize } from '@/lib/search/match';
 import { prepareIndex, search } from '@/lib/search/score';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -122,21 +122,6 @@ const Search = () => {
     return tokens.length === 0 ? 'recent' : 'matched';
   }, [loadFailed, searchIndex, tokens, results]);
 
-  const statusMessage = useMemo<string>(() => {
-    switch (panelState) {
-      case 'failed':
-        return '검색 인덱스를 불러오지 못했습니다.';
-      case 'loading':
-        return '검색 인덱스를 불러오는 중입니다.';
-      case 'empty':
-        return '결과가 없습니다.';
-      case 'recent':
-        return `최근 글 ${results.length}개`;
-      case 'matched':
-        return `${results.length}개 결과`;
-    }
-  }, [panelState, results.length]);
-
   const panelMessage = PANEL_MESSAGE[panelState];
 
   const select = useCallback(
@@ -198,15 +183,10 @@ const Search = () => {
           <input
             ref={inputRef}
             type="text"
-            role="combobox"
             aria-label="검색어"
-            aria-autocomplete="list"
-            aria-controls={LISTBOX_ID}
-            aria-expanded={results.length > 0}
-            aria-activedescendant={results.length > 0 ? optionId(activeIndex) : undefined}
             autoComplete="off"
             spellCheck={false}
-            className="h-12 w-full bg-transparent outline-none placeholder:text-soft"
+            className="h-12 w-full bg-transparent placeholder:text-soft focus-visible:-outline-offset-2"
             placeholder="제목·본문 검색"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -216,10 +196,6 @@ const Search = () => {
           </kbd>
         </div>
 
-        <p role="status" className="sr-only">
-          {statusMessage}
-        </p>
-
         <div
           ref={panelRef}
           className="scrollbar-none max-h-[60vh] overflow-y-auto overscroll-contain"
@@ -228,7 +204,7 @@ const Search = () => {
             <p className={MESSAGE_CLASS}>{panelMessage}</p>
           ) : (
             <>
-              <p className={SECTION_LABEL_CLASS} aria-hidden>
+              <p className={SECTION_LABEL_CLASS}>
                 {panelState === 'recent' ? '최근 글' : `${results.length}개 결과`}
               </p>
               <Results
