@@ -14,11 +14,7 @@
   --color-surface: #eef1f6;
   --color-background: #f8f9fc;
   --color-accent: #c2551b;
-}
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
-:root {
   --blob-1: hsla(190, 45%, 62%, 0.05);
   --blob-2: hsla(212, 46%, 64%, 0.045);
   --blob-3: hsla(172, 40%, 60%, 0.035);
@@ -41,3 +37,5 @@
 
   --overlay: hsla(225, 20%, 4%, 0.6);
 }
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

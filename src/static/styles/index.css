@@ -25,4 +25,8 @@
   button {
     @apply cursor-pointer;
   }
+
+  :focus-visible {
+    @apply outline-1 outline-offset-2 outline-accent;
+  }
 }

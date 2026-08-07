@@ -2,7 +2,6 @@ import Link from 'next/link';
 
 import type { Post } from '@/lib/MDX/types';
 
-import { cn } from '@/utils/cn';
 import { format } from 'date-fns';
 
 interface ListProps {
@@ -22,49 +21,36 @@ const List = ({ posts }: ListProps) => {
   const list = Object.entries(group).toSorted(([a], [b]) => Number(b) - Number(a));
 
   return (
-    <section className="group">
+    <div className="group">
       {list.map(([year, posts]) => (
         <section
           key={year}
-          className={cn(
-            'grid grid-cols-[auto_1fr] gap-6 sm:gap-8',
-            'transition-opacity duration-300 ease-out group-hover:opacity-40 hover:opacity-100!'
-          )}
+          aria-labelledby={`year-${year}`}
+          className="grid grid-cols-[auto_1fr] gap-6 transition-opacity duration-300 ease-out group-hover:opacity-40 hover:opacity-100! sm:gap-8"
         >
-          <span className="h-fit py-3 font-medium text-accent tabular-nums select-none sm:text-lg">
+          <h2
+            id={`year-${year}`}
+            className="h-fit py-3 font-medium text-accent tabular-nums select-none sm:text-lg"
+          >
             {year}
-          </span>
+          </h2>
           <ul>
             {posts.map(({ frontmatter, slug }) => (
               <li key={slug} className="group/li">
                 <Link href={`/${slug}`} className="flex justify-between gap-4 py-3">
-                  <h2 className="break-keep sm:text-lg">
-                    <span
-                      className={cn(
-                        'bg-no-repeat transition-[background-size] duration-300 ease-out',
-                        'bg-[linear-gradient(var(--color-accent),var(--color-accent))]',
-                        'bg-size-[0%_1.5px] bg-position-[0_100%]',
-                        'group-hover/li:bg-size-[100%_1.5px]'
-                      )}
-                    >
+                  <h3 className="break-keep sm:text-lg">
+                    <span className="bg-[linear-gradient(var(--color-accent),var(--color-accent))] bg-size-[0%_1.5px] bg-position-[0_100%] bg-no-repeat transition-[background-size] duration-300 ease-out group-hover/li:bg-size-[100%_1.5px]">
                       {frontmatter.title}
                     </span>
                     <span
+                      aria-hidden
                       data-emoji={frontmatter.emoji}
-                      className={cn(
-                        'relative after:absolute after:top-1/2 after:ml-2 after:content-[attr(data-emoji)]',
-                        'after:scale-75 after:opacity-0 after:transition-all after:duration-300',
-                        'after:ease-[cubic-bezier(0.34,1.56,0.64,1)]',
-                        'group-hover/li:after:-translate-y-1/2 group-hover/li:after:scale-100 group-hover/li:after:opacity-100'
-                      )}
+                      className="relative after:absolute after:top-1/2 after:ml-2 after:scale-75 after:opacity-0 after:transition-all after:duration-300 after:ease-[cubic-bezier(0.34,1.56,0.64,1)] after:content-[attr(data-emoji)] group-hover/li:after:-translate-y-1/2 group-hover/li:after:scale-100 group-hover/li:after:opacity-100"
                     />
-                  </h2>
+                  </h3>
                   <time
                     dateTime={frontmatter.date}
-                    className={cn(
-                      'shrink-0 text-muted tabular-nums transition-colors duration-300 ease-out sm:text-lg',
-                      'group-hover/li:text-accent'
-                    )}
+                    className="shrink-0 text-muted tabular-nums transition-colors duration-300 ease-out group-hover/li:text-accent sm:text-lg"
                   >
                     {format(frontmatter.date, 'MM.dd')}
                   </time>
@@ -74,7 +60,7 @@ const List = ({ posts }: ListProps) => {
           </ul>
         </section>
       ))}
-    </section>
+    </div>
   );
 };
 

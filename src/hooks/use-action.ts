@@ -7,6 +7,7 @@ type Action = Map<string, Set<string>>;
 
 const useAction = () => {
   const [map, setMap] = useState<Action>(new Map());
+  const [loaded, setLoaded] = useState(false);
 
   const hasAction = useCallback(
     (slug: string, action: string) => map.get(slug)?.has(action) ?? false,
@@ -38,16 +39,21 @@ const useAction = () => {
     };
 
     const id = getItem('UNIQUE_USER_ID', fallback);
-    if (!id) return;
+
+    if (!id) {
+      setLoaded(true);
+      return;
+    }
 
     getActionByUserId(id)
       .then((data) => {
         data.forEach(({ slug, action }) => setAction(slug, action));
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoaded(true));
   }, [setAction]);
 
-  return { hasAction, setAction };
+  return { loaded, hasAction, setAction };
 };
 
 export default useAction;

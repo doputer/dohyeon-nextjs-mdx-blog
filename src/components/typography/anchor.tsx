@@ -16,7 +16,7 @@ const Anchor = ({ id }: AnchorProps) => {
     <a
       href={`#${id}`}
       aria-label="섹션 링크 복사"
-      className="ml-2 text-sm font-normal text-soft opacity-0 transition-opacity duration-200 group-hover:opacity-70"
+      className="ml-2 text-sm font-normal text-soft opacity-0 transition-opacity duration-200 group-hover:opacity-70 focus-visible:opacity-100"
       onClick={handleClick}
     >
       #

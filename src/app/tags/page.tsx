@@ -23,22 +23,31 @@ const Page = async () => {
   return (
     <>
       <Counter label="태그" count={tags.length} />
-      <section className="flex flex-wrap gap-4">
+      <ul className="flex flex-wrap gap-4">
         {tags.map(([tag, totalCount]) => (
-          <Link key={tag} href={`/tags/${encode(tag)}`} className="space-x-1 text-sm">
-            <span className="uppercase">{tag}</span>
-            <span className="font-medium">{totalCount}</span>
-          </Link>
+          <li key={tag}>
+            <Link href={`/tags/${encode(tag)}`} className="space-x-1 text-sm">
+              <span className="uppercase">{tag}</span>
+              <span className="font-medium">{totalCount}</span>
+            </Link>
+          </li>
         ))}
-      </section>
+      </ul>
     </>
   );
 };
 
 export const metadata: Metadata = {
-  title: [config.title, 'Tags'].join(' | '),
+  title: 'Tags',
+  description: `${config.title}의 태그 목록`,
+  alternates: { canonical: '/tags' },
   openGraph: {
-    title: [config.title, 'Tags'].join(' | '),
+    type: 'website',
+    locale: 'ko_KR',
+    siteName: config.title,
+    images: '/api/og',
+    title: 'Tags',
+    url: `${config.siteUrl}/tags`,
   },
 };
 

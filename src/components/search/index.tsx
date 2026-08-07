@@ -8,11 +8,18 @@ import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/searc
 import Results from '@/components/search/results';
 import { tokenize } from '@/lib/search/match';
 import { prepareIndex, search } from '@/lib/search/score';
-import { cn } from '@/utils/cn';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const RECENT_POST_COUNT = 5;
 const RESULT_LIMIT = 8;
+
+type PanelState = 'failed' | 'loading' | 'empty' | 'recent' | 'matched';
+
+const PANEL_MESSAGE: Partial<Record<PanelState, string>> = {
+  failed: '검색 인덱스를 불러오지 못했습니다.',
+  loading: '불러오는 중…',
+  empty: '결과가 없습니다.',
+};
 
 const MESSAGE_CLASS = `px-4 py-10 text-center text-sm text-soft`;
 const SECTION_LABEL_CLASS = `px-4 pt-3 text-sm font-medium tracking-wide text-soft uppercase select-none`;
@@ -107,6 +114,16 @@ const Search = () => {
     return search(searchIndex, tokens, RESULT_LIMIT);
   }, [searchIndex, tokens]);
 
+  const panelState = useMemo<PanelState>(() => {
+    if (loadFailed) return 'failed';
+    if (!searchIndex) return 'loading';
+    if (results.length === 0) return 'empty';
+
+    return tokens.length === 0 ? 'recent' : 'matched';
+  }, [loadFailed, searchIndex, tokens, results]);
+
+  const panelMessage = PANEL_MESSAGE[panelState];
+
   const select = useCallback(
     (order: number) => {
       const result = results[order];
@@ -143,22 +160,19 @@ const Search = () => {
   return (
     <>
       <button
+        type="button"
         aria-label="검색"
         aria-keyshortcuts="Meta+K Control+K"
         className="flex size-7 items-center justify-center transition-colors duration-300 ease-out hover:text-accent"
         onClick={open}
       >
-        <MagnifyingGlassIcon />
+        <MagnifyingGlassIcon className="size-7" />
       </button>
 
       <dialog
         ref={dialogRef}
         aria-label="글 검색"
-        className={cn(
-          'mx-auto mt-[12vh] mb-auto w-[calc(100vw-2rem)] max-w-140 p-0',
-          'rounded border border-line bg-background text-main shadow-lg',
-          'backdrop:bg-(--overlay) open:animate-panel-in motion-reduce:animate-none'
-        )}
+        className="mx-auto mt-[12vh] mb-auto w-[calc(100vw-2rem)] max-w-140 overflow-hidden rounded border border-line bg-background p-0 text-main shadow-lg backdrop:bg-(--overlay) open:animate-panel-in motion-reduce:animate-none"
         onClick={(event) => {
           if (event.target === dialogRef.current) close();
         }}
@@ -168,7 +182,10 @@ const Search = () => {
           <MagnifyingGlassIcon className="size-4 shrink-0 text-soft" aria-hidden />
           <input
             ref={inputRef}
+            type="text"
             aria-label="검색어"
+            autoComplete="off"
+            spellCheck={false}
             className="h-12 w-full bg-transparent outline-none placeholder:text-soft"
             placeholder="제목·본문 검색"
             value={query}
@@ -179,17 +196,16 @@ const Search = () => {
           </kbd>
         </div>
 
-        <div ref={panelRef} className="scrollbar-none max-h-[60vh] overflow-y-auto">
-          {loadFailed ? (
-            <p className={MESSAGE_CLASS}>검색 인덱스를 불러오지 못했습니다.</p>
-          ) : !searchIndex ? (
-            <p className={MESSAGE_CLASS}>불러오는 중…</p>
-          ) : results.length === 0 ? (
-            <p className={MESSAGE_CLASS}>결과가 없습니다.</p>
+        <div
+          ref={panelRef}
+          className="scrollbar-none max-h-[60vh] overflow-y-auto overscroll-contain"
+        >
+          {panelMessage ? (
+            <p className={MESSAGE_CLASS}>{panelMessage}</p>
           ) : (
             <>
               <p className={SECTION_LABEL_CLASS}>
-                {tokens.length === 0 ? '최근 글' : `${results.length}개 결과`}
+                {panelState === 'recent' ? '최근 글' : `${results.length}개 결과`}
               </p>
               <Results
                 results={results}

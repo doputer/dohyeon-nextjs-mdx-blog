@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import Comment from '@/components/comment';
+import ErrorBoundary from '@/components/error-boundary';
 import Post from '@/components/post';
 import Header from '@/components/post/header';
 import Progress from '@/components/post/progress';
@@ -22,11 +23,17 @@ const Page = async (props: PageProps) => {
   return (
     <>
       <Progress />
-      <Header title={title} date={date} tags={tags} />
-      <Post toc={toc} MDX={MDX} />
-      <Reaction slug={params.slug} />
+      <article className="flex flex-col gap-12">
+        <Header title={title} date={date} tags={tags} />
+        <Post toc={toc} MDX={MDX} />
+      </article>
+      <ErrorBoundary message="좋아요를 불러오지 못했습니다.">
+        <Reaction slug={params.slug} />
+      </ErrorBoundary>
       <Related slug={params.slug} tags={tags} />
-      <Comment />
+      <ErrorBoundary message="댓글을 불러오지 못했습니다.">
+        <Comment />
+      </ErrorBoundary>
     </>
   );
 };
@@ -43,14 +50,21 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const params = await props.params;
 
   const { frontmatter } = await getPost(params.slug);
-  const { emoji, title, description } = frontmatter;
+  const { emoji, title, description, date, tags } = frontmatter;
 
   return {
     title,
     description,
+    alternates: { canonical: `/${params.slug}` },
     openGraph: {
-      images: `/api/og?emoji=${emoji}`,
+      type: 'article',
+      locale: 'ko_KR',
+      siteName: config.title,
+      publishedTime: new Date(date).toISOString(),
+      tags,
+      images: `/api/og?emoji=${encodeURIComponent(emoji)}`,
       title,
+      description,
       url: [config.siteUrl, params.slug].join('/'),
     },
   };

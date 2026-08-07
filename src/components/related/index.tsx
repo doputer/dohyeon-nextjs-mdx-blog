@@ -3,7 +3,6 @@ import Link from 'next/link';
 import type { Frontmatter } from '@/lib/MDX/types';
 
 import { getPosts } from '@/lib/MDX';
-import { cn } from '@/utils/cn';
 import { format } from 'date-fns';
 
 interface RelatedProps {
@@ -37,12 +36,7 @@ const Related = async ({ slug, tags }: RelatedProps) => {
         {related.map(({ post }) => (
           <li key={post.slug} className="group/li border-t border-line/60 first:border-t-0">
             <Link href={`/${post.slug}`} className="flex items-start justify-between gap-4 py-3">
-              <h3
-                className={cn(
-                  'font-medium break-keep transition-colors duration-300 ease-out',
-                  'group-hover/li:text-accent'
-                )}
-              >
+              <h3 className="font-medium break-keep transition-colors duration-300 ease-out group-hover/li:text-accent">
                 {post.frontmatter.title}
               </h3>
               <time

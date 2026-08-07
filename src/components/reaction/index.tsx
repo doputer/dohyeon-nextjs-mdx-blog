@@ -18,7 +18,7 @@ const prefersReduced = () =>
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
 const Reaction = ({ slug }: Props) => {
-  const { like, addLike } = useLike(slug);
+  const { like, liked, addLike } = useLike(slug);
   const btnRef = useRef<HTMLButtonElement>(null);
   const tilt = useRef({ rx: 0, ry: 0, hover: 1, press: 1 });
   const rect = useRef<DOMRect | null>(null);
@@ -101,7 +101,7 @@ const Reaction = ({ slug }: Props) => {
   }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    addLike(slug);
+    addLike();
 
     if (prefersReduced()) return;
 
@@ -126,7 +126,7 @@ const Reaction = ({ slug }: Props) => {
         <span>·</span>
       </div>
       <div
-        className="group -m-16 p-16"
+        className="group -m-10 p-10"
         onPointerEnter={handleEnter}
         onPointerMove={handleMove}
         onPointerLeave={handleLeave}
@@ -134,11 +134,14 @@ const Reaction = ({ slug }: Props) => {
         <button
           ref={btnRef}
           type="button"
-          aria-label="좋아요"
+          aria-label={`좋아요 ${like ?? 0}개`}
+          aria-pressed={liked}
           onClick={handleClick}
           className="flex items-center gap-2 rounded-full border-[1.5px] border-accent bg-accent/5 px-5 py-2.5 text-accent shadow-sm transition-[transform,background-color,box-shadow] duration-200 ease-out will-change-transform select-none group-hover:bg-accent/10 group-hover:shadow-lg group-hover:shadow-accent/25 motion-reduce:transition-none"
         >
-          <span className="text-base leading-none">♥</span>
+          <span className="text-base leading-none" aria-hidden>
+            ♥
+          </span>
           <span className="text-sm font-medium tabular-nums">{like ?? 0}</span>
         </button>
       </div>

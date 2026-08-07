@@ -32,6 +32,9 @@ const Mermaid = ({ code }: Props) => {
 
   return (
     <div
+      role="region"
+      aria-label="다이어그램"
+      tabIndex={0}
       className="overflow-x-auto [&>svg]:mx-auto [&>svg]:h-auto [&>svg]:max-w-full"
       dangerouslySetInnerHTML={{ __html: svg }}
     />

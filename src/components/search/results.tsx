@@ -24,6 +24,7 @@ const Results = ({ results, tokens, activeIndex, onActivate, onSelect }: Results
       return (
         <li key={document.slug}>
           <button
+            type="button"
             data-active={order === activeIndex}
             className={cn(
               'block w-full rounded px-2 py-2 text-left transition-colors duration-150 ease-out',

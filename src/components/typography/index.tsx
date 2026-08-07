@@ -10,6 +10,7 @@ import Heading from '@/components/typography/heading';
 import Img from '@/components/typography/img';
 import Mermaid from '@/components/typography/mermaid';
 import Table from '@/components/typography/table';
+import { cn } from '@/utils/cn';
 
 const components: MDXComponents = {
   h2: (props) => <Heading as="h2" className={format.h2} {...props} />,
@@ -20,9 +21,21 @@ const components: MDXComponents = {
   ul: (props) => <ul className={format.ul} {...props} />,
   p: (props) => <p className={format.p} {...props} />,
   table: (props) => <Table className={format.table} {...props} />,
-  th: (props) => <th className={format.th} {...props} />,
+  th: (props) => <th scope="col" className={format.th} {...props} />,
   td: (props) => <td className={format.td} {...props} />,
-  a: (props) => <a className={format.a} target="_blank" {...props} />,
+  a: ({ href, ...props }) => {
+    const isExternal = !!href && !href.startsWith('/') && !href.startsWith('#');
+
+    return (
+      <a
+        href={href}
+        className={cn(format.a, isExternal && format.external)}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noreferrer' : undefined}
+        {...props}
+      />
+    );
+  },
   strong: (props) => <strong className={format.strong} {...props} />,
   img: (props) => <Img className={format.img} {...(props as ImageProps)} />,
   blockquote: (props) => <Blockquote className={format.blockquote} {...props} />,

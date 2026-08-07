@@ -19,7 +19,14 @@ const Code = ({ codeblock, className }: Props) => {
           {codeblock.meta}
         </span>
       )}
-      <Pre code={codeblock} handlers={handlers} className={cn('overflow-auto py-4', className)} />
+      <Pre
+        code={codeblock}
+        handlers={handlers}
+        role="region"
+        aria-label={codeblock.meta || `${codeblock.lang} 코드`}
+        tabIndex={0}
+        className={cn('overflow-auto py-4', className)}
+      />
     </div>
   );
 };
