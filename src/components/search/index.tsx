@@ -166,7 +166,7 @@ const Search = () => {
         className="flex size-7 items-center justify-center transition-colors duration-300 ease-out hover:text-accent"
         onClick={open}
       >
-        <MagnifyingGlassIcon />
+        <MagnifyingGlassIcon className="size-7" />
       </button>
 
       <dialog
