@@ -101,7 +101,7 @@ const Reaction = ({ slug }: Props) => {
   }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    addLike(slug);
+    addLike();
 
     if (prefersReduced()) return;
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import useAction from '@/hooks/use-action';
 import { getLikeBySlug, postLike } from '@/lib/supabase/client/like';
@@ -8,10 +8,14 @@ const type = 'like';
 
 const useLike = (slug: string) => {
   const [like, setLike] = useState<number | null>(null);
-  const { hasAction, setAction } = useAction();
+  const { loaded, hasAction, setAction } = useAction();
+  const pending = useRef(false);
+
+  const liked = hasAction(slug, type);
 
   useEffect(() => {
     let canceled = false;
+    pending.current = false;
 
     getLikeBySlug(slug)
       .then((count) => {
@@ -26,27 +30,26 @@ const useLike = (slug: string) => {
     };
   }, [slug]);
 
-  const addLike = useCallback(
-    async (slug: string) => {
-      if (process.env.NODE_ENV === 'development') return;
+  const addLike = useCallback(async () => {
+    if (process.env.NODE_ENV === 'development') return;
+    if (!loaded || liked || pending.current) return;
 
-      const id = getItem('UNIQUE_USER_ID');
-      if (!id) return;
-      if (hasAction(slug, type)) return;
+    const id = getItem('UNIQUE_USER_ID');
+    if (!id) return;
 
-      setLike((state) => (state ?? 0) + 1);
+    pending.current = true;
+    setLike((state) => (state ?? 0) + 1);
+
+    try {
+      await postLike(id, slug);
       setAction(slug, type);
+    } catch {
+      setLike((state) => (state ?? 1) - 1);
+      pending.current = false;
+    }
+  }, [loaded, liked, slug, setAction]);
 
-      try {
-        await postLike(id, slug);
-      } catch {
-        setLike((state) => (state ?? 1) - 1);
-      }
-    },
-    [hasAction, setAction]
-  );
-
-  return { like, liked: hasAction(slug, type), addLike };
+  return { like, liked, addLike };
 };
 
 export default useLike;
