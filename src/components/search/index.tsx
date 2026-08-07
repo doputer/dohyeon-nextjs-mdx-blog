@@ -13,6 +13,8 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 const RECENT_POST_COUNT = 5;
 const RESULT_LIMIT = 8;
 
+type PanelState = 'failed' | 'loading' | 'empty' | 'recent' | 'matched';
+
 const MESSAGE_CLASS = `px-4 py-10 text-center text-sm text-soft`;
 const SECTION_LABEL_CLASS = `px-4 pt-3 text-sm font-medium tracking-wide text-soft uppercase select-none`;
 
@@ -106,13 +108,28 @@ const Search = () => {
     return search(searchIndex, tokens, RESULT_LIMIT);
   }, [searchIndex, tokens]);
 
-  const statusMessage = useMemo(() => {
-    if (loadFailed) return '검색 인덱스를 불러오지 못했습니다.';
-    if (!searchIndex) return '검색 인덱스를 불러오는 중입니다.';
-    if (tokens.length === 0) return `최근 글 ${results.length}개`;
+  const panelState = useMemo<PanelState>(() => {
+    if (loadFailed) return 'failed';
+    if (!searchIndex) return 'loading';
+    if (results.length === 0) return 'empty';
 
-    return results.length === 0 ? '결과가 없습니다.' : `${results.length}개 결과`;
+    return tokens.length === 0 ? 'recent' : 'matched';
   }, [loadFailed, searchIndex, tokens, results]);
+
+  const statusMessage = useMemo<string>(() => {
+    switch (panelState) {
+      case 'failed':
+        return '검색 인덱스를 불러오지 못했습니다.';
+      case 'loading':
+        return '검색 인덱스를 불러오는 중입니다.';
+      case 'empty':
+        return '결과가 없습니다.';
+      case 'recent':
+        return `최근 글 ${results.length}개`;
+      case 'matched':
+        return `${results.length}개 결과`;
+    }
+  }, [panelState, results.length]);
 
   const select = useCallback(
     (order: number) => {
@@ -199,16 +216,16 @@ const Search = () => {
           ref={panelRef}
           className="scrollbar-none max-h-[60vh] overflow-y-auto overscroll-contain"
         >
-          {loadFailed ? (
+          {panelState === 'failed' ? (
             <p className={MESSAGE_CLASS}>검색 인덱스를 불러오지 못했습니다.</p>
-          ) : !searchIndex ? (
+          ) : panelState === 'loading' ? (
             <p className={MESSAGE_CLASS}>불러오는 중…</p>
-          ) : results.length === 0 ? (
+          ) : panelState === 'empty' ? (
             <p className={MESSAGE_CLASS}>결과가 없습니다.</p>
           ) : (
             <>
               <p className={SECTION_LABEL_CLASS} aria-hidden>
-                {tokens.length === 0 ? '최근 글' : `${results.length}개 결과`}
+                {panelState === 'recent' ? '최근 글' : `${results.length}개 결과`}
               </p>
               <Results
                 results={results}
