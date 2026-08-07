@@ -2,28 +2,34 @@ import { cache } from 'react';
 
 import type { Post } from '@/lib/MDX/types';
 
-import { readdir } from 'fs/promises';
-import path from 'path';
+type PostModule = Pick<Post, 'frontmatter' | 'toc'> & { default: Post['MDX'] };
+type PostLoader = () => Promise<PostModule>;
+type PostModules = Record<string, PostLoader>;
 
-const DIR = path.join(process.cwd(), 'contents');
+const modules = import.meta.glob('*/index.mdx', { base: '../../../contents' }) as PostModules;
+
+const toSlug = (file: string) => file.split('/').at(-2)!;
+const toEntry = ([file, load]: [string, PostLoader]) => [toSlug(file), load] as const;
+
+const toTime = (post: Post) => new Date(post.frontmatter.date).getTime();
+const byLatest = (a: Post, b: Post) => toTime(b) - toTime(a);
+
+const loaders = new Map(Object.entries(modules).map(toEntry));
 
 const getPost = cache(async (slug: string) => {
-  const MDXModule = await import(`../../../contents/${slug}/index.mdx`);
-  const { frontmatter, toc, default: MDX } = MDXModule;
+  const load = loaders.get(slug);
 
-  return { frontmatter, toc, slug, MDX } as Post;
+  if (!load) throw new Error(`Post not found: ${slug}`);
+
+  const { frontmatter, toc, default: MDX } = await load();
+
+  return { frontmatter, toc, slug, MDX } satisfies Post;
 });
 
 const getPosts = cache(async () => {
-  const entries = await readdir(DIR, { withFileTypes: true });
-  const dirs = entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
+  const posts = await Promise.all([...loaders.keys()].map(getPost));
 
-  const posts = await Promise.all(dirs.map(getPost));
-  const sortedPosts = posts.toSorted(
-    (a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
-  );
-
-  return sortedPosts;
+  return posts.toSorted(byLatest);
 });
 
 export { getPost, getPosts };
