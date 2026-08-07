@@ -15,6 +15,12 @@ const RESULT_LIMIT = 8;
 
 type PanelState = 'failed' | 'loading' | 'empty' | 'recent' | 'matched';
 
+const PANEL_MESSAGE: Partial<Record<PanelState, string>> = {
+  failed: '검색 인덱스를 불러오지 못했습니다.',
+  loading: '불러오는 중…',
+  empty: '결과가 없습니다.',
+};
+
 const MESSAGE_CLASS = `px-4 py-10 text-center text-sm text-soft`;
 const SECTION_LABEL_CLASS = `px-4 pt-3 text-sm font-medium tracking-wide text-soft uppercase select-none`;
 
@@ -131,6 +137,8 @@ const Search = () => {
     }
   }, [panelState, results.length]);
 
+  const panelMessage = PANEL_MESSAGE[panelState];
+
   const select = useCallback(
     (order: number) => {
       const result = results[order];
@@ -216,12 +224,8 @@ const Search = () => {
           ref={panelRef}
           className="scrollbar-none max-h-[60vh] overflow-y-auto overscroll-contain"
         >
-          {panelState === 'failed' ? (
-            <p className={MESSAGE_CLASS}>검색 인덱스를 불러오지 못했습니다.</p>
-          ) : panelState === 'loading' ? (
-            <p className={MESSAGE_CLASS}>불러오는 중…</p>
-          ) : panelState === 'empty' ? (
-            <p className={MESSAGE_CLASS}>결과가 없습니다.</p>
+          {panelMessage ? (
+            <p className={MESSAGE_CLASS}>{panelMessage}</p>
           ) : (
             <>
               <p className={SECTION_LABEL_CLASS} aria-hidden>
