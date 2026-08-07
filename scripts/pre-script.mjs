@@ -3,6 +3,7 @@ import path from 'path';
 
 const SOURCE_DIR = path.join(process.cwd(), 'contents');
 const TARGET_DIR = path.join(process.cwd(), 'public/images');
+const IMAGE_PATTERN = /\.(png|gif|jpe?g|webp|avif)$/i;
 
 const exists = async (path) => {
   try {
@@ -24,7 +25,7 @@ const copyImages = async () => {
     const targetDirPath = path.resolve(path.join(TARGET_DIR, dir));
     const entries = await readdir(sourceDirPath, { withFileTypes: true });
     const files = entries.filter((entry) => !entry.isDirectory()).map((entry) => entry.name);
-    const imageFiles = files.filter((file) => /\.(png|gif)$/.test(file));
+    const imageFiles = files.filter((file) => IMAGE_PATTERN.test(file));
 
     if (imageFiles.length === 0) continue;
 
