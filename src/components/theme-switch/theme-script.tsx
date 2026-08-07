@@ -11,24 +11,31 @@ declare global {
 }
 
 const script = function () {
+  const THEME_COLOR: Record<Theme, string> = {
+    dark: 'oklch(22.5% 0.0074 248deg)',
+    light: 'oklch(100% 0 0)',
+  };
+
+  let themeListeners: Listener[] = [];
+
   function setTheme(newTheme: Theme) {
     document.documentElement.dataset.theme = newTheme;
 
-    const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement;
-    meta.content = newTheme === 'dark' ? 'oklch(22.5% 0.0074 248deg)' : 'oklch(100% 0 0)';
+    const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    if (meta) meta.content = THEME_COLOR[newTheme];
 
     window.__theme = newTheme;
     themeListeners.forEach((listener) => listener(newTheme));
   }
 
-  let preferredTheme: Theme;
-  let themeListeners: Listener[] = [];
+  let storedTheme: Theme | null = null;
 
   try {
-    preferredTheme = localStorage.getItem('theme') as Theme;
+    const stored = localStorage.getItem('theme');
+
+    if (stored === 'dark' || stored === 'light') storedTheme = stored;
   } catch (error) {
     console.error(error);
-    return;
   }
 
   window.__addThemeListener = (listener) => {
@@ -40,6 +47,7 @@ const script = function () {
   };
 
   window.__setPreferredTheme = function (newTheme) {
+    storedTheme = newTheme;
     setTheme(newTheme);
 
     try {
@@ -51,11 +59,13 @@ const script = function () {
 
   const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-  darkQuery.addEventListener('change', function (e) {
-    window.__setPreferredTheme(e.matches ? 'dark' : 'light');
+  darkQuery.addEventListener('change', function (event) {
+    if (storedTheme) return;
+
+    setTheme(event.matches ? 'dark' : 'light');
   });
 
-  setTheme(preferredTheme || (darkQuery.matches ? 'dark' : 'light'));
+  setTheme(storedTheme ?? (darkQuery.matches ? 'dark' : 'light'));
 };
 
 const ThemeScript = () => {
