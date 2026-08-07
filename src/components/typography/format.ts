@@ -11,10 +11,6 @@ const LIST = cn(
 export const h2 = cn(HEADING, MARKER, "text-2xl before:content-['#']");
 export const h3 = cn(HEADING, MARKER, "text-xl before:content-['##']");
 export const h4 = cn(HEADING);
-export const blockquote = cn('border-l-2 border-accent py-0.5 pl-4 text-muted italic');
-export const callout = cn(
-  'flex flex-col gap-4 rounded border border-line bg-surface/60 p-4 lg:flex-row'
-);
 export const code = cn('text-[0.875em] font-bold before:content-["`"] after:content-["`"]');
 export const ol = cn(LIST, 'list-decimal');
 export const ul = cn(LIST, 'list-disc');
@@ -28,4 +24,10 @@ export const td = cn('border-b border-line p-2');
 export const a = cn('text-accent underline decoration-1 underline-offset-3 after:content-["↗"]');
 export const strong = cn('font-bold');
 export const img = cn('mx-auto rounded');
+export const blockquote = cn('border-l-2 border-accent py-0.5 pl-4 text-muted italic');
+
+// Component
 export const pre = cn('text-sm leading-6');
+export const callout = cn(
+  'flex flex-col gap-4 rounded border border-line bg-surface/60 p-4 lg:flex-row'
+);
