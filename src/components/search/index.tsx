@@ -3,13 +3,10 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import type { Heading } from '@/components/search/toc';
 import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/search/types';
 
 import Results from '@/components/search/results';
-import TOC, { readHeadings } from '@/components/search/toc';
-import useScroll from '@/hooks/use-scroll';
-import { matchesAll, tokenize } from '@/lib/search/match';
+import { tokenize } from '@/lib/search/match';
 import { prepareIndex, search } from '@/lib/search/score';
 import { cn } from '@/utils/cn';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -32,9 +29,6 @@ const Search = () => {
   const [loadFailed, setLoadFailed] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
-  const [headings, setHeadings] = useState<Heading[]>([]);
-
-  const scrollToTarget = useScroll();
 
   const load = useCallback(async () => {
     if (loadRequested.current) return;
@@ -56,7 +50,6 @@ const Search = () => {
 
   const open = useCallback(() => {
     setLoadFailed(false);
-    setHeadings(readHeadings());
     dialogRef.current?.showModal();
     inputRef.current?.focus();
     load();
@@ -70,14 +63,6 @@ const Search = () => {
       router.push(`/${slug}`);
     },
     [close, router]
-  );
-
-  const jumpToHeading = useCallback(
-    (id: string) => {
-      close();
-      scrollToTarget(id);
-    },
-    [close, scrollToTarget]
   );
 
   useEffect(() => {
@@ -110,61 +95,43 @@ const Search = () => {
     return () => dialog.removeEventListener('close', handleClose);
   }, []);
 
-  const scopedToTOC = query.startsWith('#');
-  const tokens = useMemo(
-    () => tokenize(scopedToTOC ? query.slice(1) : query),
-    [query, scopedToTOC]
-  );
+  const tokens = useMemo(() => tokenize(query), [query]);
 
   const results = useMemo<SearchResult[]>(() => {
-    if (!searchIndex || scopedToTOC) return [];
+    if (!searchIndex) return [];
     if (tokens.length === 0)
       return searchIndex
         .slice(0, RECENT_POST_COUNT)
         .map((prepared) => ({ document: prepared.document, score: 0 }));
 
     return search(searchIndex, tokens, RESULT_LIMIT);
-  }, [searchIndex, scopedToTOC, tokens]);
-
-  const filteredHeadings = useMemo(
-    () => (scopedToTOC ? headings.filter(({ text }) => matchesAll(text, tokens)) : headings),
-    [scopedToTOC, headings, tokens]
-  );
-
-  const showTOC = (scopedToTOC || tokens.length === 0) && headings.length > 0;
-  const itemCount = showTOC ? filteredHeadings.length : results.length;
+  }, [searchIndex, tokens]);
 
   const select = useCallback(
     (order: number) => {
-      if (showTOC) {
-        const heading = filteredHeadings[order];
-        if (heading) jumpToHeading(heading.id);
-        return;
-      }
-
       const result = results[order];
       if (result) goToPost(result.document.slug);
     },
-    [showTOC, filteredHeadings, results, jumpToHeading, goToPost]
+    [results, goToPost]
   );
 
   useEffect(() => setActiveIndex(0), [query]);
 
   useEffect(() => {
     panelRef.current?.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'nearest' });
-  }, [activeIndex, results, filteredHeadings]);
+  }, [activeIndex, results]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (itemCount === 0) return;
+    if (results.length === 0) return;
 
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      setActiveIndex((previous) => (previous + 1) % itemCount);
+      setActiveIndex((previous) => (previous + 1) % results.length);
     }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-      setActiveIndex((previous) => (previous - 1 + itemCount) % itemCount);
+      setActiveIndex((previous) => (previous - 1 + results.length) % results.length);
     }
 
     if (event.key === 'Enter') {
@@ -203,7 +170,7 @@ const Search = () => {
             ref={inputRef}
             aria-label="검색어"
             className="h-12 w-full bg-transparent outline-none placeholder:text-soft"
-            placeholder="제목·목차·본문 검색"
+            placeholder="제목·본문 검색"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
@@ -213,30 +180,12 @@ const Search = () => {
         </div>
 
         <div ref={panelRef} className="scrollbar-none max-h-[60vh] overflow-y-auto">
-          {showTOC ? (
-            <>
-              <p className={cn(SECTION_LABEL_CLASS, 'flex items-center justify-between')}>목차</p>
-
-              {filteredHeadings.length === 0 ? (
-                <p className={MESSAGE_CLASS}>일치하는 섹션이 없습니다.</p>
-              ) : (
-                <TOC
-                  headings={filteredHeadings}
-                  tokens={tokens}
-                  activeIndex={activeIndex}
-                  onActivate={setActiveIndex}
-                  onSelect={select}
-                />
-              )}
-            </>
-          ) : loadFailed ? (
+          {loadFailed ? (
             <p className={MESSAGE_CLASS}>검색 인덱스를 불러오지 못했습니다.</p>
           ) : !searchIndex ? (
             <p className={MESSAGE_CLASS}>불러오는 중…</p>
           ) : results.length === 0 ? (
-            <p className={MESSAGE_CLASS}>
-              {scopedToTOC ? '검색할 목차가 없습니다.' : '결과가 없습니다.'}
-            </p>
+            <p className={MESSAGE_CLASS}>결과가 없습니다.</p>
           ) : (
             <>
               <p className={SECTION_LABEL_CLASS}>

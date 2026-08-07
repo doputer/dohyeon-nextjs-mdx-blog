@@ -80,12 +80,6 @@ export const findFirstMatch = (text: string, pattern: TokenPattern): Match | nul
   return null;
 };
 
-export const matchesAll = (text: string, tokens: string[]): boolean => {
-  const lowerText = text.toLowerCase();
-
-  return tokens.every((token) => findFirstMatch(lowerText, compile(token)) !== null);
-};
-
 const mergeRanges = (ranges: Range[]): Range[] => {
   const merged: Range[] = [];
 
