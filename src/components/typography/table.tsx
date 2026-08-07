@@ -1,15 +1,9 @@
-import type { PropsWithChildren } from 'react';
+import type { ComponentProps } from 'react';
 
-interface Props {
-  className?: string;
-}
-
-const Table = (props: PropsWithChildren<Props>) => {
-  return (
-    <div className="overflow-x-auto">
-      <table {...props} />
-    </div>
-  );
-};
+const Table = (props: ComponentProps<'table'>) => (
+  <div className="overflow-x-auto">
+    <table {...props} />
+  </div>
+);
 
 export default Table;

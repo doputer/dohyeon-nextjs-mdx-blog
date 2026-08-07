@@ -150,7 +150,7 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
             onClick={refetch}
             className="rounded bg-accent px-3 py-1 text-sm font-medium text-background transition-opacity hover:opacity-90"
           >
-            다시 요청
+            요청
           </button>
         </div>
       </div>

@@ -21,11 +21,11 @@ const inheritFont = (svg: string) =>
     .replace(/^\s*@import url\('https:\/\/fonts\.googleapis\.com[^']*'\);$/gm, '')
     .replace(/text \{ font-family:[^}]*\}/, 'text { font-family: inherit; }');
 
-const Mermaid = (props: Props) => {
+const Mermaid = ({ code }: Props) => {
   let svg: string;
 
   try {
-    svg = inheritFont(renderMermaidSVG(props.code, colors));
+    svg = inheritFont(renderMermaidSVG(code, colors));
   } catch (error) {
     return <pre className={format.pre}>{String(error)}</pre>;
   }

@@ -1,17 +1,9 @@
-import type { PropsWithChildren } from 'react';
+import type { ComponentProps } from 'react';
 
-import { cn } from '@/utils/cn';
-
-interface Props {
-  className?: string;
-}
-
-const Blockquote = (props: PropsWithChildren<Props>) => {
-  return (
-    <blockquote {...props} className={cn(props.className)}>
-      <div className="space-y-6 overflow-hidden">{props.children}</div>
-    </blockquote>
-  );
-};
+const Blockquote = ({ children, ...props }: ComponentProps<'blockquote'>) => (
+  <blockquote {...props}>
+    <div className="space-y-6 overflow-hidden">{children}</div>
+  </blockquote>
+);
 
 export default Blockquote;
