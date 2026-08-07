@@ -1,11 +1,16 @@
-import Actions from '@/components/header/actions';
-import Navigation from '@/components/header/navigation';
+import FloatingBar from '@/components/header/floating-bar';
+import Logo from '@/components/header/logo';
+import Search from '@/components/search';
+import ThemeSwitch from '@/components/theme-switch';
 
 const Header = () => {
   return (
     <header className="flex min-h-8 items-center">
-      <Navigation />
-      <Actions />
+      <Logo />
+      <FloatingBar>
+        <Search />
+        <ThemeSwitch />
+      </FloatingBar>
     </header>
   );
 };

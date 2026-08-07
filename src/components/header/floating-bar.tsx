@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 
-import Search from '@/components/search';
-import ThemeSwitch from '@/components/theme-switch';
 import { cn } from '@/utils/cn';
 
-const Actions = () => {
+const FloatingBar = ({ children }: PropsWithChildren) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -28,12 +26,11 @@ const Actions = () => {
             scrolled && 'bg-background/70 ring-1 ring-line backdrop-blur'
           )}
         >
-          <Search />
-          <ThemeSwitch />
+          {children}
         </div>
       </div>
     </div>
   );
 };
 
-export default Actions;
+export default FloatingBar;
