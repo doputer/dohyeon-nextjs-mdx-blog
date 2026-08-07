@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import type { Post } from '@/lib/MDX/types';
-
 import { format } from 'date-fns';
+
+import type { Post } from '@/lib/MDX/types';
 
 interface ListProps {
   posts: Post[];

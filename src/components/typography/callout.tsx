@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react';
 
-import { cn } from '@/utils/cn';
 import { BoltIcon } from '@heroicons/react/24/solid';
+
+import { cn } from '@/utils/cn';
 
 const Callout = ({ className, children, ...props }: ComponentProps<'blockquote'>) => (
   <blockquote {...props} className={cn('group', className)}>

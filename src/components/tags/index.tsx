@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
 import type { Frontmatter } from '@/lib/MDX/types';
-
 import { encode } from '@/utils/uri';
 
 interface TagsProps {

@@ -1,7 +1,7 @@
-import type { Frontmatter } from '@/lib/MDX/types';
+import { format } from 'date-fns';
 
 import Tags from '@/components/tags';
-import { format } from 'date-fns';
+import type { Frontmatter } from '@/lib/MDX/types';
 
 interface HeaderProps {
   title: Frontmatter['title'];

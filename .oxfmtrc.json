@@ -3,16 +3,14 @@
   "printWidth": 100,
   "singleQuote": true,
   "trailingComma": "es5",
-
-  "ignorePatterns": [".claude/**", "**/node_modules/**", "**/.next/**", "public/**"],
-
+  "ignorePatterns": ["**/node_modules/**", "**/.next/**"],
   "sortImports": {
     "newlinesBetween": true,
-    "internalPattern": ["^@/.*", "^#/.*"],
+    "internalPattern": ["@/", "#/"],
     "customGroups": [
       {
         "groupName": "next",
-        "elementNamePattern": ["next", "next*", "next*/**", "@next*", "@next*/**"]
+        "elementNamePattern": ["next", "next*", "next*/**"]
       },
       {
         "groupName": "react",
@@ -21,18 +19,17 @@
     ],
     "groups": [
       ["next", "react"],
-      "type-import",
-      ["value-builtin", "value-external"],
-      "type-internal",
-      "value-internal",
-      ["type-parent", "type-sibling", "type-index"],
-      ["value-parent", "value-sibling", "value-index"],
+      "builtin",
+      "external",
+      ["internal", "subpath"],
+      ["parent", "sibling", "index"],
+      "style",
       "unknown"
     ]
   },
   "sortPackageJson": true,
   "sortTailwindcss": {
-    "functions": ["clsx", "cn"],
+    "functions": ["cn"],
     "stylesheet": "./src/static/styles/index.css"
   }
 }

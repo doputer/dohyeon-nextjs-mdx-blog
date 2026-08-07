@@ -1,8 +1,9 @@
 'use client';
 
+import Giscus from '@giscus/react';
+
 import config from '@/configs/config.json';
 import useTheme from '@/hooks/use-theme';
-import Giscus from '@giscus/react';
 
 const Comment = () => {
   const { theme } = useTheme();

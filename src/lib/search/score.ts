@@ -1,7 +1,6 @@
 import type { TokenPattern } from '@/lib/search/match';
-import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/search/types';
-
 import { compile, findFirstMatch } from '@/lib/search/match';
+import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/search/types';
 
 interface FieldSpec {
   weight: number;

@@ -3,12 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/search/types';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 import Results from '@/components/search/results';
 import { tokenize } from '@/lib/search/match';
 import { prepareIndex, search } from '@/lib/search/score';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/search/types';
 
 const RECENT_POST_COUNT = 5;
 const RESULT_LIMIT = 8;

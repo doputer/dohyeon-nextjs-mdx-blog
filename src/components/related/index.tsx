@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-import type { Frontmatter } from '@/lib/MDX/types';
+import { format } from 'date-fns';
 
 import { getPosts } from '@/lib/MDX';
-import { format } from 'date-fns';
+import type { Frontmatter } from '@/lib/MDX/types';
 
 interface RelatedProps {
   slug: string;

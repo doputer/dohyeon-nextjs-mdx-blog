@@ -1,6 +1,5 @@
-import type { Post } from '@/lib/MDX/types';
-
 import TOC from '@/components/post/toc';
+import type { Post } from '@/lib/MDX/types';
 
 interface PostProps {
   toc: Post['toc'];

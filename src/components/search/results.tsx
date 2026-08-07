@@ -1,9 +1,9 @@
-import type { SearchResult } from '@/lib/search/types';
+import { format } from 'date-fns';
 
 import Highlight from '@/components/search/highlight';
 import { snippet } from '@/lib/search/match';
+import type { SearchResult } from '@/lib/search/types';
 import { cn } from '@/utils/cn';
-import { format } from 'date-fns';
 
 interface ResultsProps {
   results: SearchResult[];
