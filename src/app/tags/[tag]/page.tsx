@@ -51,11 +51,19 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   if (!tag) notFound();
 
   const capitalizedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
+  const url = `${config.siteUrl}/tags/${encode(tag)}`;
 
   return {
-    title: [config.title, capitalizedTag].join(' | '),
+    title: capitalizedTag,
+    description: `${capitalizedTag} 태그가 달린 글 목록`,
+    alternates: { canonical: `/tags/${encode(tag)}` },
     openGraph: {
-      title: [config.title, capitalizedTag].join(' | '),
+      type: 'website',
+      locale: 'ko_KR',
+      siteName: config.title,
+      images: '/api/og',
+      title: capitalizedTag,
+      url,
     },
   };
 }

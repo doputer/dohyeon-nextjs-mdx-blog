@@ -41,7 +41,10 @@ const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
 
 export const metadata: Metadata = {
   metadataBase: new URL(config.siteUrl),
-  title: config.title,
+  title: {
+    default: config.title,
+    template: `%s | ${config.title}`,
+  },
   description: config.description,
   alternates: {
     canonical: '/',
@@ -52,7 +55,10 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: '/api/og',
     siteName: config.title,
-    title: config.title,
+    title: {
+      default: config.title,
+      template: `%s | ${config.title}`,
+    },
     description: config.description,
     url: config.siteUrl,
   },

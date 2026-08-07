@@ -45,14 +45,21 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const params = await props.params;
 
   const { frontmatter } = await getPost(params.slug);
-  const { emoji, title, description } = frontmatter;
+  const { emoji, title, description, date, tags } = frontmatter;
 
   return {
     title,
     description,
+    alternates: { canonical: `/${params.slug}` },
     openGraph: {
-      images: `/api/og?emoji=${emoji}`,
+      type: 'article',
+      locale: 'ko_KR',
+      siteName: config.title,
+      publishedTime: new Date(date).toISOString(),
+      tags,
+      images: `/api/og?emoji=${encodeURIComponent(emoji)}`,
       title,
+      description,
       url: [config.siteUrl, params.slug].join('/'),
     },
   };

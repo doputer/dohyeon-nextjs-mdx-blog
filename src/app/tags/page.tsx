@@ -41,9 +41,16 @@ const Page = async () => {
 };
 
 export const metadata: Metadata = {
-  title: [config.title, 'Tags'].join(' | '),
+  title: 'Tags',
+  description: `${config.title}의 태그 목록`,
+  alternates: { canonical: '/tags' },
   openGraph: {
-    title: [config.title, 'Tags'].join(' | '),
+    type: 'website',
+    locale: 'ko_KR',
+    siteName: config.title,
+    images: '/api/og',
+    title: 'Tags',
+    url: `${config.siteUrl}/tags`,
   },
 };
 
