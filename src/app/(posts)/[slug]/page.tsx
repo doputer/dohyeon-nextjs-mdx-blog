@@ -53,7 +53,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { emoji, title, description, date, tags } = frontmatter;
 
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: `/${params.slug}` },
     openGraph: {
