@@ -12,8 +12,8 @@ declare global {
 
 const script = function () {
   const THEME_COLOR: Record<Theme, string> = {
-    dark: 'oklch(22.5% 0.0074 248deg)',
-    light: 'oklch(100% 0 0)',
+    dark: '#121620',
+    light: '#f4f7fd',
   };
 
   let themeListeners: Listener[] = [];

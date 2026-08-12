@@ -7,9 +7,9 @@
   --color-main: #16171a;
   --color-muted: #575c63;
   --color-soft: #9ca1a8;
-  --color-line: #e7e8ea;
-  --color-surface: #f4f5f6;
-  --color-background: #ffffff;
+  --color-line: #e3e7ee;
+  --color-surface: #eef1f6;
+  --color-background: #f4f7fd;
 
   --overlay: rgb(22 23 26 / 0.3);
 }
@@ -18,9 +18,9 @@
   --color-main: #ebecee;
   --color-muted: #9ea2a9;
   --color-soft: #6d7178;
-  --color-line: #26282c;
-  --color-surface: #1a1c1f;
-  --color-background: #0f1012;
+  --color-line: #262b35;
+  --color-surface: #1a1e27;
+  --color-background: #121620;
 
   --overlay: rgb(6 7 8 / 0.66);
 }
