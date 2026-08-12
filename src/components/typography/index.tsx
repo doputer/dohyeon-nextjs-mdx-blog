@@ -19,7 +19,6 @@ const components: MDXComponents = {
   code: (props) => <code className={format.code} {...props} />,
   ol: (props) => <ol className={format.ol} {...props} />,
   ul: (props) => <ul className={format.ul} {...props} />,
-  p: (props) => <p className={format.p} {...props} />,
   table: (props) => <Table className={format.table} {...props} />,
   th: (props) => <th scope="col" className={format.th} {...props} />,
   td: (props) => <td className={format.td} {...props} />,

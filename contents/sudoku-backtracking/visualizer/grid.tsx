@@ -29,7 +29,7 @@ const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Pr
             <div
               key={`${i}-${j}`}
               className={cn(
-                'flex items-center justify-center border-line text-[15px] tabular-nums',
+                'flex items-center justify-center border-line text-sm tabular-nums',
                 i % 3 === 0 ? 'border-t-2 border-t-line' : 'border-t',
                 j % 3 === 0 ? 'border-l-2 border-l-line' : 'border-l',
                 i === 0 && 'border-t-0',

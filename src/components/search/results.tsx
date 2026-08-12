@@ -36,13 +36,16 @@ const Results = ({ results, tokens, activeIndex, onActivate, onSelect }: Results
               <span className="flex-1 font-medium break-keep">
                 <Highlight text={document.title} tokens={tokens} />
               </span>
-              <time dateTime={document.date} className="shrink-0 text-sm/6 text-muted tabular-nums">
+              <time
+                dateTime={document.date}
+                className="shrink-0 py-0.5 text-sm text-muted tabular-nums"
+              >
                 {toYearMonth(document.date)}
               </time>
             </span>
 
             {excerpt && (
-              <span className="mt-1 line-clamp-2 text-sm leading-6 break-keep text-muted">
+              <span className="mt-1 line-clamp-2 text-sm break-keep text-muted">
                 <Highlight text={excerpt} tokens={tokens} />
               </span>
             )}
