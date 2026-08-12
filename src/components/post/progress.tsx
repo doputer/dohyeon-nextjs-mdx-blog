@@ -13,7 +13,7 @@ const Progress = () => {
       frame = requestAnimationFrame(() => {
         const max = document.documentElement.scrollHeight - window.innerHeight;
         const progress = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-        ref.current?.style.setProperty('transform', `scaleX(${progress})`);
+        ref.current?.style.setProperty('scale', `${progress} 1`);
       });
     };
 
