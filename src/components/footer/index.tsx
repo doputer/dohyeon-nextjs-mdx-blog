@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <>
       <hr className="border-line" />
-      <footer className="flex justify-center text-xs text-muted">
+      <footer className="flex justify-center text-sm text-muted">
         <p>© {year}. 김도현. All Rights Reserved.</p>
       </footer>
     </>

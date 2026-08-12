@@ -30,7 +30,7 @@ const Related = async ({ slug, tags }: RelatedProps) => {
 
   return (
     <section className="space-y-5">
-      <h2 className="text-xs font-medium tracking-[0.08em] text-muted uppercase select-none">
+      <h2 className="text-sm font-medium tracking-wide text-muted uppercase select-none">
         관련 글
       </h2>
       <ul className="divide-y divide-line">
@@ -42,7 +42,7 @@ const Related = async ({ slug, tags }: RelatedProps) => {
               </h3>
               <time
                 dateTime={post.frontmatter.date}
-                className="shrink-0 text-sm text-muted tabular-nums"
+                className="shrink-0 text-sm/6 text-muted tabular-nums"
               >
                 {toYearMonth(post.frontmatter.date)}
               </time>
