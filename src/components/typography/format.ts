@@ -21,7 +21,7 @@ export const table = cn(
 export const th = cn('border-b-[1.5px] border-main/60 p-2 font-medium');
 export const td = cn('border-b border-line p-2');
 export const a = cn(
-  'underline decoration-muted decoration-1 underline-offset-4 hover:decoration-main'
+  'underline decoration-muted decoration-1 underline-offset-4 transition-colors duration-200 ease-out hover:decoration-main'
 );
 export const external = cn('after:content-["↗"]');
 export const strong = cn('font-bold');
