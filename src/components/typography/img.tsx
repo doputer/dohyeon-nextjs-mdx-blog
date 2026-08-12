@@ -16,7 +16,7 @@ const Img = (props: ImageProps) => {
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
         unoptimized={toURL(props.src).endsWith('.gif')}
       />
-      {caption && <figcaption className="text-center text-sm text-soft">{caption}</figcaption>}
+      {caption && <figcaption className="text-center text-sm text-muted">{caption}</figcaption>}
     </figure>
   );
 };

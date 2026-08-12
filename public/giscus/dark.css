@@ -30,49 +30,49 @@ main {
   --color-prettylights-syntax-sublimelinter-gutter-mark: #484f58;
   --color-prettylights-syntax-constant-other-reference-link: #a5d6ff;
 
-  --color-btn-text: #ece9e3;
-  --color-btn-bg: #211f1b;
-  --color-btn-border: #ece9e326;
+  --color-btn-text: #ebecee;
+  --color-btn-bg: #1a1c1f;
+  --color-btn-border: #ebecee26;
   --color-btn-shadow: 0 0 transparent;
   --color-btn-inset-shadow: 0 0 transparent;
-  --color-btn-hover-bg: #2b2925;
-  --color-btn-hover-border: #ece9e333;
-  --color-btn-active-bg: #35322c;
-  --color-btn-active-border: #ece9e333;
-  --color-btn-selected-bg: #2b2925;
-  --color-btn-primary-text: #171512;
-  --color-btn-primary-bg: #ece9e3;
-  --color-btn-primary-border: #ece9e326;
+  --color-btn-hover-bg: #24262a;
+  --color-btn-hover-border: #ebecee33;
+  --color-btn-active-bg: #2e3034;
+  --color-btn-active-border: #ebecee33;
+  --color-btn-selected-bg: #24262a;
+  --color-btn-primary-text: #0f1012;
+  --color-btn-primary-bg: #ebecee;
+  --color-btn-primary-border: #ebecee26;
   --color-btn-primary-shadow: 0 0 transparent;
   --color-btn-primary-inset-shadow: 0 0 transparent;
-  --color-btn-primary-hover-bg: #dedad2;
-  --color-btn-primary-hover-border: #ece9e326;
-  --color-btn-primary-selected-bg: #d6d2c9;
+  --color-btn-primary-hover-bg: #d9dbde;
+  --color-btn-primary-hover-border: #ebecee26;
+  --color-btn-primary-selected-bg: #cdcfd3;
   --color-btn-primary-selected-shadow: inset 0 1px 0 #00000033;
-  --color-btn-primary-disabled-text: #171512cc;
-  --color-btn-primary-disabled-bg: #7d7a71;
-  --color-btn-primary-disabled-border: #ece9e326;
+  --color-btn-primary-disabled-text: #0f1012cc;
+  --color-btn-primary-disabled-bg: #6d7178;
+  --color-btn-primary-disabled-border: #ebecee26;
 
-  --color-action-list-item-default-hover-bg: #2b292552;
-  --color-segmented-control-bg: #211f1b;
-  --color-segmented-control-button-bg: #171512;
-  --color-segmented-control-button-selected-border: #454139;
+  --color-action-list-item-default-hover-bg: #24262a52;
+  --color-segmented-control-bg: #1a1c1f;
+  --color-segmented-control-button-bg: #0f1012;
+  --color-segmented-control-button-selected-border: #3a3d42;
 
-  --color-fg-default: #ece9e3;
-  --color-fg-muted: #7d7a71;
-  --color-fg-subtle: #7d7a71;
+  --color-fg-default: #ebecee;
+  --color-fg-muted: #9ea2a9;
+  --color-fg-subtle: #6d7178;
   --color-canvas-default: transparent;
-  --color-canvas-overlay: #171512;
-  --color-canvas-inset: #211f1b;
-  --color-canvas-subtle: #211f1b;
-  --color-border-default: #2b2925;
-  --color-border-muted: #262420;
-  --color-neutral-muted: #7d7a7133;
+  --color-canvas-overlay: #0f1012;
+  --color-canvas-inset: #1a1c1f;
+  --color-canvas-subtle: #1a1c1f;
+  --color-border-default: #26282c;
+  --color-border-muted: #202226;
+  --color-neutral-muted: #9ea2a933;
 
-  --color-accent-fg: #f08c4b;
-  --color-accent-emphasis: #f08c4b;
-  --color-accent-muted: #f08c4b66;
-  --color-accent-subtle: #f08c4b1a;
+  --color-accent-fg: #ebecee;
+  --color-accent-emphasis: #ebecee;
+  --color-accent-muted: #ebecee66;
+  --color-accent-subtle: #ebecee1a;
 
   --color-success-fg: #3fb950;
   --color-attention-fg: #d29922;
@@ -82,8 +82,8 @@ main {
   --color-danger-muted: #f8514966;
   --color-danger-subtle: #f851491a;
   --color-primer-shadow-inset: 0 0 transparent;
-  --color-scale-gray-7: #2b2925;
-  --color-scale-blue-8: #5a4632;
+  --color-scale-gray-7: #24262a;
+  --color-scale-blue-8: #33363b;
 
   /*! Extensions from @primer/css/alerts/flash.scss */
   --color-social-reaction-bg-hover: var(--color-scale-gray-7);
@@ -107,11 +107,11 @@ main .btn-primary {
 main .gsc-comments-count,
 main .gsc-comments-count-separator,
 main .gsc-replies-count {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #767c8a;
+  color: #9ea2a9;
 }
 
 main .gsc-comments-count a {

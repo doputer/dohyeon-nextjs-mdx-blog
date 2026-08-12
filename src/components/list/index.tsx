@@ -29,16 +29,16 @@ const List = ({ posts }: ListProps) => {
         >
           <h2
             id={`year-${year}`}
-            className="h-fit py-3 font-medium text-accent tabular-nums select-none sm:text-lg"
+            className="h-fit py-3.5 text-sm font-medium text-muted tabular-nums select-none sm:text-base"
           >
             {year}
           </h2>
           <ul>
             {posts.map(({ frontmatter, slug }) => (
               <li key={slug} className="group/li">
-                <Link href={`/${slug}`} className="flex justify-between gap-4 py-3">
+                <Link href={`/${slug}`} className="flex items-baseline justify-between gap-4 py-3">
                   <h3 className="break-keep sm:text-lg">
-                    <span className="bg-[linear-gradient(var(--color-accent),var(--color-accent))] bg-size-[0%_1.5px] bg-position-[0_100%] bg-no-repeat transition-[background-size] duration-300 ease-out group-hover/li:bg-size-[100%_1.5px]">
+                    <span className="bg-[linear-gradient(var(--color-main),var(--color-main))] bg-size-[0%_1px] bg-position-[0_100%] bg-no-repeat transition-[background-size] duration-300 ease-out group-hover/li:bg-size-[100%_1px]">
                       {frontmatter.title}
                     </span>
                     <span
@@ -49,7 +49,7 @@ const List = ({ posts }: ListProps) => {
                   </h3>
                   <time
                     dateTime={frontmatter.date}
-                    className="shrink-0 text-muted tabular-nums transition-colors duration-300 ease-out group-hover/li:text-accent sm:text-lg"
+                    className="shrink-0 text-sm text-muted tabular-nums transition-colors duration-300 ease-out group-hover/li:text-main sm:text-base"
                   >
                     {toMonthDay(frontmatter.date)}
                   </time>

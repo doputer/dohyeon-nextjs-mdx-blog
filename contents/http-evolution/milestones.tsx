@@ -44,7 +44,7 @@ const Milestones = () => (
                 )}
                 style={{ left: '50%' }}
               />
-              <span className="relative z-10 h-3 w-3 rounded-full border-2 border-background bg-accent" />
+              <span className="relative z-10 h-3 w-3 rounded-full border-2 border-background bg-main" />
             </div>
 
             <span className="font-mono text-sm font-medium text-main">{milestone.version}</span>

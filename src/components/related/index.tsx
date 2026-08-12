@@ -29,18 +29,20 @@ const Related = async ({ slug, tags }: RelatedProps) => {
   if (related.length === 0) return null;
 
   return (
-    <section className="space-y-4">
-      <h2 className="text-sm font-medium tracking-wide text-soft uppercase select-none">관련 글</h2>
-      <ul>
+    <section className="space-y-5">
+      <h2 className="text-xs font-medium tracking-[0.08em] text-muted uppercase select-none">
+        관련 글
+      </h2>
+      <ul className="divide-y divide-line/60">
         {related.map(({ post }) => (
-          <li key={post.slug} className="group/li border-t border-line/60 first:border-t-0">
-            <Link href={`/${post.slug}`} className="flex items-start justify-between gap-4 py-3">
-              <h3 className="font-medium break-keep transition-colors duration-300 ease-out group-hover/li:text-accent">
+          <li key={post.slug} className="group/li">
+            <Link href={`/${post.slug}`} className="flex items-baseline justify-between gap-4 py-3">
+              <h3 className="break-keep text-muted transition-colors duration-200 ease-out group-hover/li:text-main">
                 {post.frontmatter.title}
               </h3>
               <time
                 dateTime={post.frontmatter.date}
-                className="shrink-0 text-sm/6 text-soft tabular-nums"
+                className="shrink-0 text-sm text-muted tabular-nums"
               >
                 {toYearMonth(post.frontmatter.date)}
               </time>

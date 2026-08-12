@@ -35,9 +35,9 @@ const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Pr
                 i === 0 && 'border-t-0',
                 j === 0 && 'border-l-0',
                 isLocked === true && 'font-medium',
-                isLocked === false && 'text-accent',
-                isTry && 'bg-accent/15',
-                isBack && 'bg-red/15'
+                isLocked === false && 'text-muted',
+                isTry && 'bg-main/10',
+                isBack && 'bg-main/25 outline-1 -outline-offset-1 outline-main/45 outline-dashed'
               )}
             >
               {readOnly ? (

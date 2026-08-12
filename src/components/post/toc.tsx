@@ -12,22 +12,22 @@ const TOC = ({ toc }: TOCProps) => {
 
   return (
     <nav aria-label="목차">
-      <details className="group rounded border border-line bg-surface/60 px-4 py-3">
-        <summary className="flex list-none items-center justify-between font-medium text-muted select-none [&::-webkit-details-marker]:hidden">
+      <details className="group open:border-b open:border-line open:pb-3">
+        <summary className="flex cursor-pointer list-none items-center justify-between border-b border-line pb-2 text-xs font-medium tracking-[0.08em] text-muted transition-colors duration-200 ease-out select-none hover:text-main [&::-webkit-details-marker]:hidden">
           목차
           <ChevronDownIcon
-            className="size-4 text-soft transition-transform duration-200 ease-out group-open:rotate-180"
+            className="size-3.5 transition-transform duration-200 ease-out group-open:rotate-180"
             aria-hidden
           />
         </summary>
 
-        <ul className="mt-3 space-y-1 border-t border-line pt-3 text-sm">
+        <ul className="mt-3 space-y-0.5 text-sm">
           {toc.map(({ id, text, depth }) => (
             <li key={id}>
               <a
                 href={`#${id}`}
                 className={cn(
-                  'block rounded py-1 break-keep text-soft transition-colors duration-150 ease-out hover:text-accent',
+                  'block py-1 break-keep text-muted transition-colors duration-150 ease-out hover:text-main',
                   depth === 3 && 'pl-4'
                 )}
               >

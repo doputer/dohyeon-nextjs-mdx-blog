@@ -3,7 +3,7 @@ import type Confetti from 'canvas-confetti';
 type ConfettiFunction = (options?: Confetti.Options) => Promise<undefined> | null;
 type Origin = Record<'x' | 'y', number>;
 
-const colors = ['#CF5417', '#E06A2B', '#F08C4B', '#F7B580', '#8F8C84'];
+const colors = ['#2B2D31', '#4B5057', '#6D7278', '#9CA1A8', '#C6CACE'];
 const count = 300;
 
 let confettiPromise: Promise<ConfettiFunction> | null = null;

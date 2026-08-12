@@ -27,7 +27,7 @@ const Results = ({ results, tokens, activeIndex, onActivate, onSelect }: Results
             data-active={order === activeIndex}
             className={cn(
               'block w-full rounded px-2 py-2 text-left transition-colors duration-150 ease-out',
-              order === activeIndex ? 'bg-surface' : 'hover:bg-surface/60'
+              order === activeIndex ? 'bg-surface' : 'hover:bg-surface'
             )}
             onClick={() => onSelect(order)}
             onMouseMove={() => onActivate(order)}
@@ -36,13 +36,13 @@ const Results = ({ results, tokens, activeIndex, onActivate, onSelect }: Results
               <span className="flex-1 font-medium break-keep">
                 <Highlight text={document.title} tokens={tokens} />
               </span>
-              <time dateTime={document.date} className="shrink-0 text-sm/6 text-soft tabular-nums">
+              <time dateTime={document.date} className="shrink-0 text-sm/6 text-muted tabular-nums">
                 {toYearMonth(document.date)}
               </time>
             </span>
 
             {excerpt && (
-              <span className="mt-1 line-clamp-2 text-sm leading-6 break-keep text-soft">
+              <span className="mt-1 line-clamp-2 text-sm leading-6 break-keep text-muted">
                 <Highlight text={excerpt} tokens={tokens} />
               </span>
             )}

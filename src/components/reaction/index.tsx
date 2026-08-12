@@ -120,7 +120,7 @@ const Reaction = ({ slug }: Props) => {
 
   return (
     <section className="flex flex-col items-center gap-8">
-      <div aria-hidden className="flex gap-3 text-accent select-none">
+      <div aria-hidden className="flex gap-3 text-soft select-none">
         <span>·</span>
         <span>·</span>
         <span>·</span>
@@ -137,7 +137,7 @@ const Reaction = ({ slug }: Props) => {
           aria-label={`좋아요 ${like ?? 0}개`}
           aria-pressed={liked}
           onClick={handleClick}
-          className="flex items-center gap-2 rounded-full border-[1.5px] border-accent bg-accent/5 px-5 py-2.5 text-accent shadow-sm transition-[transform,background-color,box-shadow] duration-200 ease-out will-change-transform select-none group-hover:bg-accent/10 group-hover:shadow-lg group-hover:shadow-accent/25 motion-reduce:transition-none"
+          className="flex items-center gap-2 rounded-full border border-line bg-background px-5 py-2.5 text-main shadow-sm transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out will-change-transform select-none group-hover:border-main/35 group-hover:bg-surface group-hover:shadow-lg group-hover:shadow-main/10 motion-reduce:transition-none"
         >
           <span className="text-base leading-none" aria-hidden>
             ♥

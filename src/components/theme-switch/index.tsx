@@ -10,17 +10,16 @@ const ThemeSwitch = () => {
   return (
     <button
       type="button"
-      className="relative size-7 overflow-hidden transition-colors duration-300 ease-out hover:text-orange dark:hover:text-yellow"
+      className="flex size-7 items-center justify-center text-muted transition-colors duration-200 ease-out hover:text-orange dark:hover:text-yellow"
       onClick={toggleTheme}
       aria-label="테마 변경"
     >
-      <div
-        aria-hidden
-        className="absolute top-0 right-0 left-0 flex flex-col items-center transition-transform duration-300 ease-out dark:rotate-180"
-      >
-        <SunIcon />
-        <MoonIcon className="rotate-180" />
-      </div>
+      <span aria-hidden className="relative size-5 overflow-hidden">
+        <span className="absolute top-0 right-0 left-0 flex flex-col items-center transition-transform duration-300 ease-out dark:rotate-180">
+          <SunIcon className="size-5" />
+          <MoonIcon className="size-5 rotate-180" />
+        </span>
+      </span>
     </button>
   );
 };
