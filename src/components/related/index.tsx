@@ -33,7 +33,7 @@ const Related = async ({ slug, tags }: RelatedProps) => {
       <h2 className="text-xs font-medium tracking-[0.08em] text-muted uppercase select-none">
         관련 글
       </h2>
-      <ul className="divide-y divide-line/60">
+      <ul className="divide-y divide-line">
         {related.map(({ post }) => (
           <li key={post.slug} className="group/li">
             <Link href={`/${post.slug}`} className="flex items-baseline justify-between gap-4 py-3">

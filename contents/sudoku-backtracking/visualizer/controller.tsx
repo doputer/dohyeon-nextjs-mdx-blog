@@ -12,14 +12,14 @@ interface Props {
 
 const Controller = ({ state, control }: Props) => {
   return (
-    <div className="flex items-center justify-between rounded border border-line bg-surface/55 py-1 pr-1.5 pl-3.5">
+    <div className="flex items-center justify-between rounded border border-line bg-surface py-1 pr-1.5 pl-3.5">
       <div className="flex items-center gap-3 text-xs text-muted select-none">
         <span className="flex items-center gap-1.5">
-          <i className="inline-block size-2.5 rounded-xs border border-main/25 bg-main/10" />
+          <i className="inline-block size-2.5 rounded-xs border border-main/20 bg-main/20" />
           시도
         </span>
         <span className="flex items-center gap-1.5">
-          <i className="inline-block size-2.5 rounded-xs border border-dashed border-main/45" />
+          <i className="inline-block size-2.5 rounded-xs border border-dashed border-main/40" />
           되돌아가기
         </span>
       </div>

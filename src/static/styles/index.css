@@ -6,7 +6,7 @@
 @import './utility.css';
 
 @layer base {
-  @apply selection:bg-main/12;
+  @apply selection:bg-main/20;
 
   html {
     @apply scrollbar-gutter-stable;
