@@ -22,9 +22,6 @@ const PANEL_MESSAGE: Partial<Record<PanelState, string>> = {
   empty: '결과가 없습니다.',
 };
 
-const MESSAGE_CLASS = `px-4 py-10 text-center text-sm text-muted`;
-const SECTION_LABEL_CLASS = `px-4 pt-3 text-xs font-medium tracking-[0.08em] text-muted uppercase select-none`;
-
 const Search = () => {
   const router = useRouter();
 
@@ -224,10 +221,10 @@ const Search = () => {
           className="scrollbar-none max-h-[60vh] overflow-y-auto overscroll-contain"
         >
           {panelMessage ? (
-            <p className={MESSAGE_CLASS}>{panelMessage}</p>
+            <p className="px-4 py-10 text-center text-sm text-muted">{panelMessage}</p>
           ) : (
             <>
-              <p className={SECTION_LABEL_CLASS}>
+              <p className="px-4 pt-3 text-xs font-medium text-muted select-none">
                 {panelState === 'recent' ? '최근 글' : `${results.length}개 결과`}
               </p>
               <Results
