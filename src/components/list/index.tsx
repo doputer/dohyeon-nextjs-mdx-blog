@@ -38,7 +38,7 @@ const List = ({ posts }: ListProps) => {
               <li key={slug} className="group/li">
                 <Link href={`/${slug}`} className="flex items-baseline justify-between gap-4 py-3">
                   <h3 className="break-keep sm:text-lg">
-                    <span className="bg-[linear-gradient(var(--color-main),var(--color-main))] bg-size-[0%_1px] bg-position-[0_100%] bg-no-repeat transition-[background-size] duration-200 ease-out group-hover/li:bg-size-[100%_1px]">
+                    <span className="underline-grow group-hover/li:bg-size-[100%_1px]">
                       {frontmatter.title}
                     </span>
                     <span
