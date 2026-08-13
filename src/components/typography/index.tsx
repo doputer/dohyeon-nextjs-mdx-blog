@@ -13,32 +13,54 @@ import Table from '@/components/typography/table';
 import { cn } from '@/utils/cn';
 
 const components: MDXComponents = {
-  h2: (props) => <Heading as="h2" className={format.h2} {...props} />,
-  h3: (props) => <Heading as="h3" className={format.h3} {...props} />,
-  h4: (props) => <Heading as="h4" className={format.h4} {...props} />,
-  code: (props) => <code className={format.code} {...props} />,
-  ol: (props) => <ol className={format.ol} {...props} />,
-  ul: (props) => <ul className={format.ul} {...props} />,
-  p: (props) => <p className={format.p} {...props} />,
-  table: (props) => <Table className={format.table} {...props} />,
-  th: (props) => <th scope="col" className={format.th} {...props} />,
-  td: (props) => <td className={format.td} {...props} />,
-  a: ({ href, ...props }) => {
+  h2: ({ className, ...props }) => (
+    <Heading as="h2" className={cn(format.h2, className)} {...props} />
+  ),
+  h3: ({ className, ...props }) => (
+    <Heading as="h3" className={cn(format.h3, className)} {...props} />
+  ),
+  h4: ({ className, ...props }) => (
+    <Heading as="h4" className={cn(format.h4, className)} {...props} />
+  ),
+  code: ({ className, ...props }) => <code className={cn(format.code, className)} {...props} />,
+  ol: ({ className, ...props }) => <ol className={cn(format.ol, className)} {...props} />,
+  ul: ({ className, ...props }) => <ul className={cn(format.ul, className)} {...props} />,
+  p: ({ className, ...props }) => <p className={cn(format.p, className)} {...props} />,
+  hr: ({ className, ...props }) => <hr className={cn(format.hr, className)} {...props} />,
+  sup: ({ className, ...props }) => <sup className={cn(format.sup, className)} {...props} />,
+  input: ({ className, ...props }) => (
+    <input className={cn(format.checkbox, className)} {...props} />
+  ),
+  section: ({ className, ...props }) => (
+    <section className={cn('data-footnotes' in props && format.footnotes, className)} {...props} />
+  ),
+  table: ({ className, ...props }) => <Table className={cn(format.table, className)} {...props} />,
+  th: ({ className, ...props }) => (
+    <th scope="col" className={cn(format.th, className)} {...props} />
+  ),
+  td: ({ className, ...props }) => <td className={cn(format.td, className)} {...props} />,
+  a: ({ href, className, ...props }) => {
     const isExternal = !!href && !href.startsWith('/') && !href.startsWith('#');
 
     return (
       <a
         href={href}
-        className={cn(format.a, isExternal && format.external)}
+        className={cn(format.a, isExternal && format.external, className)}
         target={isExternal ? '_blank' : undefined}
         rel={isExternal ? 'noreferrer' : undefined}
         {...props}
       />
     );
   },
-  strong: (props) => <strong className={format.strong} {...props} />,
-  img: (props) => <Img className={format.img} {...(props as ImageProps)} />,
-  blockquote: (props) => <Blockquote className={format.blockquote} {...props} />,
+  strong: ({ className, ...props }) => (
+    <strong className={cn(format.strong, className)} {...props} />
+  ),
+  img: ({ className, ...props }) => (
+    <Img className={cn(format.img, className)} {...(props as ImageProps)} />
+  ),
+  blockquote: ({ className, ...props }) => (
+    <Blockquote className={cn(format.blockquote, className)} {...props} />
+  ),
   Code: (props) => <Code className={format.pre} {...props} />,
   Mermaid: (props) => <Mermaid {...props} />,
   Callout: (props) => <Callout className={format.callout} {...props} />,
