@@ -16,7 +16,7 @@ interface Props {
 
 const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Props) => {
   return (
-    <div className="grid aspect-square grid-cols-9 grid-rows-9 overflow-hidden rounded border-2 border-line bg-surface/45">
+    <div className="grid aspect-square grid-cols-9 grid-rows-9 overflow-hidden rounded border-2 border-line bg-surface">
       {board.map((row, i) =>
         row.map((cell, j) => {
           const isTry =
@@ -29,15 +29,16 @@ const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Pr
             <div
               key={`${i}-${j}`}
               className={cn(
-                'flex items-center justify-center border-line text-[15px] tabular-nums',
+                'flex items-center justify-center border-line text-sm tabular-nums',
                 i % 3 === 0 ? 'border-t-2 border-t-line' : 'border-t',
                 j % 3 === 0 ? 'border-l-2 border-l-line' : 'border-l',
                 i === 0 && 'border-t-0',
                 j === 0 && 'border-l-0',
                 isLocked === true && 'font-medium',
-                isLocked === false && 'text-accent',
-                isTry && 'bg-accent/15',
-                isBack && 'bg-red/15'
+                isLocked === false && 'text-muted',
+                isTry && 'bg-main/20',
+                isBack &&
+                  'relative after:pointer-events-none after:absolute after:inset-0 after:border after:border-dashed after:border-main/40'
               )}
             >
               {readOnly ? (

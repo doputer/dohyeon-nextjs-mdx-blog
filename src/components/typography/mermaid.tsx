@@ -10,7 +10,7 @@ const colors = {
   bg: 'var(--color-background)',
   fg: 'var(--color-main)',
   line: 'var(--color-soft)',
-  accent: 'var(--color-accent)',
+  accent: 'var(--color-main)',
   muted: 'var(--color-soft)',
   surface: 'var(--color-surface)',
   border: 'var(--color-line)',

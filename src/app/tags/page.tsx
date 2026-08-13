@@ -23,12 +23,15 @@ const Page = async () => {
   return (
     <>
       <Counter label="태그" count={tags.length} />
-      <ul className="flex flex-wrap gap-4">
+      <ul className="flex flex-wrap gap-x-5 gap-y-3">
         {tags.map(([tag, totalCount]) => (
           <li key={tag}>
-            <Link href={`/tags/${encode(tag)}`} className="space-x-1 text-sm">
+            <Link
+              href={`/tags/${encode(tag)}`}
+              className="space-x-1 text-sm text-muted transition-colors duration-200 ease-out hover:text-main"
+            >
               <span className="uppercase">{tag}</span>
-              <span className="font-medium">{totalCount}</span>
+              <span className="tabular-nums">{totalCount}</span>
             </Link>
           </li>
         ))}

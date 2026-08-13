@@ -26,7 +26,7 @@ const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
         >
           본문으로 건너뛰기
         </a>
-        <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-12 px-6 py-12">
+        <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-12 px-6 pt-24 pb-12">
           <Header />
           <main id="content" className="flex flex-1 flex-col gap-12">
             {children}

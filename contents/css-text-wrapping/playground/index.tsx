@@ -84,7 +84,7 @@ const Playground = ({ property }: Props) => {
                 key={option}
                 className={cn(
                   'flex cursor-pointer items-center gap-2 text-sm text-muted transition-colors',
-                  value === option && 'font-medium text-accent'
+                  value === option && 'font-medium text-main'
                 )}
               >
                 <input
@@ -93,7 +93,7 @@ const Playground = ({ property }: Props) => {
                   value={option}
                   checked={value === option}
                   onChange={() => setValue(option)}
-                  className="accent-accent"
+                  className="accent-main"
                 />
                 <span className="font-mono">{option}</span>
               </label>

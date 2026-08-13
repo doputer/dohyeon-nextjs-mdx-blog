@@ -17,8 +17,14 @@ const prefersReduced = () =>
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
+const lean = (offset: number, half: number) => {
+  const ratio = clamp(offset / half, -1, 1);
+  return Math.sign(ratio) * Math.sqrt(Math.abs(ratio)) * MAX_TILT;
+};
+
 const Reaction = ({ slug }: Props) => {
   const { like, liked, addLike } = useLike(slug);
+
   const btnRef = useRef<HTMLButtonElement>(null);
   const tilt = useRef({ rx: 0, ry: 0, hover: 1, press: 1 });
   const rect = useRef<DOMRect | null>(null);
@@ -44,20 +50,36 @@ const Reaction = ({ slug }: Props) => {
   const setTransition = useCallback((transform: string) => {
     const el = btnRef.current;
     if (el)
-      el.style.transition = `${transform}, background-color 250ms ease, box-shadow 250ms ease`;
+      el.style.transition = `${transform}, background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease`;
   }, []);
 
   useEffect(() => () => cancelAnimationFrame(frame.current), []);
+
+  const setPress = useCallback(
+    (down: boolean) => {
+      if (prefersReduced()) return;
+
+      tilt.current.press = down ? 0.85 : 1;
+      setTransition(down ? 'transform 90ms ease-out' : `transform 420ms ${SPRING}`);
+      schedule();
+    },
+    [schedule, setTransition]
+  );
+
+  const handleKey = useCallback(
+    (e: React.KeyboardEvent<HTMLButtonElement>, down: boolean) => {
+      if (e.repeat || (e.key !== ' ' && e.key !== 'Enter')) return;
+      setPress(down);
+    },
+    [setPress]
+  );
 
   const handleEnter = useCallback(() => {
     if (prefersReduced()) return;
 
     warmup();
 
-    const el = btnRef.current;
-    if (!el) return;
-
-    rect.current = el.getBoundingClientRect();
+    rect.current = null;
     setTransition('transform 100ms ease-out');
   }, [setTransition]);
 
@@ -65,15 +87,10 @@ const Reaction = ({ slug }: Props) => {
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (e.pointerType !== 'mouse' || prefersReduced()) return;
 
-      const el = btnRef.current;
-      if (!el) return;
+      const box = (rect.current ??= e.currentTarget.getBoundingClientRect());
 
-      const box = (rect.current ??= el.getBoundingClientRect());
-      const px = clamp((e.clientX - box.left) / box.width - 0.5, -0.5, 0.5);
-      const py = clamp((e.clientY - box.top) / box.height - 0.5, -0.5, 0.5);
-
-      tilt.current.rx = -py * MAX_TILT * 2;
-      tilt.current.ry = px * MAX_TILT * 2;
+      tilt.current.rx = -lean(e.clientY - (box.top + box.height / 2), box.height / 2);
+      tilt.current.ry = lean(e.clientX - (box.left + box.width / 2), box.width / 2);
       tilt.current.hover = 1.05;
 
       schedule();
@@ -87,8 +104,9 @@ const Reaction = ({ slug }: Props) => {
     tilt.current.rx = 0;
     tilt.current.ry = 0;
     tilt.current.hover = 1;
+    tilt.current.press = 1;
 
-    setTransition(`transform 450ms ${SPRING}`);
+    setTransition(`transform 400ms ${SPRING}`);
     schedule();
   }, [schedule, setTransition]);
 
@@ -106,27 +124,17 @@ const Reaction = ({ slug }: Props) => {
     if (prefersReduced()) return;
 
     playParticles(e.currentTarget);
-
-    tilt.current.press = 0.85;
-    setTransition('transform 90ms ease-out');
-    schedule();
-
-    window.setTimeout(() => {
-      tilt.current.press = 1;
-      setTransition(`transform 420ms ${SPRING}`);
-      schedule();
-    }, 110);
   };
 
   return (
     <section className="flex flex-col items-center gap-8">
-      <div aria-hidden className="flex gap-3 text-accent select-none">
+      <div aria-hidden className="flex gap-3 text-muted select-none">
         <span>·</span>
         <span>·</span>
         <span>·</span>
       </div>
       <div
-        className="group -m-10 p-10"
+        className="group -my-10 w-full py-10"
         onPointerEnter={handleEnter}
         onPointerMove={handleMove}
         onPointerLeave={handleLeave}
@@ -137,7 +145,12 @@ const Reaction = ({ slug }: Props) => {
           aria-label={`좋아요 ${like ?? 0}개`}
           aria-pressed={liked}
           onClick={handleClick}
-          className="flex items-center gap-2 rounded-full border-[1.5px] border-accent bg-accent/5 px-5 py-2.5 text-accent shadow-sm transition-[transform,background-color,box-shadow] duration-200 ease-out will-change-transform select-none group-hover:bg-accent/10 group-hover:shadow-lg group-hover:shadow-accent/25 motion-reduce:transition-none"
+          onPointerDown={() => setPress(true)}
+          onPointerUp={() => setPress(false)}
+          onPointerCancel={() => setPress(false)}
+          onKeyDown={(e) => handleKey(e, true)}
+          onKeyUp={(e) => handleKey(e, false)}
+          className="mx-auto flex items-center gap-2 rounded-full border border-line bg-background px-5 py-2.5 text-main shadow-sm transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out will-change-transform select-none group-hover:border-main/40 group-hover:bg-surface group-hover:shadow-lg group-hover:shadow-main/10 motion-reduce:transition-none"
         >
           <span className="text-base leading-none" aria-hidden>
             ♥

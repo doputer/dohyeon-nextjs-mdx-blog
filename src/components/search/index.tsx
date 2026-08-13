@@ -12,6 +12,7 @@ import type { PreparedDocument, SearchDocument, SearchResult } from '@/lib/searc
 
 const RECENT_POST_COUNT = 5;
 const RESULT_LIMIT = 8;
+const PRELOAD_DELAY = 120;
 
 type PanelState = 'failed' | 'loading' | 'empty' | 'recent' | 'matched';
 
@@ -21,8 +22,8 @@ const PANEL_MESSAGE: Partial<Record<PanelState, string>> = {
   empty: '결과가 없습니다.',
 };
 
-const MESSAGE_CLASS = `px-4 py-10 text-center text-sm text-soft`;
-const SECTION_LABEL_CLASS = `px-4 pt-3 text-sm font-medium tracking-wide text-soft uppercase select-none`;
+const MESSAGE_CLASS = `px-4 py-10 text-center text-sm text-muted`;
+const SECTION_LABEL_CLASS = `px-4 pt-3 text-xs font-medium tracking-[0.08em] text-muted uppercase select-none`;
 
 const Search = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const Search = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const loadRequested = useRef(false);
+  const preloadTimer = useRef(0);
 
   const [searchIndex, setSearchIndex] = useState<PreparedDocument[] | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -55,12 +57,30 @@ const Search = () => {
     }
   }, []);
 
+  const cancelPreload = useCallback(() => {
+    window.clearTimeout(preloadTimer.current);
+    preloadTimer.current = 0;
+  }, []);
+
+  const schedulePreload = useCallback(
+    (event: React.PointerEvent) => {
+      if (event.pointerType !== 'mouse' || loadRequested.current) return;
+
+      cancelPreload();
+      preloadTimer.current = window.setTimeout(() => void load(), PRELOAD_DELAY);
+    },
+    [cancelPreload, load]
+  );
+
+  useEffect(() => cancelPreload, [cancelPreload]);
+
   const open = useCallback(() => {
+    cancelPreload();
     setLoadFailed(false);
     dialogRef.current?.showModal();
     inputRef.current?.focus();
-    load();
-  }, [load]);
+    void load();
+  }, [cancelPreload, load]);
 
   const close = useCallback(() => dialogRef.current?.close(), []);
 
@@ -163,10 +183,13 @@ const Search = () => {
         type="button"
         aria-label="검색"
         aria-keyshortcuts="Meta+K Control+K"
-        className="flex size-7 items-center justify-center transition-colors duration-300 ease-out hover:text-accent"
+        className="flex size-7 items-center justify-center text-muted transition-colors duration-200 ease-out hover:text-main"
         onClick={open}
+        onPointerEnter={schedulePreload}
+        onPointerLeave={cancelPreload}
+        onFocus={() => void load()}
       >
-        <MagnifyingGlassIcon className="size-7" />
+        <MagnifyingGlassIcon className="size-5" />
       </button>
 
       <dialog
@@ -186,12 +209,12 @@ const Search = () => {
             aria-label="검색어"
             autoComplete="off"
             spellCheck={false}
-            className="h-12 w-full bg-transparent outline-none placeholder:text-soft"
+            className="h-12 w-full bg-transparent outline-none placeholder:text-muted"
             placeholder="제목·본문 검색"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 text-xs text-soft select-none sm:block">
+          <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 text-xs text-muted select-none sm:block">
             ESC
           </kbd>
         </div>

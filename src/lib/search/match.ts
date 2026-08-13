@@ -119,8 +119,9 @@ export const snippet = (body: string, tokens: string[], alreadyShown = '', radiu
   if (indexes.length === 0) return '';
 
   const anchor = Math.min(...indexes);
-  const start = Math.max(0, anchor - radius);
-  const end = Math.min(body.length, anchor + radius);
+  const width = radius * 2;
+  const start = Math.max(0, Math.min(anchor - radius, body.length - width));
+  const end = Math.min(body.length, start + width);
 
   const leading = start > 0 ? '…' : '';
   const trailing = end < body.length ? '…' : '';

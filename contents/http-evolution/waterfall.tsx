@@ -84,9 +84,9 @@ const GLOBAL_MAX = endOf(buildSchedule('http1.0', false));
 const UNIT_SEC = 0.1;
 
 const SEG_STYLE: Record<SegKind, string> = {
-  setup: 'bg-soft/45',
-  transfer: 'bg-accent',
-  stall: 'bg-red/20 border border-dashed border-red/50',
+  setup: 'bg-main/40',
+  transfer: 'bg-main',
+  stall: 'bg-main/10 border border-dashed border-main/40',
 };
 
 type Version = 'http1.0' | 'http1.1' | 'http2' | 'http3';
@@ -140,7 +140,7 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
                 type="checkbox"
                 checked={loss}
                 onChange={(e) => setLoss(e.target.checked)}
-                className="accent-accent"
+                className="accent-main"
               />
               패킷 유실
             </label>
@@ -148,7 +148,7 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
           <button
             type="button"
             onClick={refetch}
-            className="rounded bg-accent px-3 py-1 text-sm font-medium text-background transition-opacity hover:opacity-90"
+            className="rounded bg-main px-3 py-1 text-sm font-medium text-background transition-opacity hover:opacity-90"
           >
             요청
           </button>
@@ -183,17 +183,17 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
         ))}
       </div>
 
-      <div className="flex items-center justify-between gap-4 border-t border-line px-5 py-3 text-xs text-soft">
+      <div className="flex items-center justify-between gap-4 border-t border-line px-5 py-3 text-xs text-muted">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2.5 w-2.5 rounded-xs bg-soft/45" /> 연결 수립
+            <span className="inline-block h-2.5 w-2.5 rounded-xs bg-main/40" /> 연결 수립
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2.5 w-2.5 rounded-xs bg-accent" /> 전송
+            <span className="inline-block h-2.5 w-2.5 rounded-xs bg-main" /> 전송
           </span>
           {supportsLoss && (
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-2.5 w-2.5 rounded-xs border border-red/40 bg-red/25" />{' '}
+              <span className="inline-block h-2.5 w-2.5 rounded-xs border border-dashed border-main/40 bg-main/10" />{' '}
               재전송 대기
             </span>
           )}

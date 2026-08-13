@@ -4,7 +4,7 @@ import config from '@/configs/config.json';
 
 const Logo = () => {
   return (
-    <Link href="/" className="text-xl font-medium">
+    <Link href="/" className="text-xl font-bold">
       {config.name}
     </Link>
   );

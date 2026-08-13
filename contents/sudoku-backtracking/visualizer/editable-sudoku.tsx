@@ -145,7 +145,7 @@ const EditableSudoku = () => {
         readOnly={solving}
       />
       <Controller state={{ speed, paused }} control={{ increaseSpeed, togglePause, reset }} />
-      {message && <p className="text-center text-xs text-red">{message}</p>}
+      {message && <p className="text-center text-xs font-medium text-main">{message}</p>}
     </section>
   );
 };

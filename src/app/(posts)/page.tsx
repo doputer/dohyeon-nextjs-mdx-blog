@@ -1,5 +1,5 @@
 import List from '@/components/list';
-import Me from '@/components/me';
+import config from '@/configs/config.json';
 import { getPosts } from '@/lib/MDX';
 
 const Page = async () => {
@@ -7,7 +7,7 @@ const Page = async () => {
 
   return (
     <>
-      <Me />
+      <h1 className="sr-only">{config.title}</h1>
       <List posts={posts} />
     </>
   );

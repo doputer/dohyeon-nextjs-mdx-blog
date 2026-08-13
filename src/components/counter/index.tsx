@@ -7,7 +7,8 @@ const Counter = ({ label, count }: CounterProps) => {
   return (
     <div className="select-none">
       <h1 className="text-3xl font-bold tracking-tight capitalize">
-        {label} {count ? <sup className="text-xl">{count}</sup> : null}
+        {label}
+        {count ? <sup className="ml-1 text-xl font-medium text-muted">{count}</sup> : null}
       </h1>
     </div>
   );
