@@ -30,9 +30,7 @@ const Related = async ({ slug, tags }: RelatedProps) => {
 
   return (
     <section className="space-y-5">
-      <h2 className="text-sm font-medium tracking-wide text-muted uppercase select-none">
-        관련 글
-      </h2>
+      <h2 className="text-sm font-medium text-muted select-none">관련 글</h2>
       <ul className="divide-y divide-line">
         {related.map(({ post }) => (
           <li key={post.slug} className="group/li">
