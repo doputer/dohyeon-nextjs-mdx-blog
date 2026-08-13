@@ -12,7 +12,7 @@ const TOC = ({ toc }: TOCProps) => {
 
   return (
     <nav aria-label="목차">
-      <details className="group open:border-b open:border-line open:pb-4">
+      <details className="group">
         <summary className="flex w-fit cursor-pointer list-none items-center gap-1 font-medium text-muted transition-colors duration-200 ease-out select-none hover:text-main [&::-webkit-details-marker]:hidden">
           목차
           <ChevronDownIcon
