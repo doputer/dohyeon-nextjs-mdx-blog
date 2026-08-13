@@ -37,7 +37,7 @@ const Related = async ({ slug, tags }: RelatedProps) => {
         {related.map(({ post }) => (
           <li key={post.slug} className="group/li">
             <Link href={`/${post.slug}`} className="flex items-baseline justify-between gap-4 py-3">
-              <h3 className="break-keep text-muted transition-colors duration-200 ease-out group-hover/li:text-main">
+              <h3 className="break-keep transition-colors duration-200 ease-out group-hover/li:text-main">
                 {post.frontmatter.title}
               </h3>
               <time
