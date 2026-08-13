@@ -3,6 +3,7 @@
 
   --color-orange: oklch(79.5% 0.162 86deg);
   --color-yellow: oklch(94.5% 0.124 102deg);
+  --color-blue: oklch(58% 0.16 255deg);
 
   --color-main: #16171a;
   --color-muted: #575c63;
