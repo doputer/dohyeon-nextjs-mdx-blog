@@ -15,7 +15,7 @@ export const ol = cn(LIST, 'list-decimal');
 export const ul = cn(LIST, 'list-disc', TASK);
 export const p = cn('leading-8');
 export const hr = cn('border-line');
-export const checkbox = cn('mr-1 size-3.5 align-[-0.1em] accent-main');
+export const checkbox = cn('mr-1 size-4 align-[-0.1em] accent-main');
 export const sup = cn('[&_a]:text-muted [&_a]:no-underline [&_a]:hover:text-main');
 export const table = cn('w-full text-left whitespace-nowrap [&_tbody_tr:hover]:bg-surface');
 export const th = cn('border-b-[1.5px] border-main/60 p-2 font-medium');
@@ -27,10 +27,8 @@ export const img = cn('mx-auto rounded');
 export const blockquote = cn('border-l-2 border-main/20 py-0.5 pl-4 text-muted');
 
 // Component
-export const pre = cn('text-sm leading-6');
-export const callout = cn('flex flex-col gap-4 rounded bg-surface p-4 lg:flex-row');
+export const pre = cn('text-sm/6');
+export const callout = cn('flex flex-col gap-4 rounded bg-surface px-4 py-2 lg:flex-row');
 export const footnotes = cn(
-  'mt-12 border-t border-line pt-6 text-sm text-muted',
-  '[&_li]:leading-7 [&_li>p:first-child]:inline',
-  '[&_.data-footnote-backref]:ml-1 [&_.data-footnote-backref]:no-underline'
+  'mt-12 border-t border-line pt-6 text-sm text-muted [&_.data-footnote-backref]:ml-1 [&_.data-footnote-backref]:no-underline [&_li]:leading-7 [&_li>p:first-child]:inline'
 );
