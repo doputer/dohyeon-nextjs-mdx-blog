@@ -4,7 +4,6 @@ import Comment from '@/components/comment';
 import ErrorBoundary from '@/components/error-boundary';
 import Post from '@/components/post';
 import Header from '@/components/post/header';
-import Progress from '@/components/post/progress';
 import Reaction from '@/components/reaction';
 import Related from '@/components/related';
 import config from '@/configs/config.json';
@@ -22,7 +21,6 @@ const Page = async (props: PageProps) => {
 
   return (
     <>
-      <Progress />
       <article className="flex flex-col gap-12">
         <Header title={title} date={date} tags={tags} />
         <Post toc={toc} MDX={MDX} />
