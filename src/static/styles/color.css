@@ -10,6 +10,7 @@
   --color-line: #e3e7ee;
   --color-surface: #eef1f6;
   --color-background: #f4f7fd;
+  --color-accent: oklch(55% 0.16 255deg);
 
   --overlay: rgb(22 23 26 / 0.3);
 }
@@ -21,6 +22,7 @@
   --color-line: #262b35;
   --color-surface: #1a1e27;
   --color-background: #121620;
+  --color-accent: oklch(72% 0.14 255deg);
 
   --overlay: rgb(6 7 8 / 0.66);
 }

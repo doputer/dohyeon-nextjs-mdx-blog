@@ -21,7 +21,7 @@ const Highlight = ({ text, tokens }: HighlightProps) => {
     if (start > cursor) nodes.push(text.slice(cursor, start));
 
     nodes.push(
-      <mark key={start} className="bg-transparent font-bold text-main">
+      <mark key={start} className="bg-transparent font-bold text-accent">
         {text.slice(start, end)}
       </mark>
     );
