@@ -17,8 +17,14 @@ const prefersReduced = () =>
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
+const lean = (offset: number, half: number) => {
+  const ratio = clamp(offset / half, -1, 1);
+  return Math.sign(ratio) * Math.sqrt(Math.abs(ratio)) * MAX_TILT;
+};
+
 const Reaction = ({ slug }: Props) => {
   const { like, liked, addLike } = useLike(slug);
+
   const btnRef = useRef<HTMLButtonElement>(null);
   const tilt = useRef({ rx: 0, ry: 0, hover: 1, press: 1 });
   const rect = useRef<DOMRect | null>(null);
@@ -44,7 +50,7 @@ const Reaction = ({ slug }: Props) => {
   const setTransition = useCallback((transform: string) => {
     const el = btnRef.current;
     if (el)
-      el.style.transition = `${transform}, background-color 250ms ease, box-shadow 250ms ease`;
+      el.style.transition = `${transform}, background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease`;
   }, []);
 
   useEffect(() => () => cancelAnimationFrame(frame.current), []);
@@ -73,10 +79,7 @@ const Reaction = ({ slug }: Props) => {
 
     warmup();
 
-    const el = btnRef.current;
-    if (!el) return;
-
-    rect.current = el.getBoundingClientRect();
+    rect.current = null;
     setTransition('transform 100ms ease-out');
   }, [setTransition]);
 
@@ -84,15 +87,10 @@ const Reaction = ({ slug }: Props) => {
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (e.pointerType !== 'mouse' || prefersReduced()) return;
 
-      const el = btnRef.current;
-      if (!el) return;
+      const box = (rect.current ??= e.currentTarget.getBoundingClientRect());
 
-      const box = (rect.current ??= el.getBoundingClientRect());
-      const px = clamp((e.clientX - box.left) / box.width - 0.5, -0.5, 0.5);
-      const py = clamp((e.clientY - box.top) / box.height - 0.5, -0.5, 0.5);
-
-      tilt.current.rx = -py * MAX_TILT * 2;
-      tilt.current.ry = px * MAX_TILT * 2;
+      tilt.current.rx = -lean(e.clientY - (box.top + box.height / 2), box.height / 2);
+      tilt.current.ry = lean(e.clientX - (box.left + box.width / 2), box.width / 2);
       tilt.current.hover = 1.05;
 
       schedule();
@@ -108,7 +106,7 @@ const Reaction = ({ slug }: Props) => {
     tilt.current.hover = 1;
     tilt.current.press = 1;
 
-    setTransition(`transform 450ms ${SPRING}`);
+    setTransition(`transform 400ms ${SPRING}`);
     schedule();
   }, [schedule, setTransition]);
 
@@ -136,7 +134,7 @@ const Reaction = ({ slug }: Props) => {
         <span>·</span>
       </div>
       <div
-        className="group -m-10 p-10"
+        className="group -my-10 w-full py-10"
         onPointerEnter={handleEnter}
         onPointerMove={handleMove}
         onPointerLeave={handleLeave}
@@ -152,12 +150,9 @@ const Reaction = ({ slug }: Props) => {
           onPointerCancel={() => setPress(false)}
           onKeyDown={(e) => handleKey(e, true)}
           onKeyUp={(e) => handleKey(e, false)}
-          className="flex items-center gap-2 rounded-full border border-line bg-background px-5 py-2.5 text-main shadow-sm transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out will-change-transform select-none group-hover:border-main/40 group-hover:bg-surface group-hover:shadow-lg group-hover:shadow-main/10 motion-reduce:transition-none"
+          className="mx-auto flex items-center gap-2 rounded-full border border-line bg-background px-5 py-2.5 text-main shadow-sm transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out will-change-transform select-none group-hover:border-main/40 group-hover:bg-surface group-hover:shadow-lg group-hover:shadow-main/10 motion-reduce:transition-none"
         >
-          <span
-            className="text-base leading-none transition-colors duration-200 ease-out"
-            aria-hidden
-          >
+          <span className="text-base leading-none" aria-hidden>
             ♥
           </span>
           <span className="text-sm font-medium tabular-nums">{like ?? 0}</span>
