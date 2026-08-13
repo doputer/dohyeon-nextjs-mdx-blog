@@ -154,7 +154,10 @@ const Reaction = ({ slug }: Props) => {
           onKeyUp={(e) => handleKey(e, false)}
           className="flex items-center gap-2 rounded-full border border-line bg-background px-5 py-2.5 text-main shadow-sm transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out will-change-transform select-none group-hover:border-main/40 group-hover:bg-surface group-hover:shadow-lg group-hover:shadow-main/10 motion-reduce:transition-none"
         >
-          <span className="text-base leading-none" aria-hidden>
+          <span
+            className="text-base leading-none transition-colors duration-200 ease-out"
+            aria-hidden
+          >
             ♥
           </span>
           <span className="text-sm font-medium tabular-nums">{like ?? 0}</span>
