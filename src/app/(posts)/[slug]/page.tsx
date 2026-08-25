@@ -22,7 +22,7 @@ const Page = async (props: PageProps) => {
   return (
     <>
       <article className="flex flex-col gap-12">
-        <Header title={title} date={date} tags={tags} />
+        <Header title={title} date={date} />
         <Post toc={toc} MDX={MDX} />
       </article>
       <ErrorBoundary message="좋아요를 불러오지 못했습니다.">
