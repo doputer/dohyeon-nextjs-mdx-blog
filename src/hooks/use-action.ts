@@ -38,17 +38,15 @@ const useAction = () => {
       }
     };
 
-    const id = getItem('UNIQUE_USER_ID', fallback);
+    const load = async () => {
+      const id = getItem('UNIQUE_USER_ID', fallback);
+      if (!id) return;
 
-    if (!id) {
-      setLoaded(true);
-      return;
-    }
+      const data = await getActionByUserId(id);
+      data.forEach(({ slug, action }) => setAction(slug, action));
+    };
 
-    getActionByUserId(id)
-      .then((data) => {
-        data.forEach(({ slug, action }) => setAction(slug, action));
-      })
+    load()
       .catch(() => {})
       .finally(() => setLoaded(true));
   }, [setAction]);
