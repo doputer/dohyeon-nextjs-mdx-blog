@@ -24,7 +24,7 @@ const Results = ({ results, tokens, activeIndex, onActivate, onSelect }: Results
         <li key={document.slug}>
           <button
             type="button"
-            data-active={order === activeIndex}
+            data-order={order}
             className={cn(
               'block w-full rounded px-2 py-2 text-left transition-colors duration-150 ease-out',
               order === activeIndex ? 'bg-surface' : 'hover:bg-surface'
