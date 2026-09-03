@@ -199,7 +199,7 @@ const Search = () => {
       <dialog
         ref={dialogRef}
         aria-label="글 검색"
-        className="mx-auto mt-[12vh] mb-auto w-[calc(100vw-2rem)] max-w-140 overflow-hidden rounded border border-line bg-background p-0 text-main shadow-lg backdrop:bg-(--overlay) open:animate-panel-in motion-reduce:animate-none"
+        className="mx-auto mt-[15vh] mb-auto w-[calc(100vw-2rem)] max-w-140 overflow-hidden rounded border border-line bg-background p-0 text-main shadow-lg backdrop:bg-(--overlay) open:animate-panel-in motion-reduce:animate-none"
         onClick={(event) => {
           if (event.target === dialogRef.current) close();
         }}
