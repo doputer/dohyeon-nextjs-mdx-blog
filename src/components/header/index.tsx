@@ -6,10 +6,10 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between">
       <Logo />
-      <div className="flex items-center gap-2">
+      <nav className="flex items-center gap-4 text-sm">
         <Search />
         <ThemeSwitch />
-      </div>
+      </nav>
     </header>
   );
 };

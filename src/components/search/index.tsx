@@ -187,13 +187,13 @@ const Search = () => {
         type="button"
         aria-label="검색"
         aria-keyshortcuts="Meta+K Control+K"
-        className="flex size-7 items-center justify-center text-muted transition-colors duration-200 ease-out hover:text-main"
+        className="text-muted transition-colors duration-200 ease-out hover:text-main"
         onClick={open}
         onPointerEnter={schedulePreload}
         onPointerLeave={cancelPreload}
         onFocus={() => void load()}
       >
-        <MagnifyingGlassIcon className="size-5" />
+        검색
       </button>
 
       <dialog
