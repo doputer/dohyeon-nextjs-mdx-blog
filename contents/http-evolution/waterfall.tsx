@@ -98,6 +98,59 @@ const LABELS: Record<Version, string> = {
   http3: 'HTTP/3',
 };
 
+interface BarsProps {
+  rows: Row[];
+  inView: boolean;
+}
+
+const Bars = ({ rows, inView }: BarsProps) => {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (!inView) return;
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setReady(true));
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [inView]);
+
+  const animate = ready && inView;
+
+  return (
+    <div className="flex flex-col gap-2 p-5">
+      {rows.map((row) => (
+        <div key={row.label} className="flex items-center gap-3">
+          <span className="w-20 shrink-0 truncate font-mono text-xs text-muted lg:w-32">
+            {row.label}
+          </span>
+          <div className="relative h-3 flex-1 rounded bg-surface">
+            {row.segments.map((seg, i) => (
+              <div
+                key={i}
+                className={cn('absolute top-0 h-full rounded', SEG_STYLE[seg.kind])}
+                style={{
+                  left: `${(seg.start / GLOBAL_MAX) * 100}%`,
+                  width: `${(seg.duration / GLOBAL_MAX) * 100}%`,
+                  transformOrigin: 'left',
+                  transform: animate ? 'scaleX(1)' : 'scaleX(0)',
+                  transitionProperty: animate ? 'transform' : 'none',
+                  transitionTimingFunction: 'linear',
+                  transitionDuration: animate ? `${seg.duration * UNIT_SEC}s` : '0s',
+                  transitionDelay: animate ? `${seg.start * UNIT_SEC}s` : '0s',
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 interface Props {
   version: Version;
   loss?: boolean;
@@ -106,26 +159,12 @@ interface Props {
 const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
   const [loss, setLoss] = useState(initialLoss);
   const [tick, setTick] = useState(0);
-  const [animate, setAnimate] = useState(false);
 
   const { ref: sectionRef, inView } = useInView();
 
   const supportsLoss = version === 'http2' || version === 'http3';
   const rows = buildSchedule(version, supportsLoss && loss);
   const total = endOf(rows);
-
-  useEffect(() => {
-    setAnimate(false);
-    if (!inView) return;
-    let inner = 0;
-    const outer = requestAnimationFrame(() => {
-      inner = requestAnimationFrame(() => setAnimate(true));
-    });
-    return () => {
-      cancelAnimationFrame(outer);
-      cancelAnimationFrame(inner);
-    };
-  }, [tick, version, loss, inView]);
 
   const refetch = () => setTick((t) => t + 1);
 
@@ -155,33 +194,7 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 p-5">
-        {rows.map((row) => (
-          <div key={row.label} className="flex items-center gap-3">
-            <span className="w-20 shrink-0 truncate font-mono text-xs text-muted lg:w-32">
-              {row.label}
-            </span>
-            <div className="relative h-3 flex-1 rounded bg-surface">
-              {row.segments.map((seg, i) => (
-                <div
-                  key={i}
-                  className={cn('absolute top-0 h-full rounded', SEG_STYLE[seg.kind])}
-                  style={{
-                    left: `${(seg.start / GLOBAL_MAX) * 100}%`,
-                    width: `${(seg.duration / GLOBAL_MAX) * 100}%`,
-                    transformOrigin: 'left',
-                    transform: animate ? 'scaleX(1)' : 'scaleX(0)',
-                    transitionProperty: animate ? 'transform' : 'none',
-                    transitionTimingFunction: 'linear',
-                    transitionDuration: animate ? `${seg.duration * UNIT_SEC}s` : '0s',
-                    transitionDelay: animate ? `${seg.start * UNIT_SEC}s` : '0s',
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
+      <Bars key={`${version}-${loss}-${tick}`} rows={rows} inView={inView} />
 
       <div className="flex items-center justify-between gap-4 border-t border-line px-5 py-3 text-xs text-muted">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">

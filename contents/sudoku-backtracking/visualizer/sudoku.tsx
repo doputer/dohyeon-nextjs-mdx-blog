@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
 
 import { sleep, solve, type Step } from '#/sudoku-backtracking/engine/solver';
 import Controller from '#/sudoku-backtracking/visualizer/controller';
@@ -18,32 +18,23 @@ const initialBoard = [
   [9, 2, 0, 7, 0, 0, 4, 8, 0],
 ];
 
-const Sudoku = () => {
+interface RunProps {
+  speed: number;
+  speedRef: RefObject<number>;
+  increaseSpeed: () => void;
+  reset: () => void;
+}
+
+const Run = ({ speed, speedRef, increaseSpeed, reset }: RunProps) => {
   const [board, setBoard] = useState(initialBoard);
-  const [speed, setSpeed] = useState(1);
   const [paused, setPaused] = useState(false);
-  const [runId, setRunId] = useState(0);
   const [currentStep, setCurrentStep] = useState<Step>();
 
-  const speedRef = useRef(speed);
-  const pauseRef = useRef(paused);
-
-  const increaseSpeed = useCallback(() => {
-    speedRef.current = (speedRef.current * 2) % 2 ** 4 || 1;
-    setSpeed(speedRef.current);
-  }, []);
+  const pauseRef = useRef(false);
 
   const togglePause = useCallback(() => {
     pauseRef.current = !pauseRef.current;
     setPaused(pauseRef.current);
-  }, []);
-
-  const reset = useCallback(() => {
-    pauseRef.current = false;
-    setPaused(false);
-    setBoard(initialBoard);
-    setCurrentStep(undefined);
-    setRunId((id) => id + 1);
   }, []);
 
   useEffect(() => {
@@ -68,13 +59,13 @@ const Sudoku = () => {
       timeoutId = setTimeout(animate, 1500);
     };
 
-    animate();
+    void animate();
 
     return () => {
       cancelled = true;
       clearTimeout(timeoutId);
     };
-  }, [runId]);
+  }, [speedRef]);
 
   return (
     <section className="mx-auto w-full max-w-xs space-y-2.5">
@@ -86,6 +77,30 @@ const Sudoku = () => {
       />
       <Controller state={{ speed, paused }} control={{ increaseSpeed, togglePause, reset }} />
     </section>
+  );
+};
+
+const Sudoku = () => {
+  const [speed, setSpeed] = useState(1);
+  const [runId, setRunId] = useState(0);
+
+  const speedRef = useRef(speed);
+
+  const increaseSpeed = useCallback(() => {
+    speedRef.current = (speedRef.current * 2) % 2 ** 4 || 1;
+    setSpeed(speedRef.current);
+  }, []);
+
+  const reset = useCallback(() => setRunId((id) => id + 1), []);
+
+  return (
+    <Run
+      key={runId}
+      speed={speed}
+      speedRef={speedRef}
+      increaseSpeed={increaseSpeed}
+      reset={reset}
+    />
   );
 };
 
