@@ -1,30 +1,27 @@
 @theme {
   --color-*: initial;
 
-  --color-orange: oklch(79.5% 0.162 86deg);
-  --color-yellow: oklch(94.5% 0.124 102deg);
-
-  --color-main: oklch(20.5% 0.006 271.1deg);
-  --color-muted: oklch(47.3% 0.013 256.7deg);
-  --color-soft: oklch(70.7% 0.012 256.7deg);
-  --color-line: oklch(92.7% 0.01 261.8deg);
-  --color-surface: oklch(95.7% 0.007 260.7deg);
-  --color-background: oklch(97.6% 0.009 264.5deg);
+  --color-main: oklch(20.5% 0 0deg);
+  --color-muted: oklch(47.3% 0 0deg);
+  --color-soft: oklch(60% 0 0deg);
+  --color-line: oklch(92.7% 0 0deg);
+  --color-surface: oklch(95.7% 0 0deg);
+  --color-background: oklch(97.6% 0 0deg);
   --color-accent: oklch(52% 0.16 255deg);
 
-  --overlay: oklch(20.5% 0.006 271.1deg / 0.3);
+  --overlay: oklch(20.5% 0 0deg / 0.3);
 }
 
 [data-theme~='dark'] {
-  --color-main: oklch(94.3% 0.003 264.5deg);
-  --color-muted: oklch(71.1% 0.011 261.8deg);
-  --color-soft: oklch(54.8% 0.012 261.8deg);
-  --color-line: oklch(28.8% 0.02 264.2deg);
-  --color-surface: oklch(23.5% 0.018 266.2deg);
-  --color-background: oklch(20.1% 0.021 267.6deg);
+  --color-main: oklch(88% 0 0deg);
+  --color-muted: oklch(71.1% 0 0deg);
+  --color-soft: oklch(54.8% 0 0deg);
+  --color-line: oklch(28.8% 0 0deg);
+  --color-surface: oklch(23.5% 0 0deg);
+  --color-background: oklch(20.1% 0 0deg);
   --color-accent: oklch(72% 0.14 255deg);
 
-  --overlay: oklch(12.8% 0.003 245.8deg / 0.66);
+  --overlay: oklch(12.8% 0 0deg / 0.66);
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

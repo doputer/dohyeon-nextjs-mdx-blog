@@ -15,10 +15,7 @@ const TOC = ({ toc }: TOCProps) => {
       <details className="group">
         <summary className="flex w-fit cursor-pointer list-none items-center gap-1 font-medium text-muted transition-colors duration-200 ease-out select-none hover:text-main [&::-webkit-details-marker]:hidden">
           목차
-          <ChevronDownIcon
-            className="size-4 transition-transform duration-200 ease-out group-open:rotate-180"
-            aria-hidden
-          />
+          <ChevronDownIcon className="size-4 group-open:rotate-180" aria-hidden />
         </summary>
 
         <ul className="mt-2">

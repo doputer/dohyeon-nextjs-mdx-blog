@@ -149,10 +149,17 @@ const Search = () => {
     [results, goToPost]
   );
 
-  useEffect(() => setActiveIndex(0), [query]);
+  const changeQuery = (value: string) => {
+    setQuery(value);
+    setActiveIndex(0);
+  };
 
   useEffect(() => {
-    panelRef.current?.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'nearest' });
+    if (results.length === 0) return;
+
+    panelRef.current
+      ?.querySelector(`[data-order="${activeIndex}"]`)
+      ?.scrollIntoView({ block: 'nearest' });
   }, [activeIndex, results]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -180,19 +187,19 @@ const Search = () => {
         type="button"
         aria-label="검색"
         aria-keyshortcuts="Meta+K Control+K"
-        className="flex size-7 items-center justify-center text-muted transition-colors duration-200 ease-out hover:text-main"
+        className="text-muted transition-colors duration-200 ease-out hover:text-main"
         onClick={open}
         onPointerEnter={schedulePreload}
         onPointerLeave={cancelPreload}
         onFocus={() => void load()}
       >
-        <MagnifyingGlassIcon className="size-5" />
+        검색
       </button>
 
       <dialog
         ref={dialogRef}
         aria-label="글 검색"
-        className="mx-auto mt-[12vh] mb-auto w-[calc(100vw-2rem)] max-w-140 overflow-hidden rounded border border-line bg-background p-0 text-main shadow-lg backdrop:bg-(--overlay) open:animate-panel-in motion-reduce:animate-none"
+        className="mx-auto mt-[15vh] mb-auto w-[calc(100vw-2rem)] max-w-140 overflow-hidden rounded border border-line bg-background p-0 text-main shadow-lg backdrop:bg-(--overlay) open:animate-panel-in motion-reduce:animate-none"
         onClick={(event) => {
           if (event.target === dialogRef.current) close();
         }}
@@ -209,7 +216,7 @@ const Search = () => {
             className="h-12 w-full bg-transparent outline-none placeholder:text-muted"
             placeholder="제목·본문 검색"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => changeQuery(event.target.value)}
           />
           <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 text-xs text-muted select-none sm:block">
             ESC
