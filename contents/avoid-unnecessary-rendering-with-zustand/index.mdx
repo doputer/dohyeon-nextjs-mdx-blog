@@ -11,7 +11,7 @@ date: 2024-11-14
 
 ## Zustand와 리렌더링
 
-아래와 같이 Zustand 스토어와 두 개의 컴포넌트가 있습니다.
+아래와 같이 Zustand 스토어와 두 개의 컴포넌트가 있다.
 
 ```tsx
 interface Store {
@@ -51,9 +51,9 @@ function Bar() {
 }
 ```
 
-`Foo` 컴포넌트에서 상태를 변경해도 `Bar` 컴포넌트에서 리렌더링이 일어나지 않습니다. `Bar` 컴포넌트가 스토어에서 가져오는 [원시 값](https://developer.mozilla.org/ko/docs/Glossary/Primitive)이 변경되지 않았기 때문입니다.
+`Foo` 컴포넌트에서 상태를 변경해도 `Bar` 컴포넌트에서 리렌더링이 일어나지 않는다. `Bar` 컴포넌트가 스토어에서 가져오는 [원시 값](https://developer.mozilla.org/ko/docs/Glossary/Primitive)이 변경되지 않았기 때문이다.
 
-이번에는 `Bar` 컴포넌트에서 값을 가져오는 방식을 수정해 보겠습니다.
+이번에는 `Bar` 컴포넌트에서 값을 가져오는 방식을 수정해 보자.
 
 ```tsx
 function Bar() {
@@ -68,19 +68,19 @@ function Bar() {
 }
 ```
 
-`Foo` 컴포넌트에서 상태를 변경하면 `Bar` 컴포넌트에서도 리렌더링이 일어납니다. `Bar` 컴포넌트에서 사용되지 않는 `a`라는 값만 변경되었는데 말이죠. 대부분의 상황에서 의도하지 않은 결과입니다.
+`Foo` 컴포넌트에서 상태를 변경하면 `Bar` 컴포넌트에서도 리렌더링이 일어난다. `Bar` 컴포넌트에서 사용되지 않는 `a`라는 값만 변경되었는데 말이다. 대부분의 상황에서 의도하지 않은 결과다.
 
-원인은 `Foo` 컴포넌트에서 상태를 변경할 때 객체의 참조가 변경되었기 때문입니다.
+원인은 `Foo` 컴포넌트에서 상태를 변경할 때 객체의 참조가 변경되었기 때문이다.
 
-Zustand는 selector에서 실행된 값을 [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is?retiredLocale=it)로 비교하고 변경되었을 경우 리렌더링 합니다. 위 코드는 실제로 스토어의 객체 전체를 구독하고 있는 셈입니다.
+Zustand는 selector에서 실행된 값을 [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is?retiredLocale=it)로 비교하고 변경되었을 경우 리렌더링한다. 위 코드는 실제로 스토어의 객체 전체를 구독하고 있는 셈이다.
 
 :::callout
 
-Zustand는 React의 `useState`와 마찬가지로 상태를 불변하게 업데이트 해야 합니다.
+Zustand는 React의 `useState`와 마찬가지로 상태를 불변하게 업데이트해야 한다.
 
-내부적으로 상태를 병합하기 때문에 `...state`와 같은 전개 구문을 생략할 수 있습니다.
+내부적으로 상태를 병합하기 때문에 `...state`와 같은 전개 구문을 생략할 수 있다.
 
-아래 두 코드는 동일하게 동작합니다.
+아래 두 코드는 동일하게 동작한다.
 
 ```tsx
 set((state) => ({ a: state.a + 1 }));
@@ -93,7 +93,7 @@ set((state) => ({ ...state, a: state.a + 1 }));
 
 ## 객체에서 값 구독하기
 
-불필요한 리렌더링을 유발하지 않고 객체에서 값을 가져오려면 다음과 같이 사용하면 됩니다. 객체 전체를 구독하는 것이 아니라 컴포넌트에서 필요한 값만 구독하는 방법입니다.
+불필요한 리렌더링을 유발하지 않고 객체에서 값을 가져오려면 다음과 같이 사용하면 된다. 객체 전체를 구독하는 것이 아니라 컴포넌트에서 필요한 값만 구독하는 방법이다.
 
 ```tsx
 // Good 👍
@@ -103,9 +103,9 @@ const a = useStore((state) => state.a);
 const { a } = useStore((state) => state);
 ```
 
-그런데 객체에서 구독해야 하는 값이 많아지면 코드 가독성이 떨어집니다.
+그런데 객체에서 구독해야 하는 값이 많아지면 코드 가독성이 떨어진다.
 
-이런 경우 Zustand에서 제공하는 [useShallow](https://zustand.docs.pmnd.rs/guides/prevent-rerenders-with-use-shallow)라는 유틸리티 함수 이용할 수 있습니다.
+이런 경우 Zustand에서 제공하는 [useShallow](https://zustand.docs.pmnd.rs/guides/prevent-rerenders-with-use-shallow)라는 유틸리티 함수 이용할 수 있다.
 
 ```tsx
 // Hmm 🤔
@@ -118,13 +118,13 @@ const c = useStore((state) => state.c);
 const { a, b, c } = useStore(useShallow((state) => ({ a: state.a, b: state.b, c: state.c })));
 ```
 
-앞서 Zustand는 `Object.is`를 통해 selector에서 실행된 값을 비교해서 리렌더링 여부를 결정한다고 했습니다. `useShallow`를 이용하면 실행된 값이 이전과 같으면 리렌더링하지 않도록 막아줍니다.
+앞서 Zustand는 `Object.is`를 통해 selector에서 실행된 값을 비교해서 리렌더링 여부를 결정한다고 했다. `useShallow`를 이용하면 실행된 값이 이전과 같으면 리렌더링하지 않도록 막아준다.
 
 ## useShallow의 동작 원리
 
-그렇다면 `useShallow`는 어떤 방식으로 동작할까요?
+그렇다면 `useShallow`는 어떤 방식으로 동작할까?
 
-아래는 Zustand의 [useShallow](https://github.com/pmndrs/zustand/blob/main/src/react/shallow.ts) 구현 코드입니다.
+아래는 Zustand의 [useShallow](https://github.com/pmndrs/zustand/blob/main/src/react/shallow.ts) 구현 코드다.
 
 ```ts react/shallow.ts
 import React from 'react';
@@ -139,18 +139,18 @@ export function useShallow<S, U>(selector: (state: S) => U): (state: S) => U {
 }
 ```
 
-`prev`는 이전 값을 저장하고 리렌더링 시에도 값을 유지하기 위해서 `useRef`로 선언되었습니다.
+`prev`는 이전 값을 저장하고 리렌더링 시에도 값을 유지하기 위해서 `useRef`로 선언되었다.
 
-useShallow에서 반환하는 함수 `(state) => { ... }`는 useShallow가 호출될 때의 `prev`와 `selector`를 참조하는 [클로저](https://developer.mozilla.org/ko/docs/Web/JavaScript/Closures)입니다. 클로저가 없다면 useShallow 함수가 호출될 때마다 prev가 새로 선언돼서 이전 값을 잃어버립니다. 이를 막기 위해서 클로저로 동일한 prev 객체를 참조하도록 했습니다.
+useShallow에서 반환하는 함수 `(state) => { ... }`는 useShallow가 호출될 때의 `prev`와 `selector`를 참조하는 [클로저](https://developer.mozilla.org/ko/docs/Web/JavaScript/Closures)다. 클로저가 없다면 useShallow 함수가 호출될 때마다 prev가 새로 선언돼서 이전 값을 잃어버린다. 이를 막기 위해서 클로저로 동일한 prev 객체를 참조하도록 했다.
 
-`(state) => { ... }` 내부에서는 갱신된 상태를 selector를 통해서 next에 저장합니다. 이후 `shallow` 함수를 통해 `prev`와 `next`를 비교해서 값이 같다면 기존 값을 반환하고, 다르다면 `prev`에 `next`를 저장하고 저장된 값을 반환합니다.
+`(state) => { ... }` 내부에서는 갱신된 상태를 selector를 통해서 next에 저장한다. 이후 `shallow` 함수를 통해 `prev`와 `next`를 비교해서 값이 같다면 기존 값을 반환하고, 다르다면 `prev`에 `next`를 저장하고 저장된 값을 반환한다.
 
-만약 비교한 값이 같아서 `prev`를 반환했다면 기존 객체의 참조를 그대로 반환한 것이기 때문에 이를 구독하고 있는 컴포넌트에서 리렌더링이 일어나지 않습니다.
+만약 비교한 값이 같아서 `prev`를 반환했다면 기존 객체의 참조를 그대로 반환한 것이기 때문에 이를 구독하고 있는 컴포넌트에서 리렌더링이 일어나지 않는다.
 
 :::callout
 
-이 부분에서 **값을 비교한다**라는 표현은 앞선 `Object.is`와 다릅니다.
+이 부분에서 **값을 비교한다**라는 표현은 앞선 `Object.is`와 다르다.
 
-Zustand는 자체 구현한 [shallow](https://github.com/pmndrs/zustand/blob/main/src/vanilla/shallow.ts) 함수를 통해서 비교 연산을 수행합니다. 이때 단순히 객체의 참조만 비교하는 것이 아니라 객체의 첫 번째 깊이까지 키-값쌍이나 요소를 순회하면서 비교합니다.
+Zustand는 자체 구현한 [shallow](https://github.com/pmndrs/zustand/blob/main/src/vanilla/shallow.ts) 함수를 통해서 비교 연산을 수행한다. 이때 단순히 객체의 참조만 비교하는 것이 아니라 객체의 첫 번째 깊이까지 키-값쌍이나 요소를 순회하면서 비교한다.
 
 :::
