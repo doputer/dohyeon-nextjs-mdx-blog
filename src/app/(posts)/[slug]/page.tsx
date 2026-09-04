@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import Comment from '@/components/comment';
+import Divider from '@/components/divider';
 import ErrorBoundary from '@/components/error-boundary';
 import Post from '@/components/post';
 import Header from '@/components/post/header';
@@ -25,6 +26,7 @@ const Page = async (props: PageProps) => {
         <Header title={title} date={date} />
         <Post toc={toc} MDX={MDX} />
       </article>
+      <Divider />
       <ErrorBoundary message="좋아요를 불러오지 못했습니다.">
         <Reaction slug={params.slug} />
       </ErrorBoundary>

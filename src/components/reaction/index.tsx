@@ -10,12 +10,7 @@ const Reaction = ({ slug }: Props) => {
   const { like, liked, addLike } = useLike(slug);
 
   return (
-    <section className="flex flex-col items-center gap-8">
-      <div aria-hidden className="flex gap-3 text-muted select-none">
-        <span>·</span>
-        <span>·</span>
-        <span>·</span>
-      </div>
+    <section>
       <button
         type="button"
         aria-label={`좋아요 ${like ?? 0}개`}
