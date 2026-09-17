@@ -17,7 +17,7 @@ date: 2020-10-06
 
 캐시에 필요한 데이터가 없으면 미스(miss)라고 한다. 이런 경우 다음 캐시나 메모리에 접근해서 데이터를 가져와야 한다. 반면에 필요한 데이터가 있는 경우는 히트(hit)라고 한다.
 
-미스는 크게 네 가지로 분류하는데 그중 가장 많이 발생하는 것이 conflict miss다. 저장할 데이터들이 캐시의 같은 주소에 할당되어서 생기는 미스다.
+미스는 크게 네 가지로 분류하는데 그중 가장 많이 발생하는 것이 conflict miss다.[^1] 저장할 데이터들이 캐시의 같은 주소에 할당되어서 생기는 미스다.
 
 미스의 증가는 성능에 큰 영향을 주기 때문에 이를 줄이기 위해 여러 방법들이 제시됐다.
 
@@ -43,7 +43,7 @@ date: 2020-10-06
 >
 > 미스가 발생한 primary cache 블록과 히트가 발생한 victim cache 블록을 스왑(swap)한다.
 
-빅팀 캐시를 통해 conflict miss를 얼마나 개선할 수 있는지는 다음 표에서 확인할 수 있다.
+빅팀 캐시를 통해 conflict miss를 얼마나 개선할 수 있는지는 다음 표에서 확인할 수 있다.[^2]
 
 ![](0.png)
 
@@ -67,7 +67,5 @@ date: 2020-10-06
 
 컴퓨터 성능 향상을 위해서는 여러 가지 요소들을 종합적으로 바라봐야 한다. 만약에 빅팀 캐시를 구현하려고 한다면 캐시 크기, 라인 사이즈 등의 trade-off를 고려해서 주어진 상황에 맞는 최적의 조건을 찾는 것이 중요하다.
 
-## Reference
-
-- Norman P. Jouppi, "Improving Direct-Mapped Cache Performance by the Addition of a Small Fully-Associative Cache and Prefetch Buffers", IEEE, 1990.
-- David Patterson, John Hennenssy, "Computer Organization and Design : The Hardware and Software Interface 5th Ed", MK, 2014.
+[^1]: David Patterson, John Hennessy, "Computer Organization and Design : The Hardware and Software Interface 5th Ed", MK, 2014.
+[^2]: Norman P. Jouppi, "Improving Direct-Mapped Cache Performance by the Addition of a Small Fully-Associative Cache and Prefetch Buffers", IEEE, 1990.

@@ -171,7 +171,7 @@ lighthouse:
         msg: ${{ steps.format_lighthouse_score.outputs.comment}}
 ```
 
-다음은 lighthouse job이다.
+다음은 lighthouse job이다.[^1]
 
 **Run Lighthouse CI** 스텝에서 Lighthouse 검사를 수행한다.
 
@@ -302,6 +302,4 @@ jobs:
 - Lighthouse 외에 [PageSpeed Insights](https://pagespeed.web.dev/)를 고려할 수 있다. 이곳에서는 웹 페이지에서 사용자의 환경 품질에 대한 평가 점수를 제공한다.
 - CI에 테스트 코드를 실행하는 과정도 포함해 볼 수 있다.
 
-## 참고 자료
-
-- [Lighthouse CI를 알아보고 Github Actions에 적용하기](https://fe-developers.kakaoent.com/2022/220602-lighthouse-with-github-actions/)
+[^1]: [Lighthouse CI를 알아보고 Github Actions에 적용하기](https://fe-developers.kakaoent.com/2022/220602-lighthouse-with-github-actions/)

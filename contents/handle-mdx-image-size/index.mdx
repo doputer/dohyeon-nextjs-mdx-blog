@@ -58,7 +58,7 @@ Next.js 공식 문서의 [Image Optimization - Local images](https://nextjs.org/
 
 MDX는 MDAST -> HAST 과정을 거쳐서 JSX로 변환되는데, HAST에 위와 같은 객체 정보가 남아있고, 이때 트리를 순회하면서 `src`로 이미지를 불러와서 사이즈를 계산 후 추가해 줄 수 있다.
 
-이 과정에 쉽게 개입하기 위해 `rehype` 플러그인을 구현했고 이미지 사이즈 계산에는 [image-size](https://github.com/image-size/image-size) 라이브러리를 이용했다.
+이 과정에 쉽게 개입하기 위해 `rehype` 플러그인[^1]을 구현했고 이미지 사이즈 계산에는 [image-size](https://github.com/image-size/image-size) 라이브러리를 이용했다.
 
 ```js rehype-image-size.mjs
 const rehypeImageSize = () => {
@@ -113,6 +113,4 @@ const rehypeImageSize = () => {
 
 ![](1.gif '렌더링 전 이미지 영역을 확보해 놓는 모습')
 
-## 참고 자료
-
-- [rehype-plugin Topics](https://github.com/topics/rehype-plugin)
+[^1]: [rehype-plugin Topics](https://github.com/topics/rehype-plugin)
