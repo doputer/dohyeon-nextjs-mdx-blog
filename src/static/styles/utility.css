@@ -6,6 +6,22 @@
   transition: background-size 200ms ease-out;
 }
 
+@utility footnote-marker {
+  & li {
+    list-style-type: none;
+  }
+
+  & li::marker {
+    @apply text-main;
+    content: '[' counter(list-item) ']';
+  }
+
+  & li > p:first-child {
+    @apply ml-0.5;
+    display: inline;
+  }
+}
+
 @utility scrollbar-none {
   scrollbar-width: none;
   -ms-overflow-style: none;

@@ -18,10 +18,10 @@ export const hr = cn('border-line');
 export const checkbox = cn('mr-1 size-4 align-[-0.1em] accent-main');
 export const sup = cn('[&_a]:text-muted [&_a]:no-underline [&_a]:hover:text-main');
 export const table = cn('w-full text-left whitespace-nowrap [&_tbody_tr:hover]:bg-surface');
-export const th = cn('border-b-[1.5px] border-main/60 p-2 font-medium');
+export const th = cn('border-b-[1.5px] border-main/40 p-2 font-medium');
 export const td = cn('border-b border-line p-2');
-export const a = cn('underline decoration-muted decoration-1 underline-offset-4');
-export const external = cn('after:content-["↗"]');
+export const a = cn('text-accent no-underline');
+export const external = cn('text-teal');
 export const strong = cn('font-semibold');
 export const img = cn('mx-auto rounded');
 export const blockquote = cn('border-l-2 border-main/20 py-0.5 pl-4 text-muted');
@@ -30,5 +30,5 @@ export const blockquote = cn('border-l-2 border-main/20 py-0.5 pl-4 text-muted')
 export const pre = cn('text-sm/6');
 export const callout = cn('space-y-6 overflow-hidden rounded bg-surface p-4');
 export const footnotes = cn(
-  'mt-12 border-t border-line pt-6 text-sm text-muted [&_.data-footnote-backref]:ml-1 [&_.data-footnote-backref]:no-underline [&_li]:leading-7 [&_li>p:first-child]:inline'
+  'mt-12 footnote-marker border-t border-line pt-6 text-sm font-medium [&_.data-footnote-backref]:ml-0.5'
 );

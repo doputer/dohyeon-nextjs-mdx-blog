@@ -131,7 +131,12 @@ const Bars = ({ rows, inView }: BarsProps) => {
             {row.segments.map((seg, i) => (
               <div
                 key={i}
-                className={cn('absolute top-0 h-full rounded', SEG_STYLE[seg.kind])}
+                className={cn(
+                  'absolute top-0 h-full',
+                  SEG_STYLE[seg.kind],
+                  i === 0 && 'rounded-l',
+                  i === row.segments.length - 1 && 'rounded-r'
+                )}
                 style={{
                   left: `${(seg.start / GLOBAL_MAX) * 100}%`,
                   width: `${(seg.duration / GLOBAL_MAX) * 100}%`,
