@@ -5,7 +5,10 @@ const HEADING = cn('mt-12 scroll-mt-12 font-semibold');
 const LIST = cn('list-inside leading-8 marker:text-soft [&_:is(ol,ul)]:ml-6');
 
 // Element
-export const h2 = cn(HEADING, 'text-xl');
+export const h2 = cn(
+  HEADING,
+  'flex items-center gap-2 text-xl after:h-px after:flex-1 after:bg-main'
+);
 export const h3 = cn(HEADING, 'text-lg');
 export const h4 = cn(HEADING);
 export const code = cn('text-[0.875em] font-semibold before:content-["`"] after:content-["`"]');
