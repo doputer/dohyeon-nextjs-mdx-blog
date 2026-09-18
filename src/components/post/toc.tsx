@@ -1,5 +1,3 @@
-import { ChevronDownIcon } from '@heroicons/react/16/solid';
-
 import type { Post } from '@/lib/MDX/types';
 import { cn } from '@/utils/cn';
 
@@ -13,9 +11,8 @@ const TOC = ({ toc }: TOCProps) => {
   return (
     <nav aria-label="목차">
       <details className="group">
-        <summary className="flex w-fit cursor-pointer list-none items-center gap-1 font-medium text-muted transition-colors duration-200 ease-out select-none hover:text-main [&::-webkit-details-marker]:hidden">
+        <summary className="cursor-pointer font-medium text-muted transition-colors duration-200 ease-out group-open:text-main hover:text-main">
           목차
-          <ChevronDownIcon className="size-4 group-open:rotate-180" aria-hidden />
         </summary>
 
         <ul className="mt-2">
