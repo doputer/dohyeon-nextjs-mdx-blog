@@ -9,6 +9,7 @@
   --color-background: oklch(97.6% 0 0deg);
   --color-accent: oklch(52% 0.16 255deg);
   --color-teal: oklch(52% 0.1 195deg);
+  --color-yellow: oklch(82% 0.16 95deg);
 }
 
 [data-theme~='dark'] {
