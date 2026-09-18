@@ -1,0 +1,40 @@
+[data-footnotes] {
+  @apply mt-12 border-t border-line pt-6 text-sm font-medium;
+}
+
+[data-footnotes] li {
+  @apply list-none;
+}
+
+[data-footnotes] li::marker {
+  @apply text-muted;
+  content: '[' counter(list-item) ']';
+}
+
+[data-footnotes] li > p:first-child {
+  @apply ml-0.5 inline;
+}
+
+[data-footnote-ref] {
+  @apply text-muted no-underline scroll-mt-12 ml-0.5;
+}
+
+[data-footnote-ref]:hover {
+  @apply text-main;
+}
+
+[data-footnote-ref]::before {
+  @apply content-['[']
+}
+
+[data-footnote-ref]::after {
+  @apply content-[']']
+}
+
+[data-footnote-backref] {
+  @apply ml-0.5;
+}
+
+li.task-list-item {
+  @apply list-none;
+}

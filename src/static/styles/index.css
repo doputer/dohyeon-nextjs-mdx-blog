@@ -3,6 +3,7 @@
 @import './animation.css';
 @import './codehike.css';
 @import './color.css';
+@import './element.css';
 @import './utility.css';
 
 @layer base {
