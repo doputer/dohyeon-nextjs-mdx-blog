@@ -8,17 +8,20 @@ const toText = (node) => {
   return (node.children ?? []).map(toText).join('');
 };
 
+const isFootnotes = (node) => node?.type === 'element' && node.properties?.dataFootnotes;
+
 const rehypeToc = () => {
   return (tree) => {
     const toc = [];
 
-    visit(tree, 'element', (node) => {
+    visit(tree, 'element', (node, _index, parent) => {
       const match = /^h(\d)$/.exec(node.tagName);
       if (!match) return;
 
       const depth = Number(match[1]);
 
       if (!AvailableDepth.has(depth)) return;
+      if (isFootnotes(parent)) return;
 
       toc.push({ id: node.properties.id, text: toText(node), depth });
     });
