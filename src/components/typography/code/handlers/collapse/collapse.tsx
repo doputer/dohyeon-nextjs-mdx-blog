@@ -2,8 +2,9 @@
 
 import { Children, useState } from 'react';
 
-import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 import { AnnotationHandler } from 'codehike/code';
+
+import { cn } from '@/utils/cn';
 
 const Collapse: AnnotationHandler['Block'] = ({ annotation, children }) => {
   const [expanded, setExpanded] = useState(annotation.query !== 'collapsed');
@@ -13,16 +14,17 @@ const Collapse: AnnotationHandler['Block'] = ({ annotation, children }) => {
     <div className="relative">
       <button
         type="button"
-        className="absolute left-0 m-0 border-none bg-transparent p-0"
+        className="absolute left-0.5 h-6 w-4"
         onClick={() => setExpanded((prev) => !prev)}
         aria-expanded={expanded}
         aria-label={expanded ? '코드 블록 접기' : '코드 블록 펼치기'}
       >
-        {expanded ? (
-          <ChevronDownIcon className="inline-block size-4 align-middle" />
-        ) : (
-          <ChevronRightIcon className="inline-block size-4 align-middle" />
-        )}
+        <span
+          className={cn(
+            'list-item list-inside text-xs',
+            expanded ? 'list-[disclosure-open]' : 'list-[disclosure-closed]'
+          )}
+        />
       </button>
       {expanded ? children : <div>{firstLine}</div>}
     </div>

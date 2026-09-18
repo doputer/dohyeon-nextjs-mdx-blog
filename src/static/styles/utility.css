@@ -5,13 +5,3 @@
   background-size: 0% 1px;
   transition: background-size 200ms ease-out;
 }
-
-@utility scrollbar-none {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}

@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@giscus/react": "^3.1.0",
-    "@heroicons/react": "^2.2.0",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/mdx": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
@@ -52,5 +51,5 @@
     "typescript": "^7.0.2",
     "unist-util-visit": "^5.1.0"
   },
-  "packageManager": "pnpm@11.20.0"
+  "packageManager": "pnpm@12.4.2"
 }
