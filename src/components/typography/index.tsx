@@ -6,18 +6,15 @@ import Blockquote from '@/components/typography/blockquote';
 import Callout from '@/components/typography/callout';
 import Code from '@/components/typography/code';
 import * as format from '@/components/typography/format';
-import Heading from '@/components/typography/heading';
 import Img from '@/components/typography/img';
 import Mermaid from '@/components/typography/mermaid';
 import Table from '@/components/typography/table';
 import { cn } from '@/utils/cn';
 
 const components: MDXComponents = {
-  h2: ({ className, ...props }) => (
-    <Heading as="h2" className={cn(format.h2, className)} {...props} />
-  ),
-  h3: (props) => <Heading as="h3" className={format.h3} {...props} />,
-  h4: (props) => <Heading as="h4" className={format.h4} {...props} />,
+  h2: ({ className, ...props }) => <h2 className={cn(format.h2, className)} {...props} />,
+  h3: (props) => <h3 className={format.h3} {...props} />,
+  h4: (props) => <h4 className={format.h4} {...props} />,
   code: (props) => <code className={format.code} {...props} />,
   ol: (props) => <ol className={format.ol} {...props} />,
   ul: ({ className, ...props }) => <ul className={cn(format.ul, className)} {...props} />,
