@@ -9,8 +9,6 @@
   --color-background: oklch(97.6% 0 0deg);
   --color-accent: oklch(52% 0.16 255deg);
   --color-teal: oklch(52% 0.1 195deg);
-
-  --overlay: oklch(20.5% 0 0deg / 0.3);
 }
 
 [data-theme~='dark'] {
@@ -22,8 +20,6 @@
   --color-background: oklch(20.1% 0 0deg);
   --color-accent: oklch(72% 0.14 255deg);
   --color-teal: oklch(72% 0.1 195deg);
-
-  --overlay: oklch(12.8% 0 0deg / 0.66);
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
