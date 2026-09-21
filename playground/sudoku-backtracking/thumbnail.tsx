@@ -1,18 +1,34 @@
-const DOTS = [0, 1, 2, 3, 4, 5].flatMap((col) =>
-  [0, 1, 2, 3, 4].map((row) => [30 + col * 30, 20 + row * 21] as const)
-);
+const ORIGIN_X = 30;
+const ORIGIN_Y = 20;
+const PITCH_X = 30;
+const PITCH_Y = 21;
+const COLS = 6;
+const ROWS = 5;
 
-const CELL = 22;
-const GRID_X = 124;
-const GRID_Y = 17;
-const SIZE = 3;
+const px = (col: number) => ORIGIN_X + col * PITCH_X;
+const py = (row: number) => ORIGIN_Y + row * PITCH_Y;
 
-const FILLED = [
-  [0, 0],
+const DOTS = Array.from({ length: COLS }, (_, col) =>
+  Array.from({ length: ROWS }, (_, row) => [px(col), py(row)] as const)
+).flat();
+
+const PATH = [
   [2, 0],
-  [1, 1],
-  [0, 2],
+  [3, 1],
+  [2, 2],
+  [3, 3],
+  [2, 4],
 ] as const;
+
+const ABANDONED = [
+  [2, 0, 1, 1],
+  [3, 1, 4, 2],
+  [2, 2, 1, 3],
+  [3, 3, 4, 4],
+] as const;
+
+const ROOT = PATH[0];
+const SOLUTION = PATH[PATH.length - 1];
 
 const Thumbnail = () => {
   return (
@@ -23,56 +39,22 @@ const Thumbnail = () => {
         ))}
       </g>
 
-      <g className="stroke-line">
-        {Array.from({ length: SIZE + 1 }, (_, i) => (
-          <line
-            key={`v-${i}`}
-            x1={GRID_X + i * CELL}
-            y1={GRID_Y}
-            x2={GRID_X + i * CELL}
-            y2={GRID_Y + SIZE * CELL}
-            strokeWidth={2}
-          />
-        ))}
-        {Array.from({ length: SIZE + 1 }, (_, i) => (
-          <line
-            key={`h-${i}`}
-            x1={GRID_X}
-            y1={GRID_Y + i * CELL}
-            x2={GRID_X + SIZE * CELL}
-            y2={GRID_Y + i * CELL}
-            strokeWidth={2}
-          />
+      <g className="stroke-soft/60" strokeWidth={2} strokeLinecap="round" strokeDasharray="3 4">
+        {ABANDONED.map(([c1, r1, c2, r2]) => (
+          <line key={`${c1}-${r1}-${c2}-${r2}`} x1={px(c1)} y1={py(r1)} x2={px(c2)} y2={py(r2)} />
         ))}
       </g>
 
-      <g className="fill-muted">
-        {FILLED.map(([col, row]) => (
-          <circle
-            key={`${col}-${row}`}
-            cx={GRID_X + col * CELL + CELL / 2}
-            cy={GRID_Y + row * CELL + CELL / 2}
-            r={3}
-          />
-        ))}
-      </g>
+      <polyline
+        points={PATH.map(([col, row]) => `${px(col)},${py(row)}`).join(' ')}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="stroke-accent"
+      />
 
-      <rect
-        x={GRID_X + 2 * CELL}
-        y={GRID_Y}
-        width={CELL}
-        height={CELL}
-        className="fill-accent/30"
-      />
-      <rect
-        x={GRID_X + CELL}
-        y={GRID_Y + 2 * CELL}
-        width={CELL}
-        height={CELL}
-        strokeWidth={1.5}
-        strokeDasharray="3 3"
-        className="stroke-main/40"
-      />
+      <circle cx={px(ROOT[0])} cy={py(ROOT[1])} r={4} className="fill-main" />
+      <circle cx={px(SOLUTION[0])} cy={py(SOLUTION[1])} r={4} className="fill-accent" />
     </svg>
   );
 };

@@ -1,17 +1,28 @@
-const DOTS = [0, 1, 2, 3, 4, 5].flatMap((col) =>
-  [0, 1, 2, 3, 4].map((row) => [30 + col * 30, 20 + row * 21] as const)
-);
+const ORIGIN_X = 30;
+const ORIGIN_Y = 20;
+const PITCH_X = 30;
+const PITCH_Y = 21;
+const COLS = 6;
+const ROWS = 5;
 
-const CELL = 16;
-const GRID_X = 128;
-const GRID_Y = 22;
+const px = (col: number) => ORIGIN_X + col * PITCH_X;
+const py = (row: number) => ORIGIN_Y + row * PITCH_Y;
+
+const DOTS = Array.from({ length: COLS }, (_, col) =>
+  Array.from({ length: ROWS }, (_, row) => [px(col), py(row)] as const)
+).flat();
 
 const ALIVE = [
-  { col: 2, row: 1, accent: true },
-  { col: 3, row: 2, accent: false },
-  { col: 1, row: 3, accent: false },
-  { col: 2, row: 3, accent: false },
-  { col: 3, row: 3, accent: false },
+  [2, 0],
+  [3, 1],
+  [1, 2],
+  [2, 2],
+  [3, 2],
+] as const;
+
+const BORN = [
+  [1, 1],
+  [2, 3],
 ] as const;
 
 const Thumbnail = () => {
@@ -23,16 +34,17 @@ const Thumbnail = () => {
         ))}
       </g>
 
-      {ALIVE.map(({ col, row, accent }) => (
-        <rect
-          key={`${col}-${row}`}
-          x={GRID_X + col * CELL}
-          y={GRID_Y + row * CELL}
-          width={CELL - 2}
-          height={CELL - 2}
-          className={accent ? 'fill-accent' : 'fill-main'}
-        />
-      ))}
+      <g className="fill-main">
+        {ALIVE.map(([col, row]) => (
+          <circle key={`${col}-${row}`} cx={px(col)} cy={py(row)} r={6} />
+        ))}
+      </g>
+
+      <g className="stroke-accent" strokeWidth={2}>
+        {BORN.map(([col, row]) => (
+          <circle key={`${col}-${row}`} cx={px(col)} cy={py(row)} r={6} />
+        ))}
+      </g>
     </svg>
   );
 };
