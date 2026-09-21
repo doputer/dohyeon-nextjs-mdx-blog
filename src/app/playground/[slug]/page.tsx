@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
-import Playground from '@/components/playground';
-import Header from '@/components/playground/header';
+import Header from '@/components/content-header';
+import Prose from '@/components/prose';
 import { getPlayground, getPlaygrounds } from '@/lib/playground';
 
 const Page = async (props: PageProps<'/playground/[slug]'>) => {
@@ -11,8 +11,12 @@ const Page = async (props: PageProps<'/playground/[slug]'>) => {
 
   return (
     <article className="flex flex-col gap-6">
-      <Header title={frontmatter.title} description={frontmatter.description} />
-      <Playground MDX={MDX} />
+      <Header
+        title={frontmatter.title}
+        description={frontmatter.description}
+        date={frontmatter.date}
+      />
+      <Prose MDX={MDX} />
     </article>
   );
 };
