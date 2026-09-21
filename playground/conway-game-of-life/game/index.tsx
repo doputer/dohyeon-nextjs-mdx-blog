@@ -1,8 +1,8 @@
 'use client';
 
-import type { Pattern } from '#/conway-game-of-life/engine/seed';
-import useEngine from '#/conway-game-of-life/engine/use-engine';
-import Grid from '#/conway-game-of-life/game/grid';
+import type { Pattern } from '~/conway-game-of-life/engine/seed';
+import useEngine from '~/conway-game-of-life/engine/use-engine';
+import Grid from '~/conway-game-of-life/game/grid';
 
 interface Props {
   pattern: Pattern;

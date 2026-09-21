@@ -9,9 +9,9 @@ import {
   sleep,
   solve,
   type Step,
-} from '#/sudoku-backtracking/engine/solver';
-import Controller from '#/sudoku-backtracking/visualizer/controller';
-import Grid, { makeLockedMask, type Mask } from '#/sudoku-backtracking/visualizer/grid';
+} from '~/sudoku-backtracking/engine/solver';
+import Controller from '~/sudoku-backtracking/visualizer/controller';
+import Grid, { makeLockedMask, type Mask } from '~/sudoku-backtracking/visualizer/grid';
 
 const emptyBoard: Board = Array.from({ length: 9 }, () => Array(9).fill(0));
 

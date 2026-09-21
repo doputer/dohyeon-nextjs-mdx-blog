@@ -1,4 +1,4 @@
-import type { Cell } from '#/conway-game-of-life/engine/automaton';
+import type { Cell } from '~/conway-game-of-life/engine/automaton';
 
 export type Pattern =
   // Still lifes

@@ -1,5 +1,5 @@
-import type { Cell } from '#/conway-game-of-life/engine/automaton';
 import { cn } from '@/utils/cn';
+import type { Cell } from '~/conway-game-of-life/engine/automaton';
 
 interface Props {
   grid: Cell[][];

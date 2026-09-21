@@ -2,9 +2,9 @@
 
 import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
 
-import { sleep, solve, type Step } from '#/sudoku-backtracking/engine/solver';
-import Controller from '#/sudoku-backtracking/visualizer/controller';
-import Grid, { makeLockedMask } from '#/sudoku-backtracking/visualizer/grid';
+import { sleep, solve, type Step } from '~/sudoku-backtracking/engine/solver';
+import Controller from '~/sudoku-backtracking/visualizer/controller';
+import Grid, { makeLockedMask } from '~/sudoku-backtracking/visualizer/grid';
 
 const initialBoard = [
   [0, 5, 2, 0, 0, 7, 0, 9, 8],

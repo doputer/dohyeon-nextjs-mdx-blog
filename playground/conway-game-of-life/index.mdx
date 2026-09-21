@@ -1,15 +1,11 @@
 ---
-emoji: '🧬'
-title: '규칙 네 개로 만든 세계'
-description: '콘웨이의 생명 게임 시뮬레이션'
-tags:
-  - automaton
-  - visualization
+title: '콘웨이의 생명 게임 시뮬레이션'
+description: '규칙 네 개로 만든 세계'
 date: 2023-10-26
 ---
 
-import Game from '#/conway-game-of-life/game';
-import Layout from '#/conway-game-of-life/game/layout';
+import Game from '~/conway-game-of-life/game';
+import Layout from '~/conway-game-of-life/game/layout';
 
 ## 콘웨이의 생명 게임
 
@@ -35,14 +31,6 @@ import Layout from '#/conway-game-of-life/game/layout';
 이 네 가지 규칙만으로 무작위 셀들이 모여 스스로 움직이는 세계처럼 만들어진다.
 
 ## 시각화
-
-대표적인 몇 가지 패턴을 시각화해 봤다.
-
-:::callout
-
-그리드를 누르면 다음 세대로 갱신된다.
-
-:::
 
 ### 정물(Still life)
 
@@ -85,71 +73,3 @@ import Layout from '#/conway-game-of-life/game/layout';
 </Layout>
 
 [이 영상](https://www.youtube.com/watch?v=RvPrVPoLTe0)에서 전체 세대를 확인할 수 있다.
-
-## 코드
-
-직접 테스트해 볼 사람을 위해 코드를 공유한다.
-
-```ts automaton.ts
-export type Cell = 1 | 0;
-
-// prettier-ignore
-const NEIGHBOR_OFFSETS = [
-  [-1, -1], [0, -1], [1, -1],
-  [-1,  0],          [1,  0],
-  [-1,  1], [0,  1], [1,  1],
-] as const;
-
-const BIRTH = new Set([3]);
-const SURVIVE = new Set([2, 3]);
-
-class Automaton {
-  private cell: Cell[][];
-  private width: number;
-  private height: number;
-
-  constructor(seed: Cell[][]) {
-    this.cell = seed;
-    this.width = seed[0].length;
-    this.height = seed.length;
-  }
-
-  private get(x: number, y: number) {
-    if (x < 0 || x >= this.width || y < 0 || y >= this.height) return 0;
-    return this.cell[y][x];
-  }
-
-  private neighbor(x: number, y: number) {
-    let n = 0;
-
-    for (const [dx, dy] of NEIGHBOR_OFFSETS) {
-      n += this.get(x + dx, y + dy);
-      if (n > 3) return n;
-    }
-
-    return n;
-  }
-
-  next() {
-    const nextCell = this.cell.map((row) => row.slice());
-
-    for (let y = 0; y < this.height; y++) {
-      const row = this.cell[y];
-      const nextRow = nextCell[y];
-
-      for (let x = 0; x < this.width; x++) {
-        const alive = row[x] === 1;
-        const n = this.neighbor(x, y);
-
-        nextRow[x] = (alive ? SURVIVE.has(n) : BIRTH.has(n)) ? 1 : 0;
-      }
-    }
-
-    this.cell = nextCell;
-  }
-
-  view() {
-    return this.cell;
-  }
-}
-```

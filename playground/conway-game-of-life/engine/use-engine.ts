@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 
-import Automaton from '#/conway-game-of-life/engine/automaton';
-import { Pattern, SEED } from '#/conway-game-of-life/engine/seed';
+import Automaton from '~/conway-game-of-life/engine/automaton';
+import { Pattern, SEED } from '~/conway-game-of-life/engine/seed';
 
 const useEngine = (pattern: Pattern) => {
   const [seed] = useState(SEED[pattern]);
