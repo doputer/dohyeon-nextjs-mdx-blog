@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { getActionByUserId } from '@/lib/supabase/client/action';
+import { getActionByUserId } from '@/lib/supabase/action';
 import { getItem } from '@/utils/local-storage';
 
 type Action = Map<string, Set<string>>;
