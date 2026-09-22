@@ -1,7 +1,7 @@
-import { cache } from 'react';
-import type { ComponentType } from 'react';
+import { cache, type ComponentType } from 'react';
 
 import type { Lab } from '@/lib/lab/types';
+import { byLatest, toEntry } from '@/utils/mdx';
 
 type LabModule = Pick<Lab, 'frontmatter'> & { default: Lab['MDX'] };
 type LabLoader = () => Promise<LabModule>;
@@ -16,16 +16,10 @@ const thumbnailModules = import.meta.glob('*/thumbnail.tsx', {
   eager: true,
 }) as ThumbnailModules;
 
-const toSlug = (file: string) => file.split('/').at(-2)!;
-const toEntry = ([file, load]: [string, LabLoader]) => [toSlug(file), load] as const;
-const toThumbnailEntry = ([file, mod]: [string, { default: ComponentType }]) =>
-  [toSlug(file), mod.default] as const;
-
-const toTime = (lab: Lab) => new Date(lab.frontmatter.date).getTime();
-const byLatest = (a: Lab, b: Lab) => toTime(b) - toTime(a);
-
 const loaders = new Map(Object.entries(modules).map(toEntry));
-const thumbnails = new Map(Object.entries(thumbnailModules).map(toThumbnailEntry));
+const thumbnails = new Map(
+  Object.entries(thumbnailModules).map(([file, mod]) => toEntry([file, mod.default]))
+);
 
 const getLab = cache(async (slug: string) => {
   const load = loaders.get(slug);

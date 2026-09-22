@@ -1,6 +1,7 @@
 import { cache } from 'react';
 
 import type { Post } from '@/lib/post/types';
+import { byLatest, toEntry } from '@/utils/mdx';
 
 type PostModule = Pick<Post, 'frontmatter' | 'toc'> & { default: Post['MDX'] };
 type PostLoader = () => Promise<PostModule>;
@@ -9,12 +10,6 @@ type PostModules = Record<string, PostLoader>;
 const modules = import.meta.glob('*/index.mdx', {
   base: '../../../contents/post',
 }) as PostModules;
-
-const toSlug = (file: string) => file.split('/').at(-2)!;
-const toEntry = ([file, load]: [string, PostLoader]) => [toSlug(file), load] as const;
-
-const toTime = (post: Post) => new Date(post.frontmatter.date).getTime();
-const byLatest = (a: Post, b: Post) => toTime(b) - toTime(a);
 
 const loaders = new Map(Object.entries(modules).map(toEntry));
 
