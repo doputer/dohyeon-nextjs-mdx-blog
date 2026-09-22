@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next';
 
 import config from '@/configs/config.json';
+import { getLabs } from '@/lib/lab';
 import { getPosts } from '@/lib/MDX';
-import { getPlaygrounds } from '@/lib/playground';
 
 const generatePostSitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const { siteUrl } = config;
@@ -17,12 +17,12 @@ const generatePostSitemap = async (): Promise<MetadataRoute.Sitemap> => {
   return sitemap;
 };
 
-const generatePlaygroundSitemap = async (): Promise<MetadataRoute.Sitemap> => {
+const generateLabSitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const { siteUrl } = config;
-  const playgrounds = await getPlaygrounds();
-  const sitemap = playgrounds.map((playground) => ({
-    url: siteUrl + '/playground/' + playground.slug,
-    lastModified: new Date(playground.frontmatter.date),
+  const labs = await getLabs();
+  const sitemap = labs.map((lab) => ({
+    url: siteUrl + '/lab/' + lab.slug,
+    lastModified: new Date(lab.frontmatter.date),
     changeFrequency: 'monthly',
     priority: 0.5,
   })) satisfies MetadataRoute.Sitemap;
@@ -32,9 +32,9 @@ const generatePlaygroundSitemap = async (): Promise<MetadataRoute.Sitemap> => {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { siteUrl } = config;
-  const [postSitemap, playgroundSitemap] = await Promise.all([
+  const [postSitemap, labSitemap] = await Promise.all([
     generatePostSitemap(),
-    generatePlaygroundSitemap(),
+    generateLabSitemap(),
   ]);
 
   return [
@@ -45,12 +45,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: siteUrl + '/playground',
+      url: siteUrl + '/lab',
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.6,
     },
     ...postSitemap,
-    ...playgroundSitemap,
+    ...labSitemap,
   ];
 }

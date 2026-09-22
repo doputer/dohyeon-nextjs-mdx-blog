@@ -20,8 +20,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "#/*": ["./contents/*"],
-      "~/*": ["./playground/*"]
+      "#/*": ["./contents/post/*"],
+      "~/*": ["./contents/lab/*"]
     }
   },
   "include": [
