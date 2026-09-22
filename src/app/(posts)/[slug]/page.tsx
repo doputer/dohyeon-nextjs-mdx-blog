@@ -33,13 +33,13 @@ const Page = async (props: PageProps<'/[slug]'>) => {
 
 export const dynamicParams = false;
 
-export async function generateStaticParams() {
+export const generateStaticParams = async () => {
   const posts = await getMdxs();
 
   return posts.map((post) => ({ slug: post.slug }));
-}
+};
 
-export async function generateMetadata(props: PageProps<'/[slug]'>): Promise<Metadata> {
+export const generateMetadata = async (props: PageProps<'/[slug]'>): Promise<Metadata> => {
   const params = await props.params;
 
   const { frontmatter } = await getMdx(params.slug);
@@ -61,6 +61,6 @@ export async function generateMetadata(props: PageProps<'/[slug]'>): Promise<Met
       url: [config.siteUrl, params.slug].join('/'),
     },
   };
-}
+};
 
 export default Page;

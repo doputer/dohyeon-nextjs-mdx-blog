@@ -16,7 +16,7 @@ const generatePostSitemap = async (): Promise<MetadataRoute.Sitemap> => {
   }));
 };
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const postSitemap = await generatePostSitemap();
 
   return [
@@ -28,4 +28,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...postSitemap,
   ];
-}
+};
+
+export default sitemap;

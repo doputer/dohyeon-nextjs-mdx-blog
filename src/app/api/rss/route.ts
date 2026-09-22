@@ -9,7 +9,7 @@ const escapeXml = (value: string) => {
   return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 };
 
-export async function GET() {
+export const GET = async () => {
   const posts = await getMdxs();
 
   const items = posts
@@ -42,4 +42,4 @@ export async function GET() {
     status: 200,
     headers: { 'Content-Type': 'application/xml; charset=utf-8' },
   });
-}
+};
