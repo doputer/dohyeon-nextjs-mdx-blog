@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import config from '@/configs/config.json';
-import { getPosts } from '@/lib/MDX';
+import { getMdxs } from '@/lib/mdx';
 
 export const dynamic = 'force-static';
 
@@ -10,7 +10,7 @@ const escapeXml = (value: string) => {
 };
 
 export async function GET() {
-  const posts = await getPosts();
+  const posts = await getMdxs();
 
   const items = posts
     .map(

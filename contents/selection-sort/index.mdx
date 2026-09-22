@@ -5,8 +5,12 @@ description: '거품 정렬과 비슷해보이지만 다릅니다'
 tags:
   - sort
   - algorithm
+  - visualization
+category: 'visualization'
 date: 2020-10-01
 ---
+
+import SelectionSort from '#/selection-sort/selection-sort';
 
 ## 소개
 
@@ -94,3 +98,9 @@ void selection_sort(int *array) {
 ## 정리
 
 선택 정렬과 거품 정렬은 언뜻 비슷해보인다. 그러나 거품 정렬은 최악의 경우 인접한 모든 원소마다 자리 교환이 일어나지만, 선택 정렬은 비교만 거품 정렬과 동일하게 할 뿐 교환은 순회당 한 번이다. 이러한 이유로 선택 정렬이 거품 정렬보다 항상 우수하다.
+
+## 시각화
+
+가장 작은 값을 가진 막대(후보)를 갱신해가며 끝까지 순회한 다음, 후보를 맨 앞자리와 교체한다.
+
+<SelectionSort />

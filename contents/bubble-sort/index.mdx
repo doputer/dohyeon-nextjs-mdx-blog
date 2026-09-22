@@ -5,8 +5,12 @@ description: '보글보글 정렬입니다'
 tags:
   - sort
   - algorithm
+  - visualization
+category: 'visualization'
 date: 2020-09-30
 ---
+
+import BubbleSort from '#/bubble-sort/bubble-sort';
 
 ## 소개
 
@@ -149,3 +153,9 @@ void bubble_sort(int *array) {
 추가로 거품 정렬을 개선하는 방법은 여러 가지가 있다.
 
 최선의 경우를 검사해서 정렬을 사용하지 않는 방법, 거품 정렬을 양방향으로 수행하는 칵테일 셰이커 정렬(cocktail shaker sort), 특정한 감소량(shrink factor)에 의해 차이(gap)를 줄여가며 정렬하는 빗질 정렬(comb sort) 등이 있다.
+
+## 시각화
+
+막대의 높이가 값의 크기를 나타낸다. 인접한 두 막대를 비교하고, 필요하면 자리를 바꾸는 과정을 끝까지 반복한다.
+
+<BubbleSort />

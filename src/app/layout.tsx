@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import type { PropsWithChildren } from 'react';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
@@ -13,7 +12,7 @@ import { sans } from '@/static/fonts';
 
 import '@/static/styles/index.css';
 
-const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
+const RootLayout = ({ children }: LayoutProps<'/'>) => {
   return (
     <html lang="ko-KR" className={sans.variable} suppressHydrationWarning>
       <head>

@@ -16,7 +16,7 @@
 }
 
 [data-footnote-ref] {
-  @apply text-muted no-underline scroll-mt-12 ml-0.5;
+  @apply ml-0.5 scroll-mt-12 text-muted no-underline;
 }
 
 [data-footnote-ref]:hover {
@@ -24,11 +24,11 @@
 }
 
 [data-footnote-ref]::before {
-  @apply content-['[']
+  @apply content-['['];
 }
 
 [data-footnote-ref]::after {
-  @apply content-[']']
+  @apply content-[']'];
 }
 
 [data-footnote-backref] {

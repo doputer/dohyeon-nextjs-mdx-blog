@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import { getPosts } from '@/lib/MDX';
-import type { Frontmatter } from '@/lib/MDX/types';
+import { getMdxs } from '@/lib/mdx';
+import type { Frontmatter } from '@/lib/mdx/types';
 import { toYearMonth } from '@/utils/date';
 
 interface RelatedProps {
@@ -12,7 +12,7 @@ interface RelatedProps {
 const MAX = 3;
 
 const Related = async ({ slug, tags }: RelatedProps) => {
-  const posts = await getPosts();
+  const posts = await getMdxs();
   const tagSet = new Set(tags);
 
   const related = posts

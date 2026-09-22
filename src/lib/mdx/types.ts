@@ -1,7 +1,4 @@
-import type { run } from '@mdx-js/mdx';
-
-type MDXModule = Awaited<ReturnType<typeof run>>;
-type MDXContent = MDXModule['default'];
+import type { MDXContent } from 'mdx/types';
 
 export interface Frontmatter {
   emoji: string;
@@ -9,6 +6,7 @@ export interface Frontmatter {
   description: string;
   tags: string[];
   date: string;
+  category?: 'visualization';
 }
 
 interface TOC {
@@ -17,9 +15,9 @@ interface TOC {
   depth: number;
 }
 
-export interface Post {
+export interface Mdx {
   frontmatter: Frontmatter;
   toc: TOC[];
   slug: string;
-  MDX: MDXContent;
+  Content: MDXContent;
 }

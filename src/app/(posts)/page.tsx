@@ -1,15 +1,19 @@
-import List from '@/components/list';
+import Group from '@/components/group';
 import config from '@/configs/config.json';
-import { getPosts } from '@/lib/MDX';
+import { getMdxs } from '@/lib/mdx';
 
 const Page = async () => {
-  const posts = await getPosts();
+  const posts = await getMdxs();
+
+  const writings = posts.filter((post) => post.frontmatter.category !== 'visualization');
+  const visualizations = posts.filter((post) => post.frontmatter.category === 'visualization');
 
   return (
-    <>
+    <div className="flex flex-col gap-8">
       <h1 className="sr-only">{config.title}</h1>
-      <List posts={posts} />
-    </>
+      <Group title="글" posts={writings} />
+      <Group title="시각화" posts={visualizations} />
+    </div>
   );
 };
 

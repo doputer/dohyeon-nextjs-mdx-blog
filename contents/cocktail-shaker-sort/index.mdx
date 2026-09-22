@@ -5,8 +5,12 @@ description: '거품 정렬의 친구입니다'
 tags:
   - sort
   - algorithm
+  - visualization
+category: 'visualization'
 date: 2020-09-30
 ---
+
+import CocktailShakerSort from '#/cocktail-shaker-sort/cocktail-shaker-sort';
 
 ## 소개
 
@@ -157,3 +161,9 @@ void cocktail_shaker_sort(int *array) {
 생각해볼 수 있는 한 가지는 굉장히 긴 배열 데이터가 입력됐을 때 마지막 인덱스 탐색을 마친 후에 다시 처음 인덱스로 돌아가는 시간이 없어진다는 차이가 아닐까 싶다.
 
 두 정렬 모두 평균 시간 복잡도가 `O(n^2)`이라는 점과 많은 수학자들이 거품 정렬을 개선하기 위해 얼마나 많은 노력을 했는지만 알고 넘어가도 좋을 것 같다.
+
+## 시각화
+
+거품 정렬과 달리 검사 방향이 양쪽으로 번갈아 바뀐다. 한 번 오갈 때마다 검사 구역의 앞뒤가 한 칸씩 줄어드는 걸 볼 수 있다.
+
+<CocktailShakerSort />

@@ -3,7 +3,6 @@
 @import './codehike.css';
 @import './color.css';
 @import './element.css';
-@import './utility.css';
 
 @layer base {
   @apply selection:bg-accent/20;
