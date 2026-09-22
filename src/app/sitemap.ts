@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next';
 
 import config from '@/configs/config.json';
-import { getLabs } from '@/lib/lab';
 import { getPosts } from '@/lib/post';
 
 const generatePostSitemap = async (): Promise<MetadataRoute.Sitemap> => {
@@ -17,25 +16,9 @@ const generatePostSitemap = async (): Promise<MetadataRoute.Sitemap> => {
   return sitemap;
 };
 
-const generateLabSitemap = async (): Promise<MetadataRoute.Sitemap> => {
-  const { siteUrl } = config;
-  const labs = await getLabs();
-  const sitemap = labs.map((lab) => ({
-    url: siteUrl + '/lab/' + lab.slug,
-    lastModified: new Date(lab.frontmatter.date),
-    changeFrequency: 'monthly',
-    priority: 0.5,
-  })) satisfies MetadataRoute.Sitemap;
-
-  return sitemap;
-};
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { siteUrl } = config;
-  const [postSitemap, labSitemap] = await Promise.all([
-    generatePostSitemap(),
-    generateLabSitemap(),
-  ]);
+  const postSitemap = await generatePostSitemap();
 
   return [
     {
@@ -44,13 +27,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 1,
     },
-    {
-      url: siteUrl + '/lab',
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.6,
-    },
     ...postSitemap,
-    ...labSitemap,
   ];
 }

@@ -29,21 +29,12 @@ const pairs = [
   ['메모이제이션이란?', 'what-is-memoization'],
 ];
 
-const movedToPlayground = ['sudoku-backtracking', 'conway-game-of-life'];
-
 const slugify = (slug) => slug.replace(/[^가-힣\w\s-.~]/g, '').replace(/ /g, '-');
 
 export const redirects = async () => {
-  return [
-    ...pairs.map(([origin, target]) => ({
-      source: '/' + encodeURI(slugify(origin)),
-      destination: '/' + target,
-      permanent: true,
-    })),
-    ...movedToPlayground.map((slug) => ({
-      source: '/' + slug,
-      destination: '/playground/' + slug,
-      permanent: true,
-    })),
-  ];
+  return pairs.map(([origin, target]) => ({
+    source: '/' + encodeURI(slugify(origin)),
+    destination: '/' + target,
+    permanent: true,
+  }));
 };
