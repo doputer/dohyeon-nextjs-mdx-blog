@@ -2,13 +2,11 @@ import { cache } from 'react';
 
 import type { Mdx } from '@/lib/mdx/types';
 
-type MdxModule = Pick<Mdx, 'frontmatter' | 'toc'> & { default: Mdx['Content'] };
-type MdxLoader = () => Promise<MdxModule>;
-type MdxModules = Record<string, MdxLoader>;
+type MdxExports = Pick<Mdx, 'frontmatter' | 'toc'> & { default: Mdx['Content'] };
+type MdxLoader = () => Promise<MdxExports>;
+type MdxLoaders = Record<string, MdxLoader>;
 
-const modules = import.meta.glob('*/index.mdx', {
-  base: '../../../contents',
-}) as MdxModules;
+const glob = import.meta.glob('*/index.mdx', { base: '../../../contents' }) as MdxLoaders;
 
 const toSlug = (file: string) => file.split('/').at(-2)!;
 const toEntry = ([file, load]: [string, MdxLoader]) => [toSlug(file), load] as const;
@@ -16,7 +14,7 @@ const toEntry = ([file, load]: [string, MdxLoader]) => [toSlug(file), load] as c
 const toTime = (mdx: Mdx) => new Date(mdx.frontmatter.date).getTime();
 const byLatest = (a: Mdx, b: Mdx) => toTime(b) - toTime(a);
 
-const loaders = new Map(Object.entries(modules).map(toEntry));
+const loaders = new Map(Object.entries(glob).map(toEntry));
 
 const getMdx = cache(async (slug: string) => {
   const load = loaders.get(slug);

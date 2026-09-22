@@ -1,7 +1,4 @@
-import type { run } from '@mdx-js/mdx';
-
-type MDXModule = Awaited<ReturnType<typeof run>>;
-type MDXContent = MDXModule['default'];
+import type { MDXContent } from 'mdx/types';
 
 export interface Frontmatter {
   emoji: string;
