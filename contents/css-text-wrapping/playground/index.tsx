@@ -30,7 +30,7 @@ const CONFIGS = {
   },
   'text-overflow': {
     values: ['clip', 'ellipsis'],
-    sample: `한 줄에 다 담기지 않는 긴 제목은 어떻게 잘려서 표시될까요? 이렇게 비교합니다.`,
+    sample: `한 줄에 다 담기지 않는 긴 제목이 어디에서 잘리고 말줄임표는 어느 자리에 붙는지, 값을 바꿔가며 이렇게 비교합니다.`,
     style: (value) => ({ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: value }),
   },
   'line-break': {
@@ -66,42 +66,38 @@ const Playground = ({ property }: Props) => {
 
   return (
     <section className="my-8 rounded border border-line">
-      <div className="flex flex-col sm:flex-row">
-        <div className="flex min-w-0 flex-1 items-center p-4">
-          <div className="w-full max-w-full min-w-24 resize-x overflow-auto">
-            <p
-              lang={config.lang}
-              style={config.style(value) as CSSProperties}
-              className={cn('w-full text-main', config.previewClass)}
-            >
-              {config.sample}
-            </p>
-          </div>
+      <div className="p-4">
+        <div className="w-full max-w-full min-w-24 resize-x overflow-auto">
+          <p
+            lang={config.lang}
+            style={config.style(value) as CSSProperties}
+            className={cn('w-full text-main', config.previewClass)}
+          >
+            {config.sample}
+          </p>
         </div>
+      </div>
 
-        <fieldset className="shrink-0 border-t border-line bg-surface p-4 sm:w-40 sm:border-t-0 sm:border-l">
-          <div className="flex flex-wrap gap-x-4 gap-y-2 sm:flex-col sm:gap-2.5">
-            {config.values.map((option) => (
-              <label
-                key={option}
-                className={cn(
-                  'flex cursor-pointer items-center gap-2 text-sm text-muted transition-colors',
-                  value === option && 'font-medium text-main'
-                )}
-              >
-                <input
-                  type="radio"
-                  name={name}
-                  value={option}
-                  checked={value === option}
-                  onChange={() => setValue(option)}
-                  className="accent-main"
-                />
-                <span className="font-mono">{option}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
+      <div className="flex flex-wrap gap-x-4 gap-y-2 border-t border-line bg-surface px-4 py-3">
+        {config.values.map((option) => (
+          <label
+            key={option}
+            className={cn(
+              'flex cursor-pointer items-center gap-2 font-mono text-sm text-muted transition-colors hover:text-main',
+              value === option && 'font-medium text-main'
+            )}
+          >
+            <input
+              type="radio"
+              name={name}
+              value={option}
+              checked={value === option}
+              onChange={() => setValue(option)}
+              className="accent-main"
+            />
+            {option}
+          </label>
+        ))}
       </div>
     </section>
   );

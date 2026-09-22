@@ -1,0 +1,136 @@
+---
+emoji: '🧱'
+title: 'Grid, 제대로 알아보기'
+description: '행과 열을 정의하고 아이템을 배치하는 레이아웃의 원리'
+tags:
+  - css
+  - layout
+  - grid
+date: 2023-02-02
+---
+
+import Playground from '#/css-grid/playground';
+
+[flexbox](/css-flex)는 아이템에서 출발한다. 아이템이 한 줄로 늘어서고 남거나 모자란 공간을 아이템끼리 나눠 갖는다. grid는 컨테이너가 먼저 격자를 그리고 아이템이 그 칸 위에 놓인다. 속성 이름이 겹쳐도 동작이 달라지는 건 이 순서 때문이다.
+
+| 기준                      | 속성                                                          |
+| ------------------------- | ------------------------------------------------------------- |
+| 격자를 어떻게 나눌까      | `grid-template-columns`, `grid-template-rows`, `gap`          |
+| 빈칸을 어떻게 채울까      | `grid-auto-flow`, `grid-auto-rows`, `grid-auto-columns`       |
+| 아이템을 어디에 놓을까    | `grid-column`, `grid-row`, `grid-area`, `grid-template-areas` |
+| 칸 안에서 어떻게 놓을까   | `justify-items`, `align-items`, `justify-self`, `align-self`  |
+| 격자 전체를 어디에 놓을까 | `justify-content`, `align-content`                            |
+
+## grid-template-columns, 격자를 나눈다
+
+`display: grid`만 주면 아이템은 한 열로 쌓인다. 열은 `grid-template-columns`로 만들고 공백으로 구분한 값 하나가 트랙 하나가 된다.
+
+- `fr`: 트랙을 나누고 남은 공간의 비율이다. `200px 1fr 1fr`이면 첫 열이 200px를 가져가고 남은 공간을 나머지 두 열이 절반씩 나눈다. 비율이라 백분율과 달리 `gap`을 계산에 넣지 않아도 된다.
+- `repeat(4, 1fr)`: `1fr 1fr 1fr 1fr`과 같다.
+- `minmax(96px, 1fr)`: 트랙의 최소와 최대를 정한다. 최소 96px는 확보하고 여유가 있으면 더 늘어난다.
+
+둘을 합치면 열 개수를 미디어 쿼리 없이 화면 너비에 맡길 수 있다.
+
+```css
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 16px;
+}
+```
+
+`auto-fill`은 들어갈 수 있는 만큼 트랙을 만들어 아이템이 모자라면 빈 트랙이 남는다. `auto-fit`은 빈 트랙을 접어 남은 아이템이 그 자리까지 늘어난다.
+
+<Playground property="grid-template-columns" />
+
+## grid-auto-flow, 칸을 채우는 순서
+
+열만 정하면 행은 아이템 수에 따라 자동으로 생긴다. 이렇게 만들어진 트랙이 암묵적(implicit) 그리드이고 크기는 `grid-auto-rows`가 정한다. 지정하지 않으면 콘텐츠 크기가 된다.
+
+```css
+.grid {
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 120px;
+}
+```
+
+칸을 채우는 순서는 `grid-auto-flow`가 정한다.
+
+- `row`: 기본값이다. 한 행을 채우고 다음 행으로 내려간다.
+- `column`: 한 열을 채우고 다음 열로 넘어간다.
+- `dense`: `row dense`처럼 함께 적는다. 앞쪽에 생긴 빈칸을 뒤의 작은 아이템이 되돌아가 채운다. 시각적 순서가 DOM 순서와 어긋난다.
+
+<Playground property="grid-auto-flow" />
+
+## grid-column, 아이템을 직접 놓는다
+
+위치는 칸이 아니라 선(line)으로 지정한다. 열이 4개면 선은 5개고 번호는 왼쪽 끝이 1이다.
+
+- `span 2`: 시작 위치는 자동으로 두고 두 칸을 차지한다.
+- `1 / 3`: 1번 선에서 시작해 3번 선에서 끝난다. 칸으로는 두 칸이다.
+- `2 / -1`: 음수는 끝에서부터 센다. `-1`이 마지막 선이라 2번 선부터 오른쪽 끝까지다.
+
+`grid-row`도 같은 방식이고 `grid-area`는 둘을 한 번에 적는 단축 속성이다. 위치를 지정한 아이템 때문에 앞쪽에 빈칸이 남아도 뒤의 아이템이 되돌아가 채우지 않는다. 채우려면 `grid-auto-flow: row dense`가 필요하다.
+
+이름으로 배치할 수도 있다. 컨테이너에 `grid-template-areas`로 격자를 그림처럼 적고 아이템에 이름을 붙인다. 마침표(`.`)는 빈칸이다.
+
+```css
+.layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-areas:
+    'aside header'
+    'aside main';
+}
+
+.header {
+  grid-area: header;
+}
+```
+
+<Playground property="grid-column" />
+
+## justify-items와 align-items, 칸 안의 정렬
+
+grid에서 `justify-*`는 항상 가로, `align-*`은 항상 세로다. `flex-direction`에 따라 가로세로가 바뀌던 flexbox와 달리 `grid-auto-flow: column`으로 바꿔도 그대로다.
+
+`justify-items`는 칸 안에서 아이템을 가로 어디에 놓을지 정한다. 기본값 `stretch`는 아이템을 칸 너비만큼 늘리고 `start`나 `center`를 주면 아이템이 자기 콘텐츠 크기가 된다.
+
+<Playground property="justify-items" />
+
+`align-items`는 같은 일을 세로로 한다.
+
+<Playground property="align-items" />
+
+아이템 하나만 다르게 두려면 그 아이템에 `justify-self`나 `align-self`를 준다. `place-items: center`처럼 세로와 가로를 한 번에 적는 단축 속성도 있다.
+
+## justify-content, 격자 전체의 위치
+
+트랙을 `1fr`로 잡으면 격자가 컨테이너를 꽉 채우므로 이 속성은 할 일이 없다. 트랙을 `88px`처럼 고정했을 때 생기는 남는 공간을 어떻게 나눌지 정한다. 값은 flexbox와 같다.
+
+| 속성                               | 무엇을 옮기나  | 축         |
+| ---------------------------------- | -------------- | ---------- |
+| `justify-items`, `align-items`     | 칸 안의 아이템 | 가로, 세로 |
+| `justify-content`, `align-content` | 격자 전체      | 가로, 세로 |
+
+<Playground property="justify-content" />
+
+## minmax(0, 1fr), 줄어들지 않는 트랙
+
+`1fr`로 나눈 열에 긴 텍스트를 넣고 말줄임 처리했는데 격자가 컨테이너를 넘치는 경우가 있다.
+
+`1fr`은 `minmax(auto, 1fr)`의 줄임말이다. 최대는 남은 공간을 나눈 비율이지만 최소가 `auto`라 트랙은 콘텐츠의 최소 크기 아래로 줄어들지 않는다. `white-space: nowrap`이 걸린 텍스트의 최소 크기는 문장 전체 길이다.
+
+최소를 `0`으로 적으면 이 하한이 사라진다.
+
+```css
+.grid {
+  grid-template-columns: minmax(0, 1fr) 80px;
+}
+```
+
+트랙의 최소가 `auto`가 아니게 되면 아이템에 걸리는 자동 최소 크기 규칙도 함께 풀리므로 아이템에 `min-width: 0`을 따로 주지 않아도 된다.
+
+<Playground property="minmax" />
+
+크기를 콘텐츠가 정해야 하면 flexbox, 레이아웃이 정해야 하면 grid다. 페이지의 큰 틀은 grid로 잡고 칸 안의 배치는 flexbox로 두는 식으로 섞어 쓴다.
