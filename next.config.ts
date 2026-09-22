@@ -6,11 +6,8 @@ import type { Options as MDXOptions } from '@mdx-js/loader';
 import createMDX from '@next/mdx';
 import type { CodeHikeConfig } from 'codehike/mdx';
 
-import { redirects } from './scripts/redirects.mjs';
-
 const nextConfig: NextConfig = {
   pageExtensions: ['ts', 'tsx', 'mdx'],
-  redirects,
   headers: async () => [
     {
       source: '/giscus/:path*.css',
