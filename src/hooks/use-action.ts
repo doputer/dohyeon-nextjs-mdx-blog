@@ -1,35 +1,39 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { getActionByUserId } from '@/lib/supabase/action';
+import { getActionBySlug } from '@/lib/supabase/action';
 import { getItem } from '@/utils/local-storage';
 
-type Action = Map<string, Set<string>>;
+interface Action {
+  slug: string;
+  actions: Set<string>;
+}
 
-const useAction = () => {
-  const [map, setMap] = useState<Action>(new Map());
-  const [loaded, setLoaded] = useState(false);
+const useAction = (slug: string) => {
+  const [state, setState] = useState<Action | null>(null);
 
-  const hasAction = useCallback(
-    (slug: string, action: string) => map.get(slug)?.has(action) ?? false,
-    [map]
+  const actions = state?.slug === slug ? state.actions : null;
+  const loaded = actions !== null;
+
+  const hasAction = useCallback((action: string) => actions?.has(action) ?? false, [actions]);
+
+  const setAction = useCallback(
+    (action: string) => {
+      setState((prevState) => {
+        if (prevState?.slug !== slug) return prevState;
+        if (prevState.actions.has(action)) return prevState;
+
+        const nextActions = new Set(prevState.actions);
+        nextActions.add(action);
+
+        return { slug, actions: nextActions };
+      });
+    },
+    [slug]
   );
 
-  const setAction = useCallback((slug: string, action: string) => {
-    setMap((prevMap) => {
-      const prevSet = prevMap.get(slug) ?? new Set<string>();
-      if (prevSet.has(action)) return prevMap;
-
-      const nextMap = new Map(prevMap);
-      const nextSet = new Set(prevSet);
-
-      nextSet.add(action);
-      nextMap.set(slug, nextSet);
-
-      return nextMap;
-    });
-  }, []);
-
   useEffect(() => {
+    let canceled = false;
+
     const fallback = () => {
       try {
         return crypto.randomUUID();
@@ -40,16 +44,21 @@ const useAction = () => {
 
     const load = async () => {
       const id = getItem('UNIQUE_USER_ID', fallback);
-      if (!id) return;
+      const data = id ? await getActionBySlug(id, slug) : [];
 
-      const data = await getActionByUserId(id);
-      data.forEach(({ slug, action }) => setAction(slug, action));
+      return new Set(data.map(({ action }) => action));
     };
 
     load()
-      .catch(() => {})
-      .finally(() => setLoaded(true));
-  }, [setAction]);
+      .catch(() => new Set<string>())
+      .then((actions) => {
+        if (!canceled) setState({ slug, actions });
+      });
+
+    return () => {
+      canceled = true;
+    };
+  }, [slug]);
 
   return { loaded, hasAction, setAction };
 };
