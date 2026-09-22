@@ -4,14 +4,14 @@ import { getMdxs } from '@/lib/mdx';
 import type { Frontmatter } from '@/lib/mdx/types';
 import { toYearMonth } from '@/utils/date';
 
-interface RelatedProps {
+interface Props {
   slug: string;
   tags: Frontmatter['tags'];
 }
 
 const MAX = 3;
 
-const Related = async ({ slug, tags }: RelatedProps) => {
+const Related = async ({ slug, tags }: Props) => {
   const posts = await getMdxs();
   const tagSet = new Set(tags);
 

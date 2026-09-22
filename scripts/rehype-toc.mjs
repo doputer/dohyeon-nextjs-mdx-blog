@@ -1,4 +1,3 @@
-import { valueToEstree } from 'estree-util-value-to-estree';
 import { visit } from 'unist-util-visit';
 
 const AvailableDepth = new Set([2, 3]);
@@ -9,6 +8,45 @@ const toText = (node) => {
 };
 
 const isFootnotes = (node) => node?.type === 'element' && node.properties?.dataFootnotes;
+
+const program = (body) => ({ type: 'Program', sourceType: 'module', body });
+const identifier = (name) => ({ type: 'Identifier', name });
+const literal = (value) => ({ type: 'Literal', value, raw: JSON.stringify(value) });
+
+const property = (key, value) => ({
+  type: 'Property',
+  kind: 'init',
+  method: false,
+  shorthand: false,
+  computed: false,
+  key: identifier(key),
+  value: literal(value),
+});
+
+const object = (value) => ({
+  type: 'ObjectExpression',
+  properties: Object.entries(value).map(([key, item]) => property(key, item)),
+});
+
+const array = (value) => ({ type: 'ArrayExpression', elements: value.map(object) });
+
+const toExport = (name, value) => ({
+  type: 'mdxjsEsm',
+  value: '',
+  data: {
+    estree: program([
+      {
+        type: 'ExportNamedDeclaration',
+        specifiers: [],
+        declaration: {
+          type: 'VariableDeclaration',
+          kind: 'const',
+          declarations: [{ type: 'VariableDeclarator', id: identifier(name), init: value }],
+        },
+      },
+    ]),
+  },
+});
 
 const rehypeToc = () => {
   return (tree) => {
@@ -26,33 +64,7 @@ const rehypeToc = () => {
       toc.push({ id: node.properties.id, text: toText(node), depth });
     });
 
-    tree.children.unshift({
-      type: 'mdxjsEsm',
-      value: '',
-      data: {
-        estree: {
-          type: 'Program',
-          sourceType: 'module',
-          body: [
-            {
-              type: 'ExportNamedDeclaration',
-              specifiers: [],
-              declaration: {
-                type: 'VariableDeclaration',
-                kind: 'const',
-                declarations: [
-                  {
-                    type: 'VariableDeclarator',
-                    id: { type: 'Identifier', name: 'toc' },
-                    init: valueToEstree(toc, { preserveReferences: true }),
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      },
-    });
+    tree.children.unshift(toExport('toc', array(toc)));
   };
 };
 

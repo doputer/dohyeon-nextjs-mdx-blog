@@ -1,11 +1,11 @@
 import type { Mdx } from '@/lib/mdx/types';
 import { cn } from '@/utils/cn';
 
-interface TOCProps {
+interface Props {
   toc: Mdx['toc'];
 }
 
-const TOC = ({ toc }: TOCProps) => {
+const TOC = ({ toc }: Props) => {
   if (toc.length === 0) return null;
 
   return (

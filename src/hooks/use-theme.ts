@@ -1,25 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 import type { Theme } from '@/components/theme-switch/theme-script';
 
+const subscribe = (onStoreChange: () => void) => {
+  window.__addThemeListener?.(onStoreChange);
+
+  return () => {
+    window.__removeThemeListener?.(onStoreChange);
+  };
+};
+
+const getSnapshot = (): Theme => window.__theme ?? 'light';
+const getServerSnapshot = (): Theme => 'light';
+
 const useTheme = () => {
-  const [theme, setTheme] = useState(global.window?.__theme || 'light');
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const toggleTheme = () => {
-    global.window?.__setPreferredTheme?.(theme === 'light' ? 'dark' : 'light');
+    window.__setPreferredTheme?.(theme === 'light' ? 'dark' : 'light');
   };
-
-  useEffect(() => {
-    const handleTheme = (newTheme: Theme) => {
-      setTheme(newTheme);
-    };
-
-    global.window?.__addThemeListener?.(handleTheme);
-
-    return () => {
-      global.window?.__removeThemeListener?.(handleTheme);
-    };
-  }, []);
 
   return { theme, toggleTheme };
 };

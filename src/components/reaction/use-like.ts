@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import useAction from '@/hooks/use-action';
+import useAction from '@/components/reaction/use-action';
 import { getLikeBySlug, postLike } from '@/lib/supabase/like';
 import { getItem } from '@/utils/local-storage';
 
@@ -8,10 +8,10 @@ const type = 'like';
 
 const useLike = (slug: string) => {
   const [like, setLike] = useState<number | null>(null);
-  const { loaded, hasAction, setAction } = useAction();
+  const { loaded, hasAction, setAction } = useAction(slug);
   const pending = useRef(false);
 
-  const liked = hasAction(slug, type);
+  const liked = hasAction(type);
 
   useEffect(() => {
     let canceled = false;
@@ -42,7 +42,7 @@ const useLike = (slug: string) => {
 
     try {
       await postLike(id, slug);
-      setAction(slug, type);
+      setAction(type);
     } catch {
       setLike((state) => (state ?? 1) - 1);
       pending.current = false;

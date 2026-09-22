@@ -34,8 +34,8 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
         </div>
         <Analytics />
         <SpeedInsights />
+        {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId={config.gtag} />}
       </body>
-      <GoogleAnalytics gaId={config.gtag} />
     </html>
   );
 };

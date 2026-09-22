@@ -1,12 +1,12 @@
 import { toYearMonthDay } from '@/utils/date';
 
-interface HeaderProps {
+interface Props {
   title: string;
   description: string;
   date: string;
 }
 
-const Header = ({ title, description, date }: HeaderProps) => {
+const Header = ({ title, description, date }: Props) => {
   return (
     <header className="space-y-2">
       <h1 className="text-2xl font-semibold tracking-tight break-keep">{title}</h1>

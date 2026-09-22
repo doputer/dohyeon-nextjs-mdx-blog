@@ -9,7 +9,7 @@ const escapeXml = (value: string) => {
   return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 };
 
-export async function GET() {
+export const GET = async () => {
   const posts = await getMdxs();
 
   const items = posts
@@ -20,17 +20,18 @@ export async function GET() {
     <link>${config.siteUrl}/${slug}</link>
     <guid>${config.siteUrl}/${slug}</guid>
     <pubDate>${new Date(frontmatter.date).toUTCString()}</pubDate>
-    <description><![CDATA[${frontmatter.description}]]></description>
+    <description>${escapeXml(frontmatter.description)}</description>
   </item>`
     )
     .join('');
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${config.name}</title>
+    <title>${escapeXml(config.name)}</title>
     <link>${config.siteUrl}</link>
-    <description>${config.description}</description>
+    <atom:link href="${config.siteUrl}/api/rss" rel="self" type="application/rss+xml" />
+    <description>${escapeXml(config.description)}</description>
     <language>ko-kr</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     ${items}
@@ -41,4 +42,4 @@ export async function GET() {
     status: 200,
     headers: { 'Content-Type': 'application/xml; charset=utf-8' },
   });
-}
+};

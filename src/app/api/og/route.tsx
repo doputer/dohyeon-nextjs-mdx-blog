@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 const size = { width: 1200, height: 630 };
 
-export async function GET(request: Request) {
+export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const emoji = searchParams.get('emoji') || '🏷️';
 
@@ -22,4 +22,4 @@ export async function GET(request: Request) {
     </div>,
     { ...size }
   );
-}
+};

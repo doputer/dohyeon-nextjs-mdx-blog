@@ -1,10 +1,11 @@
 import { supabase } from '@/lib/supabase/client';
 
-export const getActionByUserId = async (user_id: string) => {
+export const getActionBySlug = async (user_id: string, slug: string) => {
   const { data, error } = await supabase
     .from('actions')
-    .select('slug,action')
-    .eq('user_id', user_id);
+    .select('action')
+    .eq('user_id', user_id)
+    .eq('slug', slug);
 
   if (error) throw error;
 

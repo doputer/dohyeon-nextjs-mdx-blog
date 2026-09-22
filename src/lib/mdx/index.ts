@@ -16,7 +16,7 @@ const byLatest = (a: Mdx, b: Mdx) => toTime(b) - toTime(a);
 
 const loaders = new Map(Object.entries(glob).map(toEntry));
 
-const getMdx = cache(async (slug: string) => {
+export const getMdx = cache(async (slug: string) => {
   const load = loaders.get(slug);
 
   if (!load) throw new Error(`Mdx not found: ${slug}`);
@@ -26,10 +26,8 @@ const getMdx = cache(async (slug: string) => {
   return { frontmatter, toc, slug, Content } satisfies Mdx;
 });
 
-const getMdxs = cache(async () => {
+export const getMdxs = cache(async () => {
   const items = await Promise.all([...loaders.keys()].map(getMdx));
 
   return items.toSorted(byLatest);
 });
-
-export { getMdx, getMdxs };

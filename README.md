@@ -1,12 +1,10 @@
+A personal dev blog built with Next.js and MDX. Each post is a directory under `contents/` holding its `index.mdx`, images, and interactive components, all statically generated at build time.
+
 ### Feature
 
-- Responsive Design
-- Dark Theme
-- MDX(Filesystem-Based)
+- Syntax Highlighting(Code Hike)
+- Diagram(Mermaid)
 - TOC
-- GFM(GitHub Flavored Markdown)
-- Syntax Highlighting(Bright)
-- Math Typesetting(KaTeX)
+- Dark Theme
 - Comment(Giscus)
-- GA
-- Config
+- SEO(RSS, Sitemap, OG Image)
