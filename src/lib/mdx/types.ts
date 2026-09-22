@@ -18,9 +18,9 @@ interface TOC {
   depth: number;
 }
 
-export interface Post {
+export interface Mdx {
   frontmatter: Frontmatter;
   toc: TOC[];
   slug: string;
-  MDX: MDXContent;
+  Content: MDXContent;
 }

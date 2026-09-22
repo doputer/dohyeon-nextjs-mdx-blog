@@ -1,8 +1,8 @@
-import type { Post } from '@/lib/mdx/types';
+import type { Mdx } from '@/lib/mdx/types';
 import { cn } from '@/utils/cn';
 
 interface TOCProps {
-  toc: Post['toc'];
+  toc: Mdx['toc'];
 }
 
 const TOC = ({ toc }: TOCProps) => {

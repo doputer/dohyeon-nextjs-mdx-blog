@@ -1,37 +1,37 @@
 import { cache } from 'react';
 
-import type { Post } from '@/lib/mdx/types';
+import type { Mdx } from '@/lib/mdx/types';
 
-type PostModule = Pick<Post, 'frontmatter' | 'toc'> & { default: Post['MDX'] };
-type PostLoader = () => Promise<PostModule>;
-type PostModules = Record<string, PostLoader>;
+type MdxModule = Pick<Mdx, 'frontmatter' | 'toc'> & { default: Mdx['Content'] };
+type MdxLoader = () => Promise<MdxModule>;
+type MdxModules = Record<string, MdxLoader>;
 
 const modules = import.meta.glob('*/index.mdx', {
   base: '../../../contents',
-}) as PostModules;
+}) as MdxModules;
 
 const toSlug = (file: string) => file.split('/').at(-2)!;
-const toEntry = ([file, load]: [string, PostLoader]) => [toSlug(file), load] as const;
+const toEntry = ([file, load]: [string, MdxLoader]) => [toSlug(file), load] as const;
 
-const toTime = (post: Post) => new Date(post.frontmatter.date).getTime();
-const byLatest = (a: Post, b: Post) => toTime(b) - toTime(a);
+const toTime = (mdx: Mdx) => new Date(mdx.frontmatter.date).getTime();
+const byLatest = (a: Mdx, b: Mdx) => toTime(b) - toTime(a);
 
 const loaders = new Map(Object.entries(modules).map(toEntry));
 
-const getPost = cache(async (slug: string) => {
+const getMdx = cache(async (slug: string) => {
   const load = loaders.get(slug);
 
-  if (!load) throw new Error(`Post not found: ${slug}`);
+  if (!load) throw new Error(`Mdx not found: ${slug}`);
 
-  const { frontmatter, toc, default: MDX } = await load();
+  const { frontmatter, toc, default: Content } = await load();
 
-  return { frontmatter, toc, slug, MDX } satisfies Post;
+  return { frontmatter, toc, slug, Content } satisfies Mdx;
 });
 
-const getPosts = cache(async () => {
-  const posts = await Promise.all([...loaders.keys()].map(getPost));
+const getMdxs = cache(async () => {
+  const items = await Promise.all([...loaders.keys()].map(getMdx));
 
-  return posts.toSorted(byLatest);
+  return items.toSorted(byLatest);
 });
 
-export { getPost, getPosts };
+export { getMdx, getMdxs };

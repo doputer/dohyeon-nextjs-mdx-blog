@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next';
 
 import config from '@/configs/config.json';
-import { getPosts } from '@/lib/mdx';
+import { getMdxs } from '@/lib/mdx';
 
 const generatePostSitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const { siteUrl } = config;
-  const posts = await getPosts();
+  const posts = await getMdxs();
   const sitemap = posts.map((post) => ({
     url: siteUrl + '/' + post.slug,
     lastModified: new Date(post.frontmatter.date),

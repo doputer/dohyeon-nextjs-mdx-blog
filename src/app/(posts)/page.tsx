@@ -1,9 +1,9 @@
 import List from '@/components/list';
 import config from '@/configs/config.json';
-import { getPosts } from '@/lib/mdx';
+import { getMdxs } from '@/lib/mdx';
 
 const Page = async () => {
-  const posts = await getPosts();
+  const posts = await getMdxs();
 
   return (
     <>

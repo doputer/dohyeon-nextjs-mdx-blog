@@ -9,12 +9,12 @@ import Reaction from '@/components/reaction';
 import Related from '@/components/related';
 import TOC from '@/components/toc';
 import config from '@/configs/config.json';
-import { getPost, getPosts } from '@/lib/mdx';
+import { getMdx, getMdxs } from '@/lib/mdx';
 
 const Page = async (props: PageProps<'/[slug]'>) => {
   const params = await props.params;
 
-  const { frontmatter, toc, MDX } = await getPost(params.slug);
+  const { frontmatter, toc, Content } = await getMdx(params.slug);
   const { title, description, date, tags } = frontmatter;
 
   return (
@@ -22,7 +22,7 @@ const Page = async (props: PageProps<'/[slug]'>) => {
       <article className="flex flex-col gap-12">
         <Header title={title} description={description} date={date} />
         <TOC toc={toc} />
-        <Prose MDX={MDX} />
+        <Prose Content={Content} />
       </article>
       <Divider />
       <ErrorBoundary message="좋아요를 불러오지 못했습니다.">
@@ -39,7 +39,7 @@ const Page = async (props: PageProps<'/[slug]'>) => {
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const posts = await getPosts();
+  const posts = await getMdxs();
 
   return posts.map((post) => ({ slug: post.slug }));
 }
@@ -47,7 +47,7 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: PageProps<'/[slug]'>): Promise<Metadata> {
   const params = await props.params;
 
-  const { frontmatter } = await getPost(params.slug);
+  const { frontmatter } = await getMdx(params.slug);
   const { emoji, title, description, date, tags } = frontmatter;
 
   return {

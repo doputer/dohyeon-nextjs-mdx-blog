@@ -1,8 +1,8 @@
 import Group from '@/components/list/group';
-import type { Post } from '@/lib/mdx/types';
+import type { Mdx } from '@/lib/mdx/types';
 
 interface Props {
-  posts: Post[];
+  posts: Mdx[];
 }
 
 const List = ({ posts }: Props) => {

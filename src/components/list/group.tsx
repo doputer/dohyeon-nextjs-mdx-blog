@@ -1,17 +1,17 @@
 import Link from 'next/link';
 
-import type { Post } from '@/lib/mdx/types';
+import type { Mdx } from '@/lib/mdx/types';
 import { toMonthDay, toYear } from '@/utils/date';
 
 interface Props {
   title: string;
-  posts: Post[];
+  posts: Mdx[];
 }
 
 const Group = ({ title, posts }: Props) => {
   if (posts.length === 0) return null;
 
-  const group = posts.reduce<Record<string, Post[]>>((acc, post) => {
+  const group = posts.reduce<Record<string, Mdx[]>>((acc, post) => {
     const year = toYear(post.frontmatter.date);
 
     if (!acc[year]) acc[year] = [];
