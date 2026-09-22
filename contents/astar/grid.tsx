@@ -1,5 +1,5 @@
-import { cn } from '@/utils/cn';
 import { key, type Point, type Step } from '#/astar/engine';
+import { cn } from '@/utils/cn';
 
 type Kind = 'start' | 'end' | 'wall' | 'path' | 'current' | 'open' | 'closed' | 'empty';
 

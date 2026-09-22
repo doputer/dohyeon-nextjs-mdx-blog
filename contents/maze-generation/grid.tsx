@@ -1,5 +1,5 @@
-import { cn } from '@/utils/cn';
 import { edgeKey, key, type Point, type Step } from '#/maze-generation/engine';
+import { cn } from '@/utils/cn';
 
 type Kind = 'current' | 'visited' | 'unvisited';
 
