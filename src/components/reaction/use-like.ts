@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import useAction from '@/hooks/use-action';
+import useAction from '@/components/reaction/use-action';
 import { getLikeBySlug, postLike } from '@/lib/supabase/like';
 import { getItem } from '@/utils/local-storage';
 

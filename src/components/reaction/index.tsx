@@ -1,6 +1,6 @@
 'use client';
 
-import useLike from '@/hooks/use-like';
+import useLike from '@/components/reaction/use-like';
 
 interface Props {
   slug: string;
