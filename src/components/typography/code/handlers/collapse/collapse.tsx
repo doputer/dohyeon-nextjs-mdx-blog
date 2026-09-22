@@ -2,7 +2,7 @@
 
 import { Children, useState } from 'react';
 
-import { AnnotationHandler } from 'codehike/code';
+import type { AnnotationHandler } from 'codehike/code';
 
 import { cn } from '@/utils/cn';
 

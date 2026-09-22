@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { AnnotationHandler } from 'codehike/code';
+import type { AnnotationHandler } from 'codehike/code';
 
 const InlineFold: AnnotationHandler['Inline'] = ({ children }) => {
   const [folded, setFolded] = useState(true);
