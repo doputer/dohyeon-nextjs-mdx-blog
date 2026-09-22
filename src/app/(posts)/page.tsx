@@ -9,13 +9,11 @@ const Page = async () => {
   const visualizations = posts.filter((post) => post.frontmatter.category === 'visualization');
 
   return (
-    <>
+    <div className="flex flex-col gap-8">
       <h1 className="sr-only">{config.title}</h1>
-      <div className="flex flex-col gap-8">
-        <Group title="글" posts={writings} />
-        <Group title="시각화" posts={visualizations} />
-      </div>
-    </>
+      <Group title="글" posts={writings} />
+      <Group title="시각화" posts={visualizations} />
+    </div>
   );
 };
 
