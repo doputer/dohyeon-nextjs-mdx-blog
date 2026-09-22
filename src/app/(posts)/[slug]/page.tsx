@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 
 import Comment from '@/components/comment';
 import Header from '@/components/content-header';
-import Divider from '@/components/divider';
 import Prose from '@/components/prose';
 import Reaction from '@/components/reaction';
 import Related from '@/components/related';
@@ -23,7 +22,6 @@ const Page = async (props: PageProps<'/[slug]'>) => {
         <TOC toc={toc} />
         <Prose Content={Content} />
       </article>
-      <Divider />
       <Reaction slug={params.slug} />
       <Related slug={params.slug} tags={tags} />
       <Comment />
