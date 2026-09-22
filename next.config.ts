@@ -2,7 +2,6 @@ import type { NextConfig } from 'next';
 
 import path from 'node:path';
 
-import type { Options as MDXOptions } from '@mdx-js/loader';
 import createMDX from '@next/mdx';
 import type { CodeHikeConfig } from 'codehike/mdx';
 
@@ -24,11 +23,6 @@ const codehikeConfig: CodeHikeConfig = {
   syntaxHighlighting: { theme: 'github-from-css' },
 };
 
-const remarkRehypeOptions: MDXOptions['remarkRehypeOptions'] = {
-  footnoteLabel: '각주',
-  footnoteBackLabel: '본문으로 돌아가기',
-};
-
 const local = (script: string) => path.join(__dirname, 'scripts', script);
 
 const withMDX = createMDX({
@@ -42,7 +36,6 @@ const withMDX = createMDX({
       local('remark-typography.mjs'),
       [local('remark-codehike.mjs'), codehikeConfig],
     ],
-    remarkRehypeOptions,
     rehypePlugins: ['rehype-slug', local('rehype-toc.mjs')],
   },
 });
