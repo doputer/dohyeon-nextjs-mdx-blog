@@ -9,6 +9,7 @@ export interface Frontmatter {
   description: string;
   tags: string[];
   date: string;
+  category?: 'visualization';
 }
 
 interface TOC {
