@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import Comment from '@/components/comment';
 import Header from '@/components/content-header';
 import Divider from '@/components/divider';
-import ErrorBoundary from '@/components/error-boundary';
 import Prose from '@/components/prose';
 import Reaction from '@/components/reaction';
 import Related from '@/components/related';
@@ -25,13 +24,9 @@ const Page = async (props: PageProps<'/[slug]'>) => {
         <Prose Content={Content} />
       </article>
       <Divider />
-      <ErrorBoundary message="좋아요를 불러오지 못했습니다.">
-        <Reaction slug={params.slug} />
-      </ErrorBoundary>
+      <Reaction slug={params.slug} />
       <Related slug={params.slug} tags={tags} />
-      <ErrorBoundary message="댓글을 불러오지 못했습니다.">
-        <Comment />
-      </ErrorBoundary>
+      <Comment />
     </>
   );
 };
