@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import config from '@/configs/config.json';
-import { getPosts } from '@/lib/post';
+import { getPosts } from '@/lib/mdx';
 
 export const dynamic = 'force-static';
 

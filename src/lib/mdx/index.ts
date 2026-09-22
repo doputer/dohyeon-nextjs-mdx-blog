@@ -1,13 +1,13 @@
 import { cache } from 'react';
 
-import type { Post } from '@/lib/post/types';
+import type { Post } from '@/lib/mdx/types';
 
 type PostModule = Pick<Post, 'frontmatter' | 'toc'> & { default: Post['MDX'] };
 type PostLoader = () => Promise<PostModule>;
 type PostModules = Record<string, PostLoader>;
 
 const modules = import.meta.glob('*/index.mdx', {
-  base: '../../../contents/post',
+  base: '../../../contents',
 }) as PostModules;
 
 const toSlug = (file: string) => file.split('/').at(-2)!;

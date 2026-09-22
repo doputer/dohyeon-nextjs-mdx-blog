@@ -1,6 +1,6 @@
 import List from '@/components/list';
 import config from '@/configs/config.json';
-import { getPosts } from '@/lib/post';
+import { getPosts } from '@/lib/mdx';
 
 const Page = async () => {
   const posts = await getPosts();

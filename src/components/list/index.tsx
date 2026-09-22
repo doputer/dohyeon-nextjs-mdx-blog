@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import type { Post } from '@/lib/post/types';
+import type { Post } from '@/lib/mdx/types';
 import { toMonthDay, toYear } from '@/utils/date';
 
 interface ListProps {

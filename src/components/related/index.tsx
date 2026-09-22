@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import { getPosts } from '@/lib/post';
-import type { Frontmatter } from '@/lib/post/types';
+import { getPosts } from '@/lib/mdx';
+import type { Frontmatter } from '@/lib/mdx/types';
 import { toYearMonth } from '@/utils/date';
 
 interface RelatedProps {
