@@ -9,7 +9,7 @@ import Reaction from '@/components/reaction';
 import Related from '@/components/related';
 import TOC from '@/components/toc';
 import config from '@/configs/config.json';
-import { getPost, getPosts } from '@/lib/MDX';
+import { getPost, getPosts } from '@/lib/post';
 
 const Page = async (props: PageProps<'/[slug]'>) => {
   const params = await props.params;

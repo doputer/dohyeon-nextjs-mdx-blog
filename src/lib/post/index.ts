@@ -1,6 +1,6 @@
 import { cache } from 'react';
 
-import type { Post } from '@/lib/MDX/types';
+import type { Post } from '@/lib/post/types';
 
 type PostModule = Pick<Post, 'frontmatter' | 'toc'> & { default: Post['MDX'] };
 type PostLoader = () => Promise<PostModule>;

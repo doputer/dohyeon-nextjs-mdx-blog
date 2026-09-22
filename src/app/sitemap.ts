@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 import config from '@/configs/config.json';
 import { getLabs } from '@/lib/lab';
-import { getPosts } from '@/lib/MDX';
+import { getPosts } from '@/lib/post';
 
 const generatePostSitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const { siteUrl } = config;

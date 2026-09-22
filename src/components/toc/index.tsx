@@ -1,4 +1,4 @@
-import type { Post } from '@/lib/MDX/types';
+import type { Post } from '@/lib/post/types';
 import { cn } from '@/utils/cn';
 
 interface TOCProps {

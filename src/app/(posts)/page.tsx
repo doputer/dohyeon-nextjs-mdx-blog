@@ -1,7 +1,7 @@
 import List from '@/components/list';
 import Tabs from '@/components/tabs';
 import config from '@/configs/config.json';
-import { getPosts } from '@/lib/MDX';
+import { getPosts } from '@/lib/post';
 
 const Page = async () => {
   const posts = await getPosts();
