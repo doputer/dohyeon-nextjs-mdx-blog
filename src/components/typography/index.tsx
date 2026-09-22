@@ -1,4 +1,5 @@
 import type { ImageProps } from 'next/image';
+import Link from 'next/link';
 
 import type { MDXComponents } from 'mdx/types';
 
@@ -25,7 +26,10 @@ const components: MDXComponents = {
   th: (props) => <th scope="col" className={format.th} {...props} />,
   td: (props) => <td className={format.td} {...props} />,
   a: ({ href, className, ...props }) => {
+    const isInternal = !!href && href.startsWith('/');
     const isExternal = !!href && !href.startsWith('/') && !href.startsWith('#');
+
+    if (isInternal) return <Link href={href} className={cn(format.a, className)} {...props} />;
 
     return (
       <a
