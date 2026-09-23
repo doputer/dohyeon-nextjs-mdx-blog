@@ -32,24 +32,7 @@ const isPlacementValid = (board: Board, row: number, col: number, value: number)
   return true;
 };
 
-export const cloneBoard = (board: Board) => board.map((row) => [...row]);
-
-export const isBoardValid = (board: Board) => {
-  const copy = cloneBoard(board);
-
-  for (let row = 0; row < copy.length; row++) {
-    for (let col = 0; col < copy[row].length; col++) {
-      const value = copy[row][col];
-      if (value === 0) continue;
-
-      copy[row][col] = 0;
-      if (!isPlacementValid(copy, row, col, value)) return false;
-      copy[row][col] = value;
-    }
-  }
-
-  return true;
-};
+const cloneBoard = (board: Board) => board.map((row) => [...row]);
 
 export function* solve(board: Board): Generator<Step, boolean> {
   const emptyCell = findEmptyCell(board);

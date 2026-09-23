@@ -73,7 +73,6 @@ const Run = ({ speed, speedRef, increaseSpeed, reset }: RunProps) => {
         board={board}
         currentStep={currentStep}
         lockedMask={makeLockedMask(initialBoard)}
-        readOnly
       />
       <Controller state={{ speed, paused }} control={{ increaseSpeed, togglePause, reset }} />
     </section>

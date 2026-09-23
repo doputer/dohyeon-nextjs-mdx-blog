@@ -10,11 +10,9 @@ interface Props {
   board: Board;
   currentStep?: Step;
   lockedMask?: Mask;
-  onChange?: (row: number, col: number, n: number) => void;
-  readOnly?: boolean;
 }
 
-const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Props) => {
+const Grid = ({ board, currentStep, lockedMask }: Props) => {
   return (
     <div className="grid aspect-square grid-cols-9 grid-rows-9 overflow-hidden rounded border-2 border-line bg-surface">
       {board.map((row, i) =>
@@ -41,25 +39,7 @@ const Grid = ({ board, currentStep, lockedMask, onChange, readOnly = false }: Pr
                   'relative after:pointer-events-none after:absolute after:inset-0 after:border after:border-dashed after:border-main/40'
               )}
             >
-              {readOnly ? (
-                <span>{cell || ''}</span>
-              ) : (
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]"
-                  maxLength={1}
-                  value={cell || ''}
-                  onChange={(e) => {
-                    if (!onChange) return;
-                    const v = e.target.value;
-                    const n = v === '' ? 0 : Number.parseInt(v, 10);
-                    if (Number.isNaN(n) || n < 0 || n > 9) return;
-                    onChange(i, j, n);
-                  }}
-                  className="size-full bg-transparent text-center outline-none"
-                />
-              )}
+              {cell || ''}
             </div>
           );
         })
