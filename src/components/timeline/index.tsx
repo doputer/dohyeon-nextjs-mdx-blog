@@ -22,17 +22,13 @@ const Timeline = ({ posts }: Props) => {
   const list = Object.entries(group).toSorted(([a], [b]) => Number(b) - Number(a));
 
   return (
-    <div className="group">
+    <section aria-label="글" className="group">
       {list.map(([year, posts]) => (
-        <section
+        <div
           key={year}
-          aria-labelledby={`year-${year}`}
           className="grid grid-cols-[auto_1fr] gap-6 transition-opacity duration-200 ease-out group-hover:opacity-40 hover:opacity-100! sm:gap-8"
         >
-          <h2
-            id={`year-${year}`}
-            className="h-fit py-3.5 text-sm font-medium text-muted tabular-nums select-none sm:text-base"
-          >
+          <h2 className="h-fit py-3.5 text-sm font-medium text-muted tabular-nums select-none sm:text-base">
             {year}
           </h2>
           <ul>
@@ -59,9 +55,9 @@ const Timeline = ({ posts }: Props) => {
               </li>
             ))}
           </ul>
-        </section>
+        </div>
       ))}
-    </div>
+    </section>
   );
 };
 
