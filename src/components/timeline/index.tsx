@@ -8,7 +8,7 @@ interface Props {
   posts: Mdx[];
 }
 
-const Group = ({ title, posts }: Props) => {
+const Timeline = ({ title, posts }: Props) => {
   if (posts.length === 0) return null;
 
   const group = posts.reduce<Record<string, Mdx[]>>((acc, post) => {
@@ -23,8 +23,8 @@ const Group = ({ title, posts }: Props) => {
   const list = Object.entries(group).toSorted(([a], [b]) => Number(b) - Number(a));
 
   return (
-    <section className="flex flex-col gap-2">
-      <h2 className="py-3.5 text-lg font-semibold sm:text-xl">{title}</h2>
+    <section className="flex flex-col gap-1">
+      <h2 className="text-lg font-medium">{title}</h2>
       <div className="group">
         {list.map(([year, posts]) => (
           <section
@@ -52,7 +52,7 @@ const Group = ({ title, posts }: Props) => {
                       <span
                         aria-hidden
                         data-emoji={frontmatter.emoji}
-                        className="relative after:absolute after:top-1/2 after:ml-2 after:scale-75 after:opacity-0 after:transition-all after:duration-200 after:ease-[cubic-bezier(0.34,1.56,0.64,1)] after:content-[attr(data-emoji)] group-hover/li:after:-translate-y-1/2 group-hover/li:after:scale-100 group-hover/li:after:opacity-100"
+                        className="relative after:absolute after:top-1/2 after:ml-2 after:scale-75 after:opacity-0 after:transition-all after:duration-200 after:ease-[cubic-bezier(0.34,1.56,0.64,1)] after:will-change-transform after:content-[attr(data-emoji)] group-hover/li:after:-translate-y-1/2 group-hover/li:after:scale-100 group-hover/li:after:opacity-100"
                       />
                     </h4>
                     <time
@@ -72,4 +72,4 @@ const Group = ({ title, posts }: Props) => {
   );
 };
 
-export default Group;
+export default Timeline;

@@ -1,4 +1,5 @@
-import Group from '@/components/group';
+import Chips from '@/components/chips';
+import Timeline from '@/components/timeline';
 import config from '@/configs/config.json';
 import { getMdxs } from '@/lib/mdx';
 
@@ -9,10 +10,10 @@ const Page = async () => {
   const visualizations = posts.filter((post) => post.frontmatter.category === 'visualization');
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-10">
       <h1 className="sr-only">{config.title}</h1>
-      <Group title="글" posts={writings} />
-      <Group title="시각화" posts={visualizations} />
+      <Timeline title="글" posts={writings} />
+      <Chips title="시각화" posts={visualizations} />
     </div>
   );
 };

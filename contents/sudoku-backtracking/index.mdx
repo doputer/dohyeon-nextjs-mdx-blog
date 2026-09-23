@@ -11,7 +11,6 @@ date: 2023-07-05
 ---
 
 import Sudoku from '#/sudoku-backtracking/visualizer/sudoku';
-import EditableSudoku from '#/sudoku-backtracking/visualizer/editable-sudoku';
 
 ## 백트래킹
 
@@ -33,20 +32,6 @@ import EditableSudoku from '#/sudoku-backtracking/visualizer/editable-sudoku';
 
 ## 시각화
 
-### 자동 진행
-
-무작위로 채워진 스도쿠판이 스스로 풀리는 과정을 지켜본다.
+빈칸에 숫자를 하나씩 시도하고, 막히면 되돌아가며 스도쿠판이 채워지는 과정이다.
 
 <Sudoku />
-
-### 직접 해보기
-
-- **9x9 격자판**에 1부터 9까지의 숫자를 채워 넣는 퍼즐이다.
-- **각 가로줄**에는 1부터 9까지의 숫자가 겹치지 않게 한 번씩만 들어가야 한다.
-- **각 세로줄**에도 1부터 9까지의 숫자가 겹치지 않게 한 번씩만 들어가야 한다.
-- **각 3x3 블록**에도 1부터 9까지의 숫자가 겹치지 않게 한 번씩만 들어가야 한다.
-- **모든 칸**을 규칙에 맞게 채우면 퍼즐이 완성된다.
-
-각 셀에 초깃값을 입력하고, 스도쿠 백트래킹 과정을 관찰해보자.
-
-<EditableSudoku />
