@@ -10,15 +10,15 @@ date: 2023-01-31
 
 import Playground from '#/css-text-wrapping/playground';
 
-웹 페이지의 텍스트는 컨테이너 너비에 맞춰 스스로 줄을 바꾼다. 대개는 알아서 되지만 어긋나는 순간이 있다. 긴 URL이 컨테이너를 뚫고 나가고, 한글 어절이 중간에서 끊기고, 말줄임표가 나와야 할 자리에 나오지 않는다.
+텍스트는 컨테이너 너비에 맞춰 줄을 바꾼다. 기본 동작으로는 긴 URL이 컨테이너를 넘치고, 한글 어절이 중간에서 끊기고, 말줄임표가 필요한 자리에 나오지 않는다.
 
-이럴 때 사용하는 속성이 `white-space`, `word-break`, `overflow-wrap`, `line-break`, `hyphens`, `text-overflow`, `text-wrap`이다. 이름이 비슷하고 역할도 겹쳐 보이지만 각 속성이 답하는 기준은 다르다.
+이럴 때 사용하는 속성이 `white-space`, `word-break`, `overflow-wrap`, `line-break`, `hyphens`, `text-overflow`, `text-wrap`이다.
 
-| 기준                          | 속성                                                                |
-| ----------------------------- | ------------------------------------------------------------------- |
-| 공백과 개행을 어떻게 처리할까 | `white-space`                                                       |
-| 줄을 어디서 끊을까            | `word-break`, `overflow-wrap`, `line-break`, `hyphens`, `text-wrap` |
-| 넘치면 어떻게 보여줄까        | `overflow` + `text-overflow`, `line-clamp`                          |
+| 역할           | 속성                                                                |
+| -------------- | ------------------------------------------------------------------- |
+| 공백·개행 처리 | `white-space`                                                       |
+| 줄바꿈 위치    | `word-break`, `overflow-wrap`, `line-break`, `hyphens`, `text-wrap` |
+| 넘침 표시      | `overflow` + `text-overflow`, `line-clamp`                          |
 
 ## white-space, 공백과 개행의 처리
 
@@ -78,7 +78,7 @@ import Playground from '#/css-text-wrapping/playground';
 }
 ```
 
-다만 `keep-all`은 공백이 없는 긴 문자열을 막지 못한다. 긴 URL 하나가 컨테이너를 뚫고 나가는 문제는 그대로 남는다. 이 문제를 맡는 속성이 따로 있다.
+다만 `keep-all`은 공백이 없는 긴 문자열을 끊지 못하므로 긴 URL은 여전히 컨테이너를 넘친다.
 
 <Playground property="word-break" />
 
@@ -90,7 +90,7 @@ import Playground from '#/css-text-wrapping/playground';
 - `break-word`: 넘치는 단어에 한해 단어 안에서 끊는다.
 - `anywhere`: `break-word`와 비슷하지만 요소의 최소 너비(`min-content`) 계산에도 영향을 준다.
 
-`word-break: break-all`과 `overflow-wrap: break-word`가 가장 자주 혼동된다. 둘 다 단어 안에서 끊지만 조건이 다르다. `break-all`은 공간이 남아 있어도 줄 끝에 오면 글자를 끊는다. `break-word`는 다른 방법으로는 들어가지 않을 때만 최후의 수단으로 단어를 끊는다.
+`word-break: break-all`과 `overflow-wrap: break-word`가 가장 자주 혼동된다. 둘 다 단어 안에서 끊지만 조건이 다르다. `break-all`은 공간이 남아 있어도 줄 끝에 오면 글자를 끊는다. `break-word`는 다른 방법으로는 들어가지 않을 때만 단어를 끊는다.
 
 일반적인 문단이라면 `overflow-wrap: break-word`가 자연스럽다. 한글은 어절 단위로 끊고 긴 URL만 강제로 끊어 넘침을 막으려면 두 속성을 함께 쓴다.
 
@@ -129,7 +129,7 @@ import Playground from '#/css-text-wrapping/playground';
 
 <Playground property="hyphens" />
 
-여기까지는 줄을 바꾸는 쪽의 이야기였다. `nowrap`처럼 줄을 바꾸지 않기로 했다면 텍스트는 넘친다. 넘친 텍스트를 어떻게 보여줄지가 남은 기준이다.
+`nowrap`처럼 줄을 바꾸지 않으면 긴 텍스트는 컨테이너를 넘친다.
 
 ## text-overflow, 넘친 텍스트의 표시
 
@@ -186,4 +186,4 @@ p {
 
 <Playground property="text-wrap" />
 
-한국어 본문이라면 `word-break: keep-all`과 `overflow-wrap: break-word`를 함께 두면 대부분의 어색함이 사라진다. 나머지는 필요한 순간에 하나씩 꺼내 쓰면 된다.
+한국어 본문이라면 `word-break: keep-all`과 `overflow-wrap: break-word`를 함께 두면 대부분의 어색함이 사라진다.

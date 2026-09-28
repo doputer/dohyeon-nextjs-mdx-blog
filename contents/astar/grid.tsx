@@ -9,8 +9,8 @@ const KIND_CLASS: Record<Kind, string> = {
   wall: 'bg-muted/50',
   path: 'bg-accent/70',
   current: 'bg-accent/30',
-  open: 'bg-teal/25',
-  closed: 'bg-teal/10',
+  open: 'bg-accent-alt/25',
+  closed: 'bg-accent-alt/10',
   empty: '',
 };
 

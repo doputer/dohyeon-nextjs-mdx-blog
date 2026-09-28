@@ -19,7 +19,7 @@ const Controller = ({ state, control }: Props) => {
           현재 칸
         </span>
         <span className="flex items-center gap-1.5">
-          <i className="inline-block size-2.5 rounded-xs bg-teal/15" />
+          <i className="inline-block size-2.5 rounded-xs bg-accent-alt/15" />
           방문한 칸
         </span>
       </div>

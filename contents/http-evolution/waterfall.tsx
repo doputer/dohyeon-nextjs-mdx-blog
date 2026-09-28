@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import useInView from '#/http-evolution/hook/use-in-view';
 import { cn } from '@/utils/cn';
@@ -98,63 +98,69 @@ const LABELS: Record<Version, string> = {
   http3: 'HTTP/3',
 };
 
-interface BarsProps {
-  rows: Row[];
-  inView: boolean;
-}
+const MAX_FRAME_SEC = 0.1;
 
-const Bars = ({ rows, inView }: BarsProps) => {
-  const [ready, setReady] = useState(false);
+const useElapsed = (total: number, inView: boolean) => {
+  const [elapsed, setElapsed] = useState(0);
+  const inViewRef = useRef(inView);
 
   useEffect(() => {
-    if (!inView) return;
-    let inner = 0;
-    const outer = requestAnimationFrame(() => {
-      inner = requestAnimationFrame(() => setReady(true));
-    });
-    return () => {
-      cancelAnimationFrame(outer);
-      cancelAnimationFrame(inner);
-    };
+    inViewRef.current = inView;
   }, [inView]);
 
-  const animate = ready && inView;
+  useEffect(() => {
+    let frameId: number;
+    let last: number | null = null;
 
-  return (
-    <div className="flex flex-col gap-2 p-5">
-      {rows.map((row) => (
-        <div key={row.label} className="flex items-center gap-3">
-          <span className="w-20 shrink-0 truncate font-mono text-xs text-muted lg:w-32">
-            {row.label}
-          </span>
-          <div className="relative h-3 flex-1 rounded bg-surface">
-            {row.segments.map((seg, i) => (
-              <div
-                key={i}
-                className={cn(
-                  'absolute top-0 h-full',
-                  SEG_STYLE[seg.kind],
-                  i === 0 && 'rounded-l',
-                  i === row.segments.length - 1 && 'rounded-r'
-                )}
-                style={{
-                  left: `${(seg.start / GLOBAL_MAX) * 100}%`,
-                  width: `${(seg.duration / GLOBAL_MAX) * 100}%`,
-                  transformOrigin: 'left',
-                  transform: animate ? 'scaleX(1)' : 'scaleX(0)',
-                  transitionProperty: animate ? 'transform' : 'none',
-                  transitionTimingFunction: 'linear',
-                  transitionDuration: animate ? `${seg.duration * UNIT_SEC}s` : '0s',
-                  transitionDelay: animate ? `${seg.start * UNIT_SEC}s` : '0s',
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+    const tick = (now: number) => {
+      const delta = last === null ? 0 : Math.min(MAX_FRAME_SEC, (now - last) / 1000);
+      last = now;
+      if (inViewRef.current) setElapsed((prev) => Math.min(total, prev + delta / UNIT_SEC));
+      frameId = requestAnimationFrame(tick);
+    };
+
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, [total]);
+
+  const reset = useCallback(() => setElapsed(0), []);
+
+  return { elapsed, reset };
 };
+
+interface BarsProps {
+  rows: Row[];
+  elapsed: number;
+}
+
+const Bars = ({ rows, elapsed }: BarsProps) => (
+  <div className="flex flex-col gap-2 p-5">
+    {rows.map((row) => (
+      <div key={row.label} className="flex items-center gap-3">
+        <span className="w-20 shrink-0 truncate font-mono text-xs text-muted lg:w-32">
+          {row.label}
+        </span>
+        <div className="relative h-3 flex-1 rounded bg-surface">
+          {row.segments.map((seg, i) => (
+            <div
+              key={i}
+              className={cn(
+                'absolute top-0 h-full',
+                SEG_STYLE[seg.kind],
+                i === 0 && 'rounded-l',
+                i === row.segments.length - 1 && 'rounded-r'
+              )}
+              style={{
+                left: `${(seg.start / GLOBAL_MAX) * 100}%`,
+                width: `${(Math.min(seg.duration, Math.max(0, elapsed - seg.start)) / GLOBAL_MAX) * 100}%`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
 
 interface Props {
   version: Version;
@@ -163,7 +169,6 @@ interface Props {
 
 const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
   const [loss, setLoss] = useState(initialLoss);
-  const [tick, setTick] = useState(0);
 
   const { ref: sectionRef, inView } = useInView();
 
@@ -171,7 +176,12 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
   const rows = buildSchedule(version, supportsLoss && loss);
   const total = endOf(rows);
 
-  const refetch = () => setTick((t) => t + 1);
+  const { elapsed, reset } = useElapsed(total, inView);
+
+  const toggleLoss = (checked: boolean) => {
+    setLoss(checked);
+    reset();
+  };
 
   return (
     <section ref={sectionRef} className="my-8 overflow-hidden rounded border border-line">
@@ -183,7 +193,7 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
               <input
                 type="checkbox"
                 checked={loss}
-                onChange={(e) => setLoss(e.target.checked)}
+                onChange={(e) => toggleLoss(e.target.checked)}
                 className="accent-main"
               />
               패킷 유실
@@ -191,7 +201,7 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
           )}
           <button
             type="button"
-            onClick={refetch}
+            onClick={reset}
             className="rounded bg-main px-3 py-1 text-sm font-medium text-background transition-opacity hover:opacity-90"
           >
             요청
@@ -199,7 +209,7 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
         </div>
       </div>
 
-      <Bars key={`${version}-${loss}-${tick}`} rows={rows} inView={inView} />
+      <Bars rows={rows} elapsed={elapsed} />
 
       <div className="flex items-center justify-between gap-4 border-t border-line px-5 py-3 text-xs text-muted">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -216,7 +226,7 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
             </span>
           )}
         </div>
-        <span className="shrink-0 font-mono text-muted">총 {(total * UNIT_SEC).toFixed(1)}초</span>
+        <span className="shrink-0 font-mono text-muted">{(elapsed * UNIT_SEC).toFixed(1)}초</span>
       </div>
     </section>
   );
