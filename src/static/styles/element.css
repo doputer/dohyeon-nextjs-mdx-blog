@@ -16,11 +16,7 @@
 }
 
 [data-footnote-ref] {
-  @apply ml-0.5 scroll-mt-12 text-muted no-underline;
-}
-
-[data-footnote-ref]:hover {
-  @apply text-main;
+  @apply ml-0.5 scroll-mt-12 no-underline;
 }
 
 [data-footnote-ref]::before {
