@@ -13,12 +13,12 @@ import Playground from '#/css-flex/playground';
 
 `display: flex`를 주면 자식들이 한 줄로 늘어선다. 이후에 쓰는 속성은 대부분 주축(main axis)과 교차축(cross axis) 위에서 정의된다. 두 축의 방향은 `flex-direction`이 정한다.
 
-| 기준                      | 속성                                         |
-| ------------------------- | -------------------------------------------- |
-| 축을 어디로 놓을까        | `flex-direction`, `flex-wrap`                |
-| 주축에서 어떻게 놓을까    | `justify-content`, `gap`                     |
-| 교차축에서 어떻게 놓을까  | `align-items`, `align-content`, `align-self` |
-| 아이템이 얼마나 늘고 줄까 | `flex-grow`, `flex-shrink`, `flex-basis`     |
+| 역할        | 속성                                         |
+| ----------- | -------------------------------------------- |
+| 축과 줄바꿈 | `flex-direction`, `flex-wrap`                |
+| 주축 정렬   | `justify-content`, `gap`                     |
+| 교차축 정렬 | `align-items`, `align-content`, `align-self` |
+| 아이템 크기 | `flex-grow`, `flex-shrink`, `flex-basis`     |
 
 `align-self`와 크기 관련 속성은 아이템에, 나머지는 컨테이너에 건다.
 
@@ -86,10 +86,10 @@ import Playground from '#/css-flex/playground';
 `flex-grow`, `flex-shrink`, `flex-basis`의 단축 속성이고 기본값은 `0 1 auto`다.
 
 - `flex-grow`: 남는 공간을 나눠 가질 비율이다. 기본값 `0`이라 아이템은 저절로 늘어나지 않는다.
-- `flex-shrink`: 공간이 모자랄 때 줄어들 비율이다. 기본값이 `1`이라 아이템은 가만히 두면 줄어든다.
+- `flex-shrink`: 공간이 모자랄 때 줄어들 비율이다. 기본값이 `1`이라 아이템은 따로 설정하지 않아도 줄어든다.
 - `flex-basis`: 늘리고 줄이기 전의 기준 크기다. `auto`면 주축 방향의 `width`(또는 `height`)를 보고 그것도 `auto`면 콘텐츠 크기가 된다.
 
-| 값        | 풀어 쓰면  | 뜻                                               |
+| 값        | 풀어 쓴 값 | 동작                                             |
 | --------- | ---------- | ------------------------------------------------ |
 | `initial` | `0 1 auto` | 콘텐츠 크기에서 시작해 줄어들기만 한다           |
 | `auto`    | `1 1 auto` | 콘텐츠 크기에서 시작해 남는 공간도 나눠 갖는다   |
@@ -147,4 +147,4 @@ flex 컨테이너에서 `auto` 마진은 남는 공간을 전부 가져간다. �
 }
 ```
 
-정렬이 이상하면 주축이 어디인지, 크기가 이상하면 `flex-basis`와 `min-width`를 확인하면 된다. 행과 열을 동시에 잡는 일은 [grid](/css-grid)의 몫이다.
+정렬이 이상하면 주축이 어디인지, 크기가 이상하면 `flex-basis`와 `min-width`를 확인하면 된다. 행과 열을 함께 다루려면 [grid](/css-grid)를 쓴다.
