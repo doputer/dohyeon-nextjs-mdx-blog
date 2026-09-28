@@ -15,11 +15,11 @@ const Controller = ({ state, control }: Props) => {
     <div className="flex items-center justify-between rounded border border-line bg-surface py-1 pr-1.5 pl-3.5">
       <div className="flex items-center gap-3 text-xs text-muted select-none">
         <span className="flex items-center gap-1.5">
-          <i className="inline-block size-2.5 rounded-xs bg-teal/25" />
+          <i className="inline-block size-2.5 rounded-xs bg-accent-alt/25" />
           열린 목록
         </span>
         <span className="flex items-center gap-1.5">
-          <i className="inline-block size-2.5 rounded-xs bg-teal/10" />
+          <i className="inline-block size-2.5 rounded-xs bg-accent-alt/10" />
           닫힌 목록
         </span>
         <span className="flex items-center gap-1.5">

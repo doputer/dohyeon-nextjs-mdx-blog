@@ -5,7 +5,7 @@ type Kind = 'current' | 'visited' | 'unvisited';
 
 const KIND_CLASS: Record<Kind, string> = {
   current: 'bg-accent/30',
-  visited: 'bg-teal/15',
+  visited: 'bg-accent-alt/15',
   unvisited: '',
 };
 

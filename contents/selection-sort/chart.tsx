@@ -19,7 +19,7 @@ const Chart = ({ array, max, candidate, probe, sortedTo }: Props) => (
           index < sortedTo
             ? 'bg-main'
             : index === candidate
-              ? 'bg-teal'
+              ? 'bg-accent-alt'
               : index === probe
                 ? 'bg-accent'
                 : 'bg-line'
