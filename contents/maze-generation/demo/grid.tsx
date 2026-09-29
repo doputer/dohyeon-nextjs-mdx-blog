@@ -30,7 +30,7 @@ const Grid = ({ rows, cols, step }: Props) => {
 
   return (
     <div
-      className="grid aspect-video overflow-hidden rounded border-2 border-line bg-surface select-none"
+      className="grid aspect-video overflow-hidden border-2 border-line select-none"
       style={{
         gridTemplateColumns: `repeat(${cols}, 1fr)`,
         gridTemplateRows: `repeat(${rows}, 1fr)`,

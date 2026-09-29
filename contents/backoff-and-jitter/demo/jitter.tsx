@@ -102,7 +102,7 @@ const Jitter = ({ strategy }: Props) => {
 
   return (
     <section ref={sectionRef} className="space-y-2.5">
-      <div className="rounded border-2 border-line bg-surface p-4 select-none">
+      <div className="border-2 border-line p-4 select-none">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-muted">
           <span className="text-main">{LABELS[strategy]}</span>
           <span className="font-mono">
@@ -206,30 +206,29 @@ const Jitter = ({ strategy }: Props) => {
         </svg>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-y-1 rounded border border-line bg-surface py-1 pr-1.5 pl-3.5">
-        <div className="flex items-center gap-3 text-xs text-muted select-none">
-          <span className="flex items-center gap-1.5">
-            <i className="inline-block size-2.5 rounded-full bg-main" />
-            요청
-          </span>
-          <span className="flex items-center gap-1.5">
-            <i className="inline-block size-2.5 rounded-full bg-accent-alt" />
-            성공
-          </span>
-          <span className="flex items-center gap-1.5">
-            <i className="inline-block size-2.5 rounded-full border border-main" />
-            거절
-          </span>
-        </div>
-
+      <div className="-mt-1 flex flex-wrap items-center justify-end gap-x-3 gap-y-1 px-0.5 text-xs text-muted select-none">
+        <span className="flex items-center gap-1.5">
+          <i className="inline-block size-2.5 rounded-full bg-main" />
+          요청
+        </span>
+        <span className="flex items-center gap-1.5">
+          <i className="inline-block size-2.5 rounded-full bg-accent-alt" />
+          성공
+        </span>
+        <span className="flex items-center gap-1.5">
+          <i className="inline-block size-2.5 rounded-full border border-main" />
+          거절
+        </span>
+      </div>
+      <fieldset aria-label="조작">
         <button
           type="button"
           onClick={rerun}
-          className="ml-2.5 flex items-center justify-center rounded bg-main px-1.5 py-0.5 text-xs font-medium text-background select-none hover:opacity-85"
+          className="border border-main px-2 py-0.5 text-sm text-main select-none"
         >
           다시 실행
         </button>
-      </div>
+      </fieldset>
     </section>
   );
 };

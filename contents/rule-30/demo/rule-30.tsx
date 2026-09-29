@@ -70,7 +70,7 @@ const Rule30 = () => {
 
   return (
     <section className="space-y-2.5">
-      <div className="aspect-video overflow-hidden rounded border-2 border-line bg-surface">
+      <div className="aspect-video overflow-hidden border-2 border-line">
         <svg viewBox={`0 0 ${WIDTH} ${MAX_ROWS}`} className="h-full w-full" aria-hidden>
           {rows.map((row, y) =>
             row.map((cell, x) =>

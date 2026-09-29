@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Chart = ({ array, max, active, sortedFrom }: Props) => (
-  <div className="flex aspect-video items-end gap-px overflow-hidden rounded border-2 border-line bg-surface p-2">
+  <div className="flex aspect-video items-end gap-px overflow-hidden border-2 border-line p-2">
     {array.map((value, index) => (
       <div
         key={index}

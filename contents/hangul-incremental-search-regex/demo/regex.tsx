@@ -48,7 +48,7 @@ const Demo = () => {
 
   return (
     <section className="space-y-2.5">
-      <ul className="space-y-1.5 rounded border-2 border-line bg-surface p-4">
+      <ul className="space-y-1.5 border-2 border-line p-4">
         {SAMPLES.map((sample) => {
           const matched =
             tokens.length > 0 && tokens.every((token) => compile(token).test(sample.toLowerCase()));
@@ -64,18 +64,18 @@ const Demo = () => {
         })}
       </ul>
 
-      <div className="flex flex-col gap-2 rounded border border-line bg-surface p-3">
+      <fieldset aria-label="검색어" className="flex flex-col gap-2">
         <input
           ref={ref}
           type="text"
           placeholder="한글을 입력해보세요"
           aria-label="검색어"
           onChange={onChange}
-          className="min-w-0 flex-1 rounded border border-line bg-background px-2.5 py-1.5 text-sm text-main outline-none placeholder:text-soft focus:border-muted"
+          className="min-w-0 flex-1 border border-line bg-background px-2.5 py-1.5 text-sm text-main outline-none placeholder:text-soft focus:border-muted"
         />
 
         <p className="min-h-4 font-mono text-xs break-all text-muted">{sources.join(' ')}</p>
-      </div>
+      </fieldset>
     </section>
   );
 };

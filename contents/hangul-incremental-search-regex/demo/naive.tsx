@@ -37,7 +37,7 @@ const Naive = () => {
 
   return (
     <section className="space-y-2.5">
-      <div className="rounded border-2 border-line bg-surface p-4">
+      <div className="border-2 border-line p-4">
         {matched.length > 0 ? (
           <ul className="space-y-1.5">
             {matched.map((sample) => (
@@ -51,20 +51,20 @@ const Naive = () => {
         )}
       </div>
 
-      <div className="flex flex-col gap-2 rounded border border-line bg-surface p-3">
+      <fieldset aria-label="검색어" className="flex flex-col gap-2">
         <input
           ref={ref}
           type="text"
           placeholder="검색어를 입력해보세요"
           aria-label="검색어"
           onChange={onChange}
-          className="min-w-0 flex-1 rounded border border-line bg-background px-2.5 py-1.5 text-sm text-main outline-none placeholder:text-soft focus:border-muted"
+          className="min-w-0 flex-1 border border-line bg-background px-2.5 py-1.5 text-sm text-main outline-none placeholder:text-soft focus:border-muted"
         />
 
         <p className="min-h-4 font-mono text-xs text-muted">
           {query === '' ? '' : `includes("${query}")`}
         </p>
-      </div>
+      </fieldset>
     </section>
   );
 };

@@ -14,7 +14,7 @@ interface Props {
 
 const Grid = ({ board, currentStep, lockedMask }: Props) => {
   return (
-    <div className="grid aspect-square grid-cols-9 grid-rows-9 overflow-hidden rounded border-2 border-line bg-surface">
+    <div className="grid aspect-square grid-cols-9 grid-rows-9 overflow-hidden border-2 border-line">
       {board.map((row, i) =>
         row.map((cell, j) => {
           const isTry =

@@ -140,7 +140,7 @@ const Bars = ({ rows, elapsed }: BarsProps) => (
         <span className="w-20 shrink-0 truncate font-mono text-xs text-muted lg:w-32">
           {row.label}
         </span>
-        <div className="relative h-3 flex-1 rounded bg-background">
+        <div className="relative h-3 flex-1 rounded bg-surface">
           {row.segments.map((seg, i) => (
             <div
               key={i}
@@ -185,7 +185,7 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
 
   return (
     <section ref={sectionRef} className="space-y-2.5">
-      <div className="space-y-4 rounded border-2 border-line bg-surface p-4 select-none">
+      <div className="space-y-4 border-2 border-line p-4 select-none">
         <div className="flex items-center justify-between gap-4 font-mono text-xs text-muted">
           <span className="text-main">{LABELS[version]}</span>
           <span>{(elapsed * UNIT_SEC).toFixed(1)}초</span>
@@ -194,50 +194,43 @@ const Waterfall = ({ version, loss: initialLoss = false }: Props) => {
         <Bars rows={rows} elapsed={elapsed} />
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-y-1 rounded border border-line bg-surface py-1 pr-1.5 pl-3.5">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted select-none">
+      <div className="-mt-1 flex flex-wrap items-center justify-end gap-x-3 gap-y-1 px-0.5 text-xs text-muted select-none">
+        <span className="flex items-center gap-1.5">
+          <i className="inline-block size-2.5 bg-main/40" />
+          연결 수립
+        </span>
+        <span className="flex items-center gap-1.5">
+          <i className="inline-block size-2.5 bg-main" />
+          전송
+        </span>
+        {supportsLoss && (
           <span className="flex items-center gap-1.5">
-            <i className="inline-block size-2.5 rounded-xs bg-main/40" />
-            연결 수립
+            <i className="inline-block size-2.5 border border-dashed border-main/40 bg-main/10" />
+            재전송 대기
           </span>
-          <span className="flex items-center gap-1.5">
-            <i className="inline-block size-2.5 rounded-xs bg-main" />
-            전송
-          </span>
+        )}
+      </div>
+      <fieldset aria-label="조작">
+        <div className="flex items-center gap-3">
           {supportsLoss && (
-            <span className="flex items-center gap-1.5">
-              <i className="inline-block size-2.5 rounded-xs border border-dashed border-main/40 bg-main/10" />
-              재전송 대기
-            </span>
-          )}
-        </div>
-
-        <div className="flex items-center">
-          {supportsLoss && (
-            <button
-              type="button"
-              aria-pressed={loss}
-              onClick={() => toggleLoss(!loss)}
-              className="flex min-w-7 items-center justify-center gap-1.5 rounded px-1.5 py-0.5 text-xs font-medium text-muted select-none hover:bg-background hover:text-main"
-            >
-              <i
-                className={cn(
-                  'inline-block size-2.5 rounded-xs border border-main',
-                  loss && 'bg-main'
-                )}
+            <label className="flex cursor-pointer items-center gap-1.5 text-sm text-muted select-none has-checked:text-main">
+              <input
+                type="checkbox"
+                checked={loss}
+                onChange={(e) => toggleLoss(e.target.checked)}
               />
               패킷 유실
-            </button>
+            </label>
           )}
           <button
             type="button"
             onClick={reset}
-            className="ml-2.5 flex items-center justify-center rounded bg-main px-1.5 py-0.5 text-xs font-medium text-background select-none hover:opacity-85"
+            className="border border-main px-2 py-0.5 text-sm text-main select-none"
           >
             요청
           </button>
         </div>
-      </div>
+      </fieldset>
     </section>
   );
 };

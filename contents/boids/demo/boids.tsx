@@ -76,7 +76,7 @@ const Boids = () => {
 
   return (
     <section className="space-y-2.5">
-      <div className="aspect-video overflow-hidden rounded border-2 border-line bg-surface">
+      <div className="aspect-video overflow-hidden border-2 border-line">
         <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="h-full w-full">
           <g className="fill-line">
             {DOTS.map(([x, y]) => (

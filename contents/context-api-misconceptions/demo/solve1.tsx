@@ -54,7 +54,7 @@ const Baz = () => {
       <Control>
         <button
           onClick={() => setValue(value + 1)}
-          className="flex items-center justify-center rounded bg-main px-1.5 py-0.5 text-xs font-medium text-background select-none hover:opacity-85"
+          className="border border-main px-2 py-0.5 text-sm text-main select-none"
         >
           Button
         </button>

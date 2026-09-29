@@ -27,14 +27,14 @@ const SLIDERS: { key: keyof Weights; label: string }[] = [
 
 const Controller = ({ state, control }: Props) => {
   return (
-    <div className="flex flex-col gap-2 rounded border border-line bg-surface p-3">
+    <fieldset aria-label="조작" className="flex flex-col gap-2">
       <div className="flex flex-col gap-1">
         {SLIDERS.map(({ key, label }) => {
           const value = state.weights[key];
           const fill = `${((value - MIN) / (MAX - MIN)) * 100}%`;
 
           return (
-            <label key={key} className="flex items-center gap-2.5 text-xs text-muted select-none">
+            <label key={key} className="flex items-center gap-2.5 text-sm text-muted select-none">
               <span className="w-8 shrink-0 font-mono">{label}</span>
               <input
                 type="range"
@@ -51,27 +51,27 @@ const Controller = ({ state, control }: Props) => {
         })}
       </div>
 
-      <div className="flex items-center justify-end">
+      <div className="flex items-center gap-1.5">
         <button
-          className="flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 text-xs font-medium text-muted select-none hover:bg-background hover:text-main"
+          className="border border-line px-2 py-0.5 text-sm text-main select-none"
           onClick={control.reset}
         >
           초기화
         </button>
         <button
-          className="flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 text-xs font-medium text-muted select-none hover:bg-background hover:text-main"
+          className="min-w-9 border border-line px-2 py-0.5 font-mono text-sm text-main select-none"
           onClick={control.increaseSpeed}
         >
           ×{state.speed}
         </button>
         <button
-          className="ml-2.5 flex items-center justify-center rounded bg-main px-1.5 py-0.5 text-xs font-medium text-background select-none hover:opacity-85"
+          className="border border-main px-2 py-0.5 text-sm text-main select-none"
           onClick={control.togglePause}
         >
           {state.paused ? '재생' : '정지'}
         </button>
       </div>
-    </div>
+    </fieldset>
   );
 };
 

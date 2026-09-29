@@ -21,8 +21,8 @@ const Controller = ({ state, control }: Props) => {
   const fill = `${((state.rule - MIN) / (MAX - MIN)) * 100}%`;
 
   return (
-    <div className="flex flex-col gap-2 rounded border border-line bg-surface p-3">
-      <label className="flex items-center gap-2.5 text-xs text-muted select-none">
+    <fieldset aria-label="조작" className="flex flex-col gap-2">
+      <label className="flex items-center gap-2.5 text-sm text-muted select-none">
         <span className="w-8 shrink-0 font-mono">규칙</span>
         <input
           type="range"
@@ -37,27 +37,27 @@ const Controller = ({ state, control }: Props) => {
         <span className="w-8 shrink-0 text-right font-mono">{state.rule}</span>
       </label>
 
-      <div className="flex items-center justify-end">
+      <div className="flex items-center gap-1.5">
         <button
-          className="flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 text-xs font-medium text-muted select-none hover:bg-background hover:text-main"
+          className="border border-line px-2 py-0.5 text-sm text-main select-none"
           onClick={control.restart}
         >
           다시 시작
         </button>
         <button
-          className="flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 text-xs font-medium text-muted select-none hover:bg-background hover:text-main"
+          className="min-w-9 border border-line px-2 py-0.5 font-mono text-sm text-main select-none"
           onClick={control.increaseSpeed}
         >
           ×{state.speed}
         </button>
         <button
-          className="ml-2.5 flex items-center justify-center rounded bg-main px-1.5 py-0.5 text-xs font-medium text-background select-none hover:opacity-85"
+          className="border border-main px-2 py-0.5 text-sm text-main select-none"
           onClick={control.togglePause}
         >
           {state.paused ? '재생' : '정지'}
         </button>
       </div>
-    </div>
+    </fieldset>
   );
 };
 

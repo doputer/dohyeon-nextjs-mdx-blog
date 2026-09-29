@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, useState } from 'react';
+import { type CSSProperties, useId, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -100,26 +100,24 @@ interface Props {
 
 const Playground = ({ property }: Props) => {
   const config: PropertyConfig = CONFIGS[property];
+  const name = useId();
   const [value, setValue] = useState(config.values[0]);
 
   const selected = config.style(value) as CSSProperties;
 
   return (
     <section className="space-y-2.5">
-      <div className="overflow-hidden rounded border-2 border-line bg-surface p-4">
+      <div className="overflow-hidden border-2 border-line p-4">
         <div
           style={{ ...config.base, ...(config.apply === 'container' ? selected : undefined) }}
-          className={cn(
-            'grid gap-2 rounded border border-dashed border-line p-3',
-            config.containerClass
-          )}
+          className={cn('grid gap-2 border border-dashed border-line p-3', config.containerClass)}
         >
           {config.items.map((item, index) => (
             <div
               key={item.label}
               style={config.apply === 'first' && index === 0 ? selected : undefined}
               className={cn(
-                'flex items-center justify-center rounded border border-line bg-background px-3 py-2 text-sm text-main',
+                'flex items-center justify-center border border-line bg-surface px-3 py-2 text-sm text-main',
                 item.className
               )}
             >
@@ -135,27 +133,25 @@ const Playground = ({ property }: Props) => {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded border border-line bg-surface py-1 pr-1.5 pl-3.5">
-        <span className="font-mono text-xs text-muted select-none">{property}</span>
-        <div className="flex flex-wrap items-center justify-end">
+      <fieldset aria-label={property}>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
           {config.values.map((option) => (
-            <button
+            <label
               key={option}
-              type="button"
-              aria-pressed={value === option}
-              onClick={() => setValue(option)}
-              className={cn(
-                'flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 font-mono text-xs font-medium select-none',
-                value === option
-                  ? 'bg-main text-background'
-                  : 'text-muted hover:bg-background hover:text-main'
-              )}
+              className="flex cursor-pointer items-center gap-1.5 font-mono text-sm text-muted select-none has-checked:text-main"
             >
+              <input
+                type="radio"
+                name={name}
+                value={option}
+                checked={value === option}
+                onChange={() => setValue(option)}
+              />
               {option}
-            </button>
+            </label>
           ))}
         </div>
-      </div>
+      </fieldset>
     </section>
   );
 };

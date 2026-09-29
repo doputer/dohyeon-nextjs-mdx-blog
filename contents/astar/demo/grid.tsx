@@ -46,7 +46,7 @@ const Grid = ({ rows, cols, start, end, walls, step, onPointerDown, onPointerEnt
 
   return (
     <div
-      className="grid aspect-video touch-none overflow-hidden rounded border-2 border-line bg-surface select-none"
+      className="grid aspect-video touch-none overflow-hidden border-2 border-line select-none"
       style={{
         gridTemplateColumns: `repeat(${cols}, 1fr)`,
         gridTemplateRows: `repeat(${rows}, 1fr)`,
