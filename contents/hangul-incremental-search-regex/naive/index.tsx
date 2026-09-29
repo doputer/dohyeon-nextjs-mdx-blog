@@ -36,23 +36,8 @@ const Naive = () => {
   const matched = query === '' ? [] : SAMPLES.filter((sample) => sample.includes(query));
 
   return (
-    <section className="my-8 rounded border border-line">
-      <div className="p-4">
-        <input
-          ref={ref}
-          type="text"
-          placeholder="검색어를 입력해보세요"
-          aria-label="검색어"
-          onChange={onChange}
-          className="min-h-6 w-full border-b border-line bg-transparent pb-2 text-main outline-none placeholder:text-muted"
-        />
-
-        <p className="mt-3 font-mono text-xs whitespace-pre-line text-muted">
-          {query === '' ? '\n' : `includes("${query}")`}
-        </p>
-      </div>
-
-      <div className="border-t border-line bg-surface p-4">
+    <section className="space-y-2.5">
+      <div className="rounded border-2 border-line bg-surface p-4">
         {matched.length > 0 ? (
           <ul className="space-y-1.5">
             {matched.map((sample) => (
@@ -64,6 +49,21 @@ const Naive = () => {
         ) : (
           <p className="text-sm text-muted">결과 없음</p>
         )}
+      </div>
+
+      <div className="flex flex-col gap-2 rounded border border-line bg-surface p-3">
+        <input
+          ref={ref}
+          type="text"
+          placeholder="검색어를 입력해보세요"
+          aria-label="검색어"
+          onChange={onChange}
+          className="min-w-0 flex-1 rounded border border-line bg-background px-2.5 py-1.5 text-sm text-main outline-none placeholder:text-soft focus:border-muted"
+        />
+
+        <p className="min-h-4 font-mono text-xs text-muted">
+          {query === '' ? '' : `includes("${query}")`}
+        </p>
       </div>
     </section>
   );

@@ -27,14 +27,14 @@ const Controller = ({ state, control }: Props) => {
       <div className="flex items-center">
         {control.reset && (
           <button
-            className="flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 text-xs font-medium text-muted select-none hover:bg-surface hover:text-main"
+            className="flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 text-xs font-medium text-muted select-none hover:bg-background hover:text-main"
             onClick={control.reset}
           >
             초기화
           </button>
         )}
         <button
-          className="flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 text-xs font-medium text-muted select-none hover:bg-surface hover:text-main"
+          className="flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 text-xs font-medium text-muted select-none hover:bg-background hover:text-main"
           onClick={control.increaseSpeed}
         >
           ×{state.speed}

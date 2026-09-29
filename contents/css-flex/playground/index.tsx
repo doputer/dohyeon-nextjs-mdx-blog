@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, useId, useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -102,14 +102,13 @@ interface Props {
 
 const Playground = ({ property }: Props) => {
   const config: PropertyConfig = CONFIGS[property];
-  const name = useId();
   const [value, setValue] = useState(config.values[0]);
 
   const selected = config.style(value) as CSSProperties;
 
   return (
-    <section className="my-8 rounded border border-line">
-      <div className="overflow-hidden p-4">
+    <section className="space-y-2.5">
+      <div className="overflow-hidden rounded border-2 border-line bg-surface p-4">
         <div
           style={{ ...config.base, ...(config.apply === 'container' ? selected : undefined) }}
           className={cn(
@@ -122,7 +121,7 @@ const Playground = ({ property }: Props) => {
               key={item.label}
               style={config.apply === 'items' ? selected : undefined}
               className={cn(
-                'flex items-center justify-center rounded border border-line bg-surface px-3 py-2 text-sm text-main',
+                'flex items-center justify-center rounded border border-line bg-background px-3 py-2 text-sm text-main',
                 item.className
               )}
             >
@@ -138,26 +137,26 @@ const Playground = ({ property }: Props) => {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-x-4 gap-y-2 border-t border-line bg-surface px-4 py-3">
-        {config.values.map((option) => (
-          <label
-            key={option}
-            className={cn(
-              'flex cursor-pointer items-center gap-2 font-mono text-sm text-muted transition-colors hover:text-main',
-              value === option && 'font-medium text-main'
-            )}
-          >
-            <input
-              type="radio"
-              name={name}
-              value={option}
-              checked={value === option}
-              onChange={() => setValue(option)}
-              className="accent-main"
-            />
-            {option}
-          </label>
-        ))}
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded border border-line bg-surface py-1 pr-1.5 pl-3.5">
+        <span className="font-mono text-xs text-muted select-none">{property}</span>
+        <div className="flex flex-wrap items-center justify-end">
+          {config.values.map((option) => (
+            <button
+              key={option}
+              type="button"
+              aria-pressed={value === option}
+              onClick={() => setValue(option)}
+              className={cn(
+                'flex min-w-7 items-center justify-center rounded px-1.5 py-0.5 font-mono text-xs font-medium select-none',
+                value === option
+                  ? 'bg-main text-background'
+                  : 'text-muted hover:bg-background hover:text-main'
+              )}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
       </div>
     </section>
   );

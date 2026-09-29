@@ -2,6 +2,7 @@
 
 import { createContext, type PropsWithChildren, useContext, useState } from 'react';
 
+import Frame, { Control } from '#/context-api-misconceptions/example/frame';
 import useRender from '#/context-api-misconceptions/hook/use-render';
 
 type Type = {
@@ -44,7 +45,6 @@ const Bar = () => {
 
 const Baz = () => {
   const ref1 = useRender();
-  const ref2 = useRender();
 
   const context = useContext(Context);
   if (!context) throw new Error();
@@ -54,18 +54,23 @@ const Baz = () => {
   return (
     <>
       <div ref={ref1}>Baz</div>
-      <button ref={ref2} onClick={() => setValue2(value2 + 1)}>
-        Button
-      </button>
+      <Control>
+        <button
+          onClick={() => setValue2(value2 + 1)}
+          className="flex items-center justify-center rounded bg-main px-1.5 py-0.5 text-xs font-medium text-background select-none hover:opacity-85"
+        >
+          Button
+        </button>
+      </Control>
     </>
   );
 };
 
 const Problem2 = () => {
   return (
-    <section className="space-y-4 rounded border border-line bg-background p-4">
+    <Frame>
       <Foo />
-    </section>
+    </Frame>
   );
 };
 

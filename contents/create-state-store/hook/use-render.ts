@@ -11,10 +11,7 @@ const useRender = <T extends HTMLElement>() => {
     if (!element.current) return;
 
     element.current.animate(
-      [
-        { outline: '2px solid oklch(61.2% 0.231 22.6deg / 1)' },
-        { outline: '2px solid oklch(61.2% 0.231 22.6deg / 0)' },
-      ],
+      [{ outline: '2px solid var(--color-accent)' }, { outline: '2px solid transparent' }],
       { duration: 500 }
     );
   });

@@ -101,19 +101,15 @@ const Jitter = ({ strategy }: Props) => {
   const elapsed = (world.finishedAt ?? world.tick) / TICKS_PER_SECOND;
 
   return (
-    <section ref={sectionRef} className="my-8 overflow-hidden rounded border border-line">
-      <div className="flex items-center justify-between gap-3 border-b border-line bg-surface px-5 py-3">
-        <span className="text-sm font-medium text-main">{LABELS[strategy]}</span>
-        <button
-          type="button"
-          onClick={rerun}
-          className="rounded bg-main px-3 py-1 text-sm font-medium text-background transition-opacity hover:opacity-90"
-        >
-          다시 실행
-        </button>
-      </div>
+    <section ref={sectionRef} className="space-y-2.5">
+      <div className="rounded border-2 border-line bg-surface p-4 select-none">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-muted">
+          <span className="text-main">{LABELS[strategy]}</span>
+          <span className="font-mono">
+            완료 {doneOf(world)}/{CLIENT_COUNT} · 시도 {world.attempts}회 · {elapsed.toFixed(1)}초
+          </span>
+        </div>
 
-      <div className="p-5">
         <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="h-auto w-full">
           {world.clients.map((_, i) => (
             <line
@@ -210,21 +206,29 @@ const Jitter = ({ strategy }: Props) => {
         </svg>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t border-line px-5 py-3 text-xs text-muted">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+      <div className="flex flex-wrap items-center justify-between gap-y-1 rounded border border-line bg-surface py-1 pr-1.5 pl-3.5">
+        <div className="flex items-center gap-3 text-xs text-muted select-none">
           <span className="flex items-center gap-1.5">
-            <span className="inline-block size-2.5 rounded-full bg-main" /> 요청
+            <i className="inline-block size-2.5 rounded-full bg-main" />
+            요청
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="inline-block size-2.5 rounded-full bg-accent-alt" /> 성공
+            <i className="inline-block size-2.5 rounded-full bg-accent-alt" />
+            성공
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="inline-block size-2.5 rounded-full border border-main" /> 거절
+            <i className="inline-block size-2.5 rounded-full border border-main" />
+            거절
           </span>
         </div>
-        <span className="shrink-0 font-mono text-muted">
-          완료 {doneOf(world)}/{CLIENT_COUNT} · 시도 {world.attempts}회 · {elapsed.toFixed(1)}초
-        </span>
+
+        <button
+          type="button"
+          onClick={rerun}
+          className="ml-2.5 flex items-center justify-center rounded bg-main px-1.5 py-0.5 text-xs font-medium text-background select-none hover:opacity-85"
+        >
+          다시 실행
+        </button>
       </div>
     </section>
   );

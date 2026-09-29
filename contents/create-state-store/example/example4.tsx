@@ -1,5 +1,6 @@
 'use client';
 
+import Frame, { Control } from '#/create-state-store/example/frame';
 import useRender from '#/create-state-store/hook/use-render';
 import { useShallow } from '#/create-state-store/hook/use-shallow';
 import { createStore, useStore } from '#/create-state-store/store/selective-store';
@@ -25,16 +26,23 @@ const Person = () => {
     <div ref={ref}>
       <div>Name: {name}</div>
       <div>Age: {age}</div>
-      <button onClick={increase}>Increase Button</button>
+      <Control>
+        <button
+          onClick={increase}
+          className="flex items-center justify-center rounded bg-main px-1.5 py-0.5 text-xs font-medium text-background select-none hover:opacity-85"
+        >
+          Increase Button
+        </button>
+      </Control>
     </div>
   );
 };
 
 const Example4 = () => {
   return (
-    <section className="space-y-4 rounded border border-line bg-background p-4">
+    <Frame>
       <Person />
-    </section>
+    </Frame>
   );
 };
 

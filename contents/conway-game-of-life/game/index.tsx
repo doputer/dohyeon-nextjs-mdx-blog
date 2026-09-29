@@ -1,24 +1,29 @@
 'use client';
 
+import { useContext, useEffect } from 'react';
+
 import type { Pattern } from '#/conway-game-of-life/engine/seed';
 import useEngine from '#/conway-game-of-life/engine/use-engine';
 import Grid from '#/conway-game-of-life/game/grid';
+import { GenerationContext } from '#/conway-game-of-life/game/layout';
 
 interface Props {
   pattern: Pattern;
 }
 
 const Game = ({ pattern }: Props) => {
+  const generation = useContext(GenerationContext);
   const { cell, next } = useEngine(pattern);
 
+  useEffect(() => {
+    if (generation > 0) next();
+  }, [generation, next]);
+
   return (
-    <section
-      className="flex cursor-pointer flex-col items-center justify-center gap-2 select-none"
-      onClick={next}
-    >
+    <div className="flex flex-col items-center justify-center gap-2">
       <Grid grid={cell} />
-      <span className="text-sm text-soft">{pattern}</span>
-    </section>
+      <span className="font-mono text-xs text-muted">{pattern}</span>
+    </div>
   );
 };
 
