@@ -13,6 +13,8 @@
 }
 
 [data-theme~='dark'] {
+  color-scheme: dark;
+
   --color-main: oklch(88% 0 0deg);
   --color-muted: oklch(71.1% 0 0deg);
   --color-soft: oklch(54.8% 0 0deg);
