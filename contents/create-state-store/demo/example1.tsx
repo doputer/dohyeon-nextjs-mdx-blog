@@ -1,0 +1,41 @@
+'use client';
+
+import { createStore, useStore } from '#/create-state-store/demo/basic-store';
+import Frame, { Control } from '#/create-state-store/demo/frame';
+import useRender from '#/create-state-store/demo/use-render';
+
+const store = createStore(0);
+
+const Counter = () => {
+  const ref = useRender();
+
+  const value = useStore(store);
+
+  const increase = () => {
+    store.setState((prev) => prev + 1);
+  };
+
+  return (
+    <div ref={ref}>
+      <div>Value: {value}</div>
+      <Control>
+        <button
+          onClick={increase}
+          className="flex items-center justify-center rounded bg-main px-1.5 py-0.5 text-xs font-medium text-background select-none hover:opacity-85"
+        >
+          Increase Button
+        </button>
+      </Control>
+    </div>
+  );
+};
+
+const Example1 = () => {
+  return (
+    <Frame>
+      <Counter />
+    </Frame>
+  );
+};
+
+export default Example1;
