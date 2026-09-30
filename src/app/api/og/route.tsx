@@ -1,10 +1,14 @@
 import { ImageResponse } from 'next/og';
+import type { NextRequest } from 'next/server';
 
-const size = { width: 1200, height: 630 };
+const options = {
+  width: 1200,
+  height: 630,
+  headers: { 'Cache-Control': 'public, max-age=86400, s-maxage=31536000' },
+};
 
-export const GET = async (request: Request) => {
-  const { searchParams } = new URL(request.url);
-  const emoji = searchParams.get('emoji') || '🏷️';
+export const GET = (request: NextRequest) => {
+  const emoji = request.nextUrl.searchParams.get('emoji') || '🏷️';
 
   return new ImageResponse(
     <div
@@ -20,6 +24,6 @@ export const GET = async (request: Request) => {
     >
       {emoji}
     </div>,
-    { ...size }
+    options
   );
 };
