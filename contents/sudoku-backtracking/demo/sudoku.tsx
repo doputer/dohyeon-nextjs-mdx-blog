@@ -68,7 +68,7 @@ const Run = ({ speed, speedRef, increaseSpeed, reset }: RunProps) => {
   }, [speedRef]);
 
   return (
-    <section className="mx-auto w-full max-w-xs space-y-2.5">
+    <section className="mx-auto w-full max-w-sm space-y-2.5">
       <Grid board={board} currentStep={currentStep} lockedMask={makeLockedMask(initialBoard)} />
       <Controller state={{ speed, paused }} control={{ increaseSpeed, togglePause, reset }} />
     </section>

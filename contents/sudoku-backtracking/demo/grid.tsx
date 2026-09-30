@@ -34,9 +34,9 @@ const Grid = ({ board, currentStep, lockedMask }: Props) => {
                 j === 0 && 'border-l-0',
                 isLocked === true && 'font-medium',
                 isLocked === false && 'text-muted',
-                isTry && 'bg-main/20',
+                isTry && 'bg-accent/30',
                 isBack &&
-                  'relative after:pointer-events-none after:absolute after:inset-0 after:border after:border-dashed after:border-main/40'
+                  'relative bg-accent-alt/15 after:pointer-events-none after:absolute after:inset-0 after:border after:border-dashed after:border-accent-alt'
               )}
             >
               {cell || ''}
