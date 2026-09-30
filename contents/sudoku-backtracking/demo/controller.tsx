@@ -15,16 +15,16 @@ const Controller = ({ state, control }: Props) => {
     <>
       <div className="-mt-1 flex flex-wrap items-center justify-end gap-x-3 gap-y-1 px-0.5 text-xs text-muted select-none">
         <span className="flex items-center gap-1.5">
-          <i className="inline-block size-2.5 border border-main/20 bg-main/20" />
+          <i className="inline-block size-2.5 bg-accent/30" />
           시도
         </span>
         <span className="flex items-center gap-1.5">
-          <i className="inline-block size-2.5 border border-dashed border-main/40" />
+          <i className="inline-block size-2.5 border border-dashed border-accent-alt bg-accent-alt/15" />
           되돌아가기
         </span>
       </div>
       <fieldset aria-label="조작">
-        <div className="flex items-center">
+        <div className="flex items-center gap-1.5">
           {control.reset && (
             <button
               className="border border-line px-2 py-0.5 text-sm text-main select-none"
